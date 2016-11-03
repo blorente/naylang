@@ -1,32 +1,38 @@
 language: cpp
 compiler:
-  - gcc
-  - clang
-
+- gcc
 addons:
   apt:
     sources:
-      - george-edison55-precise-backports # cmake 3.2.3 / doxygen 1.8.3
+    - george-edison55-precise-backports
     packages:
-      - cmake
-      - cmake-data
-
+    - cmake
+    - cmake-data
 sudo: required
-
 before_install:
-    - sudo add-apt-repository ppa:george-edison55/cmake-3.x --yes
-    - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-    - sudo apt-get update
-
+- sudo add-apt-repository ppa:george-edison55/cmake-3.x --yes
+- sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+- sudo apt-get update
 install:
-    - sudo apt-get install cmake
-    - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
-    - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
-
+- sudo apt-get install cmake
+- if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
+- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 script:
-  - mkdir bin
-  - cd bin
-  - cmake -G "Unix Makefiles" ..
-  - cmake --build .
-  - cd tests
-  - ./tests
+- mkdir bin
+- cd bin
+- cmake -G "Unix Makefiles" ..
+- cmake --build .
+- cd tests
+- "./tests"
+
+before_deploy:
+- pwd && ls
+
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: SC+eegBYY8ZIAfPNRzWeb5Qg45VYdmTlyCykz2fnVhPxQRRdlSQHtrgcRTLfRDZXYHl9M0Cl8ZEdU4RMDLaHZlEc09mbnxgsahSlOoJZGOU5TTo2qZYrNDU8O6SLgPO3EzAELB2lYBDtybNz1VDPzwR/DNDF/1JFkji4OT9zYrrZhv3JmsM6NDDGS+G+UzYa/N8RhEXd+h/+NIbQBV2jUfurWoVVpXDH1p4p27Ht2qiPumF0mY2r72htdH5LDnRBh+A3AIsOTxnZJKpJxM/VCwAdItOEJ1i8RyhZDlWCpH0sNjZz1mDs8GJs/vvM1dMwtIs/a+bnndbZ4MdinFI4KpOYhbv9zs10vuVXn5Jp3lh0+eG9kri9Qq2+ddffmSKx1VGWz/aULE3iNa8XqnjcsmduV3uXqApHJi4o0uNli3eukN1XxwWp8tNge4Qb87iRnBiUgbFI9/qCUjB+h5jMVIiDquPoD0H0kQFXaEJR+1zCtE+LiM1KjMMubdwidxMQK58No6+R9jL74cMVws31JjSw+fg72aZ+2F+d0rvwagYMJInhhyv3H0hnnHKvc3CLsCEZW78Mk36k76pFW/Ia9cVvSGP2qF8/sD6wFBRaDwwKlG3EWWfHwdb3yTooelxHllXXbeayzJvcddHr6U5r1AKkkYLeUQWYzQBeXGZMQTU=
+  file: /home/travis/build/blorente/naylang/bin/interpreter/interpreter
+  on:
+    repo: blorente/naylang
