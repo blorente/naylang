@@ -1,7 +1,11 @@
 #include <iostream>
-#include "incl.h"
 
 int main() {
-  SAY_HELLO();
+  std::string command;
+  while (command != "quit") {
+      std::cout << ">>> ";
+      getline(std::cin, command);
+      std::cout << command << std::endl;
+  }
   return 0;
 }
