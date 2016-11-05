@@ -7,6 +7,5 @@ set(SOURCE_FILES
 
 include_directories(include)
 include_directories(../interpreter/src)
-include_directories(../interpreter/src)
 
 add_executable(tests ${SOURCE_FILES})
