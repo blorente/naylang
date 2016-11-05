@@ -24,15 +24,15 @@ script:
 - cmake --build .
 - cd tests
 - "./tests"
-
 before_deploy:
 - pwd && ls
-
 deploy:
   skip_cleanup: true
   provider: releases
-  api_key:
-    secure: SC+eegBYY8ZIAfPNRzWeb5Qg45VYdmTlyCykz2fnVhPxQRRdlSQHtrgcRTLfRDZXYHl9M0Cl8ZEdU4RMDLaHZlEc09mbnxgsahSlOoJZGOU5TTo2qZYrNDU8O6SLgPO3EzAELB2lYBDtybNz1VDPzwR/DNDF/1JFkji4OT9zYrrZhv3JmsM6NDDGS+G+UzYa/N8RhEXd+h/+NIbQBV2jUfurWoVVpXDH1p4p27Ht2qiPumF0mY2r72htdH5LDnRBh+A3AIsOTxnZJKpJxM/VCwAdItOEJ1i8RyhZDlWCpH0sNjZz1mDs8GJs/vvM1dMwtIs/a+bnndbZ4MdinFI4KpOYhbv9zs10vuVXn5Jp3lh0+eG9kri9Qq2+ddffmSKx1VGWz/aULE3iNa8XqnjcsmduV3uXqApHJi4o0uNli3eukN1XxwWp8tNge4Qb87iRnBiUgbFI9/qCUjB+h5jMVIiDquPoD0H0kQFXaEJR+1zCtE+LiM1KjMMubdwidxMQK58No6+R9jL74cMVws31JjSw+fg72aZ+2F+d0rvwagYMJInhhyv3H0hnnHKvc3CLsCEZW78Mk36k76pFW/Ia9cVvSGP2qF8/sD6wFBRaDwwKlG3EWWfHwdb3yTooelxHllXXbeayzJvcddHr6U5r1AKkkYLeUQWYzQBeXGZMQTU=
-  file: /home/travis/build/blorente/naylang/bin/interpreter/interpreter
+  api_key: ${GITHUB_TOKEN}
+  file: "/home/travis/build/blorente/naylang/bin/interpreter/interpreter"
   on:
     repo: blorente/naylang
+env:
+  global:
+    secure: cEgIAN379G8SJa+JFJhzpa6vBbdjDdgz7PXXakgYh+voGJkPZ63JBNSQYKFqrGGrlV0YiLRAhjopHxrqsmmg/W6Y47QWzMipB2koMABabmFFUlmXT9WmDqTVguUEZVxw5y2MNGEtGrJ9nUOXB6Mo4PiGSbOiEX8CB4FQ+CLM602+j0Skj9C5ToPKxRufK6j9ZqG1QNjauexK3LavcVvnAD8Twl1svkb+nqypwNQKLsfoURgZicQmXDUig0zp32j4WfTnw13ndHTElPZTxYi2+diT61GEIJMEg0a9TjIPn0tLG0KEEqUkpipWUXiLU1i/hTBAHZ3PTv+iTFFJtBMlJdk3BFkmml+h6krvugguiEtQh5gMkwN/uGyaOxuZCSFpsKm/leDuCCcFl8WRLn1h3bZFXwRr7JIfVrAHKOrMuXbyg4zZXDN/GRRYExkx9vgmQRg3Gf0TF9GY1S2aFtcgt/8z9GD0r9/J8vkW5hfAa+0Fv6FDtiPRegNE1cKR4Jaa1WkXJUqeNgUVQogfKi5WhiH1gg9jAKrxts34dB5kM5n3NGgfgbgmQzA75JnCmJOyEwqPHnttApl1TRCEsJat6ajFF2xoD/cBlLZu9jNmIKAALoTgr+N6c7y9+v19DrZslAp2NY3G8TcBmKZzJZwuPXnDKsORXn9AmM/m2qbjXzQ=
