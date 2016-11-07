@@ -27,6 +27,11 @@ public:
     Number(double value) : Literal<double>(value) {}
 };
 
+class Boolean : public Literal<bool> {
+public:
+    Boolean(bool value) : Literal<bool>(value) {}
+};
+
 }
 
 
