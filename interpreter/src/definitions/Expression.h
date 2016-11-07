@@ -7,7 +7,7 @@ class Expression {
 public:
     Expression() {}
     ~Expression() {}
-    virtual Ret evaluate() = 0;
+    virtual Ret evaluate() const = 0;
 };
 }
 

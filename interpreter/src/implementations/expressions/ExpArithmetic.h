@@ -16,9 +16,13 @@ class ExpArithmetic : public Expression<Number> {
 public:
     ExpArithmetic(Number left, const BinaryOperation<Number, Number, Number> &operation, Number right) :
            _left_part(left), _operation(operation), _right_part(right) {}
+    ExpArithmetic(const Expression<Number> &left,
+                  const BinaryOperation<Number, Number, Number> &operation,
+                  const Expression<Number> &right) :
+            _left_part(left.evaluate()), _operation(operation), _right_part(right.evaluate()) {}
     ~ExpArithmetic() {}
 
-    Number evaluate() {
+    Number evaluate() const {
         Number n = _operation.operate(_left_part, _right_part);
         return n;
     }
