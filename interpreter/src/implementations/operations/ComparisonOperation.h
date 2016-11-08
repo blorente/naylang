@@ -23,30 +23,30 @@ public:
     ~ComparisonOperation() {}
 
     Boolean operate(Number left, Number right) const {
-        Boolean result(false);
+        bool result;
         switch (_operator) {
             case ComparisonOperator::EQUAL:
-                result = Boolean(left.evaluate() == right.evaluate());
+                result = left.evaluate() == right.evaluate();
                 break;
             case ComparisonOperator::NOT_EQUAL:
-                result = Boolean(left.evaluate() != right.evaluate());
+                result = left.evaluate() != right.evaluate();
                 break;
             case ComparisonOperator::GREATER:
-                result = Boolean(left.evaluate() > right.evaluate());
+                result = left.evaluate() > right.evaluate();
                 break;
             case ComparisonOperator::GREATER_OR_EQUAL:
-                result = Boolean(left.evaluate() >= right.evaluate());
+                result = left.evaluate() >= right.evaluate();
                 break;
             case ComparisonOperator::SMALLER:
-                result = Boolean(left.evaluate() < right.evaluate());
+                result = left.evaluate() < right.evaluate();
                 break;
             case ComparisonOperator::SMALLER_OR_EQUAL:
-                result = Boolean(left.evaluate() <= right.evaluate());
+                result = left.evaluate() <= right.evaluate();
                 break;
             default:
                 throw "Arithmetic Operation not recognized";
         }
-        return result;
+        return Boolean(result);
     }
 };
 }
