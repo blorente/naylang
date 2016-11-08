@@ -1,5 +1,4 @@
 #include <implementations/operations/ArithmeticOperation.h>
-#include <implementations/expressions/ExpBoolean.h>
 #include <implementations/expressions/ExpArithmetic.h>
 #include "catch.h"
 #include "implementations/expressions/ExpConditional.h"
@@ -8,9 +7,7 @@ using namespace naylang;
 
 TEST_CASE("A conditional takes two expressions of the same type, and one bool", "[ExpConditional]") {
     Number one(1.0), two(2.0);
-    Boolean truth(true), lie(false);
-    ExpBoolean condition_true(truth);
-    ExpBoolean condition_false(lie);
+    Boolean condition_true(true), condition_false(false);
     ArithmeticOperation sum(ArithmeticOperator::ADD);
     ArithmeticOperation sub(ArithmeticOperator::SUB);
 

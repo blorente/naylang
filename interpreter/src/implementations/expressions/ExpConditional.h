@@ -14,17 +14,17 @@ template <class Ret>
 class ExpConditional : public Expression<Ret> {
 
     const Expression<Ret> &_positive, &_negative;
-    const Expression<Boolean> &_condition;
+    const Expression<bool> &_condition;
 public:
     ExpConditional(
-            const Expression<Boolean> &condition,
+            const Expression<bool> &condition,
             const Expression<Ret> &positive,
             const Expression<Ret> &negative) :
             _condition(condition), _positive(positive), _negative(negative){}
     ~ExpConditional() {}
 
     Ret evaluate() const {
-        if (_condition.evaluate().evaluate())
+        if (_condition.evaluate())
             return _positive.evaluate();
 
         return _negative.evaluate();
