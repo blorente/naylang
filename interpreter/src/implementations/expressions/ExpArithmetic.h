@@ -3,7 +3,7 @@
 
 #include "definitions/Expression.h"
 #include "definitions/Operations.h"
-#include "definitions/Literal.h"
+#include "ExpLiteral.h"
 
 namespace naylang {
 class ExpArithmetic;

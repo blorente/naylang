@@ -19,9 +19,9 @@ TEST_CASE("A conditional takes two expressions of the same type, and one bool", 
         ExpArithmetic neg_example(one, sub, two);
 
         ExpConditional<Number> positive(condition_true, pos_example, neg_example);
-        REQUIRE(positive.evaluate().value() == 3.0);
+        REQUIRE(positive.evaluate() == Number(3.0));
 
         ExpConditional<Number> negative(condition_false, pos_example, neg_example);
-        REQUIRE(negative.evaluate().value() == -1.0);
+        REQUIRE(negative.evaluate() == Number(-1.0));
     }
 }

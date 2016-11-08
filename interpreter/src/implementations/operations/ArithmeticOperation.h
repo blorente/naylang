@@ -2,7 +2,7 @@
 #define NAYLANG_OP_SUM_H
 
 #include "definitions/Operations.h"
-#include "definitions/Literal.h"
+#include "implementations/expressions/ExpLiteral.h"
 
 namespace naylang {
 
@@ -23,19 +23,19 @@ public:
         double result = -1;
         switch (_operator) {
             case ArithmeticOperator::ADD:
-                result = left.value() + right.value();
+                result = left.evaluate() + right.evaluate();
                 break;
             case ArithmeticOperator::SUB:
-                result = left.value() - right.value();
+                result = left.evaluate() - right.evaluate();
                 break;
             case ArithmeticOperator::MUL:
-                result = left.value() * right.value();
+                result = left.evaluate() * right.evaluate();
                 break;
             case ArithmeticOperator::DIV:
-                if (right.value() >= 0.0 && right.value() <= 0.0)
+                if (right.evaluate() >= 0.0 && right.evaluate() <= 0.0)
                     throw "Division by zero";
 
-                result = left.value() / right.value();
+                result = left.evaluate() / right.evaluate();
                 break;
             default:
                 throw "Arithmetic Operation not recognized";

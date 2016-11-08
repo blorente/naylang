@@ -3,7 +3,7 @@
 
 #include "definitions/Expression.h"
 #include "definitions/Operations.h"
-#include "definitions/Literal.h"
+#include "ExpLiteral.h"
 
 namespace naylang {
 
@@ -24,7 +24,7 @@ public:
     ~ExpConditional() {}
 
     Ret evaluate() const {
-        if (_condition.evaluate().value())
+        if (_condition.evaluate().evaluate())
             return _positive.evaluate();
 
         return _negative.evaluate();

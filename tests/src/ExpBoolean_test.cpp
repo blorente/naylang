@@ -8,7 +8,7 @@ TEST_CASE("A Boolean expression returns a Boolean", "[ExpBoolean]") {
     SECTION("ExpBoolean can take a Boolean (trivial case)") {
         Boolean truthy(true), falsy(false);
         ExpBoolean truth(truthy), lie(falsy);
-        REQUIRE(truth.evaluate().value());
-        REQUIRE(!lie.evaluate().value());
+        REQUIRE(truth.evaluate() == Boolean(true));
+        REQUIRE(lie.evaluate() == Boolean(false));
     }
 }

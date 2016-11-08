@@ -2,7 +2,7 @@
 #define NAYLANG_EXPBOOLEAN_H
 
 #include "definitions/Expression.h"
-#include "definitions/Literal.h"
+#include "ExpLiteral.h"
 
 namespace naylang {
 

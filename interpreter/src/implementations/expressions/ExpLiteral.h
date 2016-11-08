@@ -1,23 +1,25 @@
 #ifndef NAYLANG_LITERAL_H
 #define NAYLANG_LITERAL_H
 
+#include "definitions/Expression.h"
+
 namespace naylang {
 template<class T>
 class Literal;
 
 template<class T>
-class Literal {
+class Literal : public Expression<T> {
     T _value;
 public:
     Literal(T value) : _value(value) {}
     ~Literal() {}
 
-    T value() {
+    T evaluate() const {
         return _value;
     }
 
-    bool operator==(Literal other) {
-        return _value == other.value();
+    bool operator==(const Expression<T> &other) const {
+        return _value == other.evaluate();
     }
 };
 

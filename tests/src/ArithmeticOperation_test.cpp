@@ -1,5 +1,5 @@
 #include "catch.h"
-#include "definitions/Literal.h"
+#include "implementations/expressions/ExpLiteral.h"
 #include "implementations/operations/ArithmeticOperation.h"
 
 using namespace naylang;
@@ -8,7 +8,7 @@ TEST_CASE("The ADD operation takes two Numbers and returns a Number", "[Arithmet
     Number five(5.0);
     Number threePointFive(3.5);
     ArithmeticOperation operation = ArithmeticOperation(ArithmeticOperator::ADD);
-    REQUIRE(operation.operate(threePointFive, five).value() == 8.5);
+    REQUIRE(operation.operate(threePointFive, five) == Number(8.5));
 }
 
 TEST_CASE("The ADD operation can add negative numbers", "[ArithmeticOperation]") {
@@ -17,7 +17,7 @@ TEST_CASE("The ADD operation can add negative numbers", "[ArithmeticOperation]")
     Number threePointFive(3.5);
     ArithmeticOperation operation = ArithmeticOperation(ArithmeticOperator::ADD);
     REQUIRE(operation.operate(minusTwo, threePointFive) == Number(1.5));
-    REQUIRE(operation.operate(minusTwo, minusOne).value() == -3.0);
+    REQUIRE(operation.operate(minusTwo, minusOne) == Number(-3.0));
 }
 
 TEST_CASE("ArithmeticOperation accepts SUBstraction", "[ArithmeticOperation]") {
@@ -57,6 +57,6 @@ TEST_CASE("ArithmeticOperation accepts DIVision", "[ArithmeticOperation]") {
     }
 
     SECTION("Division by 0 is inf") {
-        REQUIRE_THROWS(operation.operate(three, zero).value() == 0.0);
+        REQUIRE_THROWS(operation.operate(three, zero) == Number(0.0));
     }
 }

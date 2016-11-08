@@ -2,7 +2,7 @@
 #define NAYLANG_COMPARISONOPERATION_H
 
 #include "definitions/Operations.h"
-#include "definitions/Literal.h"
+#include "implementations/expressions/ExpLiteral.h"
 
 namespace naylang {
 
@@ -26,22 +26,22 @@ public:
         Boolean result(false);
         switch (_operator) {
             case ComparisonOperator::EQUAL:
-                result = Boolean(left.value() == right.value());
+                result = Boolean(left.evaluate() == right.evaluate());
                 break;
             case ComparisonOperator::NOT_EQUAL:
-                result = Boolean(left.value() != right.value());
+                result = Boolean(left.evaluate() != right.evaluate());
                 break;
             case ComparisonOperator::GREATER:
-                result = Boolean(left.value() > right.value());
+                result = Boolean(left.evaluate() > right.evaluate());
                 break;
             case ComparisonOperator::GREATER_OR_EQUAL:
-                result = Boolean(left.value() >= right.value());
+                result = Boolean(left.evaluate() >= right.evaluate());
                 break;
             case ComparisonOperator::SMALLER:
-                result = Boolean(left.value() < right.value());
+                result = Boolean(left.evaluate() < right.evaluate());
                 break;
             case ComparisonOperator::SMALLER_OR_EQUAL:
-                result = Boolean(left.value() <= right.value());
+                result = Boolean(left.evaluate() <= right.evaluate());
                 break;
             default:
                 throw "Arithmetic Operation not recognized";

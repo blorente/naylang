@@ -1,5 +1,5 @@
 #include "catch.h"
-#include "definitions/Literal.h"
+#include "implementations/expressions/ExpLiteral.h"
 #include "implementations/operations/ComparisonOperation.h"
 
 using namespace naylang;
@@ -14,20 +14,20 @@ TEST_CASE("Comparison operations can deal with Number", "[ComparisonOperation]")
     ComparisonOperation smaller(ComparisonOperator::SMALLER);
     ComparisonOperation smallerOrEqual(ComparisonOperator::SMALLER_OR_EQUAL);
 
-    REQUIRE(equals.operate(one, anotherOne).value());
-    REQUIRE(notEquals.operate(one, two).value());
+    REQUIRE(equals.operate(one, anotherOne) == Boolean(true));
+    REQUIRE(notEquals.operate(one, two) == Boolean(true));
 
-    REQUIRE(!greater.operate(one, three).value());
-    REQUIRE(greater.operate(three, one).value());
+    REQUIRE(greater.operate(one, three) == Boolean(false));
+    REQUIRE(greater.operate(three, one) == Boolean(true));
 
-    REQUIRE(!greaterOrEqual.operate(one, three).value());
-    REQUIRE(greaterOrEqual.operate(three, one).value());
-    REQUIRE(greaterOrEqual.operate(one, anotherOne).value());
+    REQUIRE(greaterOrEqual.operate(one, three) == Boolean(false));
+    REQUIRE(greaterOrEqual.operate(three, one) == Boolean(true));
+    REQUIRE(greaterOrEqual.operate(one, anotherOne) == Boolean(true));
 
-    REQUIRE(smaller.operate(one, three).value());
-    REQUIRE(!smaller.operate(three, one).value());
+    REQUIRE(smaller.operate(one, three) == Boolean(true));
+    REQUIRE(smaller.operate(three, one) == Boolean(false));
 
-    REQUIRE(smallerOrEqual.operate(one, three).value());
-    REQUIRE(!smallerOrEqual.operate(three, one).value());
-    REQUIRE(smallerOrEqual.operate(one, anotherOne).value());
+    REQUIRE(smallerOrEqual.operate(one, three) == Boolean(true));
+    REQUIRE(smallerOrEqual.operate(three, one) == Boolean(false));
+    REQUIRE(smallerOrEqual.operate(one, anotherOne) == Boolean(true));
 }
