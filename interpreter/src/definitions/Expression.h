@@ -2,11 +2,18 @@
 #define NAYLANG_EXPRESSION_H
 
 namespace naylang {
-template<class Ret>
+
+class ExpressionBase {
+public:
+    ExpressionBase() {}
+    ~ExpressionBase() = default;
+};
+
+#define ExpressionPointer std::unique_ptr<ExpressionBase>
+
 class Expression {
 public:
-    Expression() {}
-    ~Expression() {}
+    template <typename Ret>
     virtual Ret evaluate() const = 0;
 };
 }
