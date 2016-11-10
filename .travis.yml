@@ -15,8 +15,8 @@ before_install:
 - sudo apt-get update
 install:
 - sudo apt-get install cmake
-- if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
-- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+- if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-6; fi
+- if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
 script:
 - mkdir bin
 - cd bin
