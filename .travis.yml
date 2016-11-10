@@ -23,7 +23,7 @@ script:
 - cmake -G "Unix Makefiles" ..
 - cmake --build .
 - cd tests
-- "./tests"
+- "./tests -r console -s"
 before_deploy:
 - pwd && ls
 deploy:
@@ -33,6 +33,7 @@ deploy:
   file: "/home/travis/build/blorente/naylang/bin/interpreter/interpreter"
   on:
     repo: blorente/naylang
+    branch: master
 env:
   global:
     secure: cEgIAN379G8SJa+JFJhzpa6vBbdjDdgz7PXXakgYh+voGJkPZ63JBNSQYKFqrGGrlV0YiLRAhjopHxrqsmmg/W6Y47QWzMipB2koMABabmFFUlmXT9WmDqTVguUEZVxw5y2MNGEtGrJ9nUOXB6Mo4PiGSbOiEX8CB4FQ+CLM602+j0Skj9C5ToPKxRufK6j9ZqG1QNjauexK3LavcVvnAD8Twl1svkb+nqypwNQKLsfoURgZicQmXDUig0zp32j4WfTnw13ndHTElPZTxYi2+diT61GEIJMEg0a9TjIPn0tLG0KEEqUkpipWUXiLU1i/hTBAHZ3PTv+iTFFJtBMlJdk3BFkmml+h6krvugguiEtQh5gMkwN/uGyaOxuZCSFpsKm/leDuCCcFl8WRLn1h3bZFXwRr7JIfVrAHKOrMuXbyg4zZXDN/GRRYExkx9vgmQRg3Gf0TF9GY1S2aFtcgt/8z9GD0r9/J8vkW5hfAa+0Fv6FDtiPRegNE1cKR4Jaa1WkXJUqeNgUVQogfKi5WhiH1gg9jAKrxts34dB5kM5n3NGgfgbgmQzA75JnCmJOyEwqPHnttApl1TRCEsJat6ajFF2xoD/cBlLZu9jNmIKAALoTgr+N6c7y9+v19DrZslAp2NY3G8TcBmKZzJZwuPXnDKsORXn9AmM/m2qbjXzQ=
