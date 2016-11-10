@@ -16,7 +16,6 @@ class Number : public Expression {
     NumberValue _value;
 public:
     Number(double value);
-    ~Number() = default;
 
     void accept(Visitor &visitor);
     NumberValue value() const;
