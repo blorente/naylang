@@ -11,7 +11,7 @@ public:
     Visitor() {}
     ~Visitor() = default;
 
-    virtual void process(Expression *exp) = 0;
+    virtual void process(Expression &exp) = 0;
 };
 }
 

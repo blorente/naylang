@@ -8,11 +8,9 @@ namespace naylang {
 
 class Number;
 
-class NumberVisitor : Visitor {
+class NumberVisitor : public Visitor {
 public:
-    void process(Number *exp) {
-
-    }
+    void process(Expression &exp);
 };
 }
 
