@@ -17,7 +17,6 @@ class Number : public Expression {
 public:
     Number(double value);
 
-    void accept(Visitor &visitor);
     NumberValue value() const;
     bool operator==(const Number &other) const;
 };

@@ -5,10 +5,6 @@ Number::Number(double value) {
     _value.doubleValue = value;
 }
 
-void Number::accept(Visitor &visitor) {
-    visitor.process(*this);
-}
-
 NumberValue Number::value() const {
     return _value;
 }

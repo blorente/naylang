@@ -18,7 +18,6 @@ public:
     Constant(LValue identifier, const Expression &value)
             : _identifier(identifier), _value(value) {}
 
-    void accept(Visitor &visitor);
     const Expression & value();
 };
 }
