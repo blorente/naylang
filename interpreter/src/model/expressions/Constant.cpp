@@ -4,6 +4,6 @@
 namespace naylang {
 
 const Expression & Constant::value() {
-    return _value;
+    return *_value;
 }
 }
