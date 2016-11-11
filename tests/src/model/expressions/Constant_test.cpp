@@ -11,5 +11,5 @@ TEST_CASE("Constants return expressions", "[Constant]") {
     std::unique_ptr<Expression> five_ptr(new Number(5.0));
     Constant number("x", std::move(five_ptr));
     const Number &val = static_cast<const Number &>(number.value());
-    REQUIRE(val.value().doubleValue == Number(5.0).value().doubleValue);
+    REQUIRE(val == Number(5.0));
 }

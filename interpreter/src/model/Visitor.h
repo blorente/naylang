@@ -7,6 +7,7 @@
 namespace naylang {
 
 class Environment;
+class Expression;
 
 class Visitor {
 public:
