@@ -10,7 +10,7 @@ class Number;
 
 class NumberVisitor : public Visitor {
 public:
-    void process(Expression &exp);
+    void process(Expression &exp, Environment &env);
 };
 }
 

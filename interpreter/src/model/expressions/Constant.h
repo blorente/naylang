@@ -6,8 +6,6 @@
 #include "model/Expression.h"
 #include "model/Visitor.h"
 
-#include <iostream>
-
 namespace naylang {
 
 typedef std::string LValue;
@@ -15,17 +13,15 @@ typedef std::string LValue;
 class Constant : public Expression {
 
     LValue _identifier;
-    std::shared_ptr<Expression> _value;
+    std::unique_ptr<Expression> _value;
 
 public:
-    Constant(LValue identifier, std::shared_ptr<Expression> value)
-            : _identifier(identifier), _value(value) 
-            {}
-
-    ~Constant() {
-    	std::cout << "~Constant()" << std::endl;
+    Constant(LValue identifier, std::unique_ptr<Expression> value) {
+        _identifier = identifier;
+        _value = std::move(value);
     }
 
+    const LValue & identifier();
     const Expression & value();
 };
 }

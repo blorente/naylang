@@ -1,7 +1,7 @@
 #ifndef NAYLANG_EXPRESSION_H
 #define NAYLANG_EXPRESSION_H
 
-#include "Visitor.h"
+#include "model/Visitor.h"
 
 namespace naylang {
 
@@ -9,11 +9,15 @@ class Visitor;
 
 class Expression {
 public:
-    Expression() {};
-    ~Expression() = default;
-    virtual void accept(Visitor &visitor) {
-        visitor.process(*this);
-    }
+    Expression() = default;
+    virtual ~Expression() = default;
+    // Support move
+    Expression(Expression&&) = default;
+    Expression& operator=(Expression&&) = default;
+    // Support copy
+    Expression(const Expression&) = default;
+    Expression& operator=(const Expression&) = default;
+
 };
 
 }

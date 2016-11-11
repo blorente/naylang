@@ -1,7 +1,8 @@
 #include "NumberVisitor.h"
 
 namespace naylang {
-void NumberVisitor::process(Expression &exp) {
-    Number &number = dynamic_cast<Number &>(exp);
+void NumberVisitor::process(Expression &exp, Environment &env) {
+    Number &number = static_cast<Number &>(exp);
 }
+
 }

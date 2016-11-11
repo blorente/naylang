@@ -4,8 +4,6 @@
 #include "model/Expression.h"
 #include "model/visitors/NumberVisitor.h"
 
-#include <iostream>
-
 namespace naylang {
 
 union NumberValue {
@@ -19,10 +17,7 @@ union NumberValue {
 class Number : public Expression {
     NumberValue _value;
 public:
-    Number(double value);
-    ~Number() {
-    	std::cout << "~Number()" << std::endl;
-    }
+    explicit Number(double value);
 
     NumberValue value() const;
     bool operator==(const Number &other) const;
