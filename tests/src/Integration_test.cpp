@@ -29,7 +29,6 @@ TEST_CASE( "Composite arithmetic operations", "[Integration Tests]" ) {
     REQUIRE(evaluator.getPartial() == 3.5);
 }
 
-/*
 TEST_CASE( "Arithmetic operations with assignments", "[Integration Tests]") {
     GraceEvaluator evaluator;
 
@@ -38,7 +37,7 @@ TEST_CASE( "Arithmetic operations with assignments", "[Integration Tests]") {
     auto minusSeven = std::make_shared<Number>(-7.0);
 
     // These are not evaluated directly
-    auto three = std::make_shared<PrimitiveOperation>(PrimitiveOperationType::SUBTRACT, two, minusOne);
+    auto three = std::make_shared<Subtraction>(two, minusOne);
 
     // Must be evaluated directly
     auto constY = std::make_shared<Constant>("y", three);
@@ -48,7 +47,7 @@ TEST_CASE( "Arithmetic operations with assignments", "[Integration Tests]") {
     // Not evaluated directly
     auto refY = std::make_shared<VariableReference>("y");
     auto refX = std::make_shared<VariableReference>("x");
-    auto yTimesX = std::make_shared<PrimitiveOperation>(PrimitiveOperationType::MULTIPLY, refY, refX);
+    auto yTimesX = std::make_shared<Multiplication>(refY, refX);
 
     auto reassignX = std::make_shared<Assignment>("x", yTimesX);
 
@@ -60,5 +59,5 @@ TEST_CASE( "Arithmetic operations with assignments", "[Integration Tests]") {
 
     // Check the value of X
     REQUIRE_NOTHROW(evaluator.evaluate(*refX));
-    REQUIRE(evaluator.getPartials().top() == -21.0);
-}*/
+    REQUIRE(evaluator.getPartial() == -21.0);
+}
