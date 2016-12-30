@@ -15,6 +15,7 @@
 #include <model/expressions/Assignment.h>
 #include <model/expressions/VariableDeclaration.h>
 #include <model/expressions/VariableReference.h>
+#include <model/expressions/IfThenElse.h>
 
 #include <model/expressions/operations/Addition.h>
 #include <model/expressions/operations/Subtraction.h>
@@ -40,6 +41,7 @@ public:
     virtual void evaluate(VariableReference &expression);
     virtual void evaluate(Assignment &expression);
     virtual void evaluate(VariableDeclaration &expression);
+    virtual void evaluate(IfThenElse &expression);
 
     virtual void evaluate(Addition &expression);
     virtual void evaluate(Subtraction &expression);

@@ -19,6 +19,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     auto six = std::make_shared<Number>(6.0);
     auto zero = std::make_shared<Number>(0.0);
     auto tru = std::make_shared<Boolean>(true);
+    auto fals = std::make_shared<Boolean>(false);
 
     SECTION("A Number expression just stores the value") {
         Number fiveNat(5.0);
@@ -64,7 +65,16 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
 
     SECTION("The evaluator places the value of a Boolean in a partial") {
         REQUIRE_NOTHROW(eval.evaluate(*tru));
-        REQUIRE(eval.getPartialDouble());
+        REQUIRE(eval.getPartialBool());
+    }
+
+    SECTION("The evaluator executes ITE blocks according to the condition") {
+        IfThenElse iteSix(tru, six, zero);
+        IfThenElse iteZero(fals, six, zero);
+        REQUIRE_NOTHROW(eval.evaluate(iteSix));
+        REQUIRE(eval.getPartialDouble() == 6.0);
+        REQUIRE_NOTHROW(eval.evaluate(iteZero));
+        REQUIRE(eval.getPartialDouble() == 0.0);
     }
 
 }

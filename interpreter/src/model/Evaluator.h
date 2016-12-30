@@ -20,6 +20,7 @@ class Assignment;
 class PrimitiveOperation;
 class VariableDeclaration;
 class VariableReference;
+class IfThenElse;
 
 class Addition;
 class Subtraction;
@@ -40,6 +41,7 @@ public:
     virtual void evaluate(Assignment &expression) = 0;
     virtual void evaluate(VariableDeclaration &expression) = 0;
     virtual void evaluate(VariableReference &expression) = 0;
+    virtual void evaluate(IfThenElse &expression) = 0;
 
     virtual void evaluate(Addition &expression) = 0;
     virtual void evaluate(Subtraction &expression) = 0;

@@ -56,6 +56,16 @@ void GraceEvaluator::evaluate(VariableReference &expression) {
     _partialDouble = currentValue;
 }
 
+void GraceEvaluator::evaluate(IfThenElse &expression) {
+    expression.condition()->accept(*this);
+    auto condition = _partialBool;
+    if (condition) {
+        expression.thenExpression()->accept(*this);
+    } else {
+        expression.elseExpression()->accept(*this);
+    }
+}
+
 void GraceEvaluator::evaluate(Subtraction &expression) {
     expression.leftOperand()->accept(*this);
     auto lop = _partialDouble;
