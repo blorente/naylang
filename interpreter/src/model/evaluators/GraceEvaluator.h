@@ -8,7 +8,9 @@
 #include "model/Evaluator.h"
 #include <model/environment/Environment.h>
 
-#include <model/expressions/Number.h>
+#include <model/expressions/primitives/Number.h>
+#include <model/expressions/primitives/Boolean.h>
+
 #include <model/expressions/Constant.h>
 #include <model/expressions/Assignment.h>
 #include <model/expressions/VariableDeclaration.h>
@@ -24,13 +26,16 @@ namespace naylang {
 class GraceEvaluator : public Evaluator {
 
     Environment _environment;
-    double _partial;
+    double _partialDouble;
+    bool _partialBool;
 
 public:
 
     virtual ~GraceEvaluator() = default;
 
     virtual void evaluate(Number &expression);
+    virtual void evaluate(Boolean &expression);
+
     virtual void evaluate(Constant &expression);
     virtual void evaluate(VariableReference &expression);
     virtual void evaluate(Assignment &expression);
@@ -41,7 +46,8 @@ public:
     virtual void evaluate(Multiplication &expression);
     virtual void evaluate(Division &expression);
 
-    double getPartial() const;
+    double getPartialDouble() const;
+    bool getPartialBool() const;
 };
 
 }

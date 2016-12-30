@@ -26,7 +26,7 @@ TEST_CASE( "Composite arithmetic operations", "[Integration Tests]" ) {
     auto toThreePointFive = std::make_shared<Division>(toPlusSeven, two);
 
     REQUIRE_NOTHROW(evaluator.evaluate(*toThreePointFive));
-    REQUIRE(evaluator.getPartial() == 3.5);
+    REQUIRE(evaluator.getPartialDouble() == 3.5);
 }
 
 TEST_CASE( "Arithmetic operations with assignments", "[Integration Tests]") {
@@ -59,5 +59,5 @@ TEST_CASE( "Arithmetic operations with assignments", "[Integration Tests]") {
 
     // Check the value of X
     REQUIRE_NOTHROW(evaluator.evaluate(*refX));
-    REQUIRE(evaluator.getPartial() == -21.0);
+    REQUIRE(evaluator.getPartialDouble() == -21.0);
 }

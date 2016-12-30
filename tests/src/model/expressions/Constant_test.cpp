@@ -6,7 +6,7 @@
 #include "catch.h"
 
 #include "model/expressions/Constant.h"
-#include "model/expressions/Number.h"
+#include "model/expressions/primitives/Number.h"
 
 using namespace naylang;
 

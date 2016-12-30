@@ -18,11 +18,12 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     auto minusOne = std::make_shared<Number>(-1.0);
     auto six = std::make_shared<Number>(6.0);
     auto zero = std::make_shared<Number>(0.0);
+    auto tru = std::make_shared<Boolean>(true);
 
     SECTION("A Number expression just stores the value") {
         Number fiveNat(5.0);
         REQUIRE_NOTHROW(eval.evaluate(fiveNat));
-        REQUIRE(eval.getPartial() == fiveNat.value());
+        REQUIRE(eval.getPartialDouble() == fiveNat.value());
     }
 
     SECTION("If the identifier of a constant already exists in the environment, it throws an exception") {
@@ -53,12 +54,17 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE_NOTHROW(eval.evaluate(xDeclaration));
         REQUIRE_NOTHROW(eval.evaluate(xAssignment));
         REQUIRE_NOTHROW(eval.evaluate(xReference));
-        REQUIRE(eval.getPartial() == 6.0);
+        REQUIRE(eval.getPartialDouble() == 6.0);
     }
 
     SECTION("The evaluator throws an exception when dividing by 0") {
         Division divideByZero(six, zero);
         REQUIRE_THROWS(eval.evaluate(divideByZero));
+    }
+
+    SECTION("The evaluator places the value of a Boolean in a partial") {
+        REQUIRE_NOTHROW(eval.evaluate(*tru));
+        REQUIRE(eval.getPartialDouble());
     }
 
 }
