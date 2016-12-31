@@ -18,7 +18,7 @@ const std::string & Assignment::identifier() const {
     return _identifier;
 }
 
-std::shared_ptr<Expression> Assignment::value() const {
+ExpressionPtr Assignment::value() const {
     return _value;
 }
 

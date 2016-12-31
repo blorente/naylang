@@ -15,15 +15,15 @@ namespace naylang {
 class Assignment : public Expression {
 
     std::string _identifier;
-    std::shared_ptr<Expression> _value;
+    ExpressionPtr _value;
 
 public:
 
-    Assignment(const std::string &identifier, std::shared_ptr<Expression> value);
+    Assignment(const std::string &identifier, ExpressionPtr value);
 
     virtual void accept(Evaluator &evaluator);
     const std::string &identifier() const;
-    std::shared_ptr<Expression> value() const;
+    ExpressionPtr value() const;
 };
 
 }

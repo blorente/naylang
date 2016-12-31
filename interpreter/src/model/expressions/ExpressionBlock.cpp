@@ -12,11 +12,11 @@ void ExpressionBlock::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
-void ExpressionBlock::addExpression(std::shared_ptr<Expression> expression) {
+void ExpressionBlock::addExpression(ExpressionPtr expression) {
     _expressions.push_back(std::move(expression));
 }
 
-const std::vector<std::shared_ptr<Expression>> &ExpressionBlock::expressions() const {
+const std::vector<ExpressionPtr> &ExpressionBlock::expressions() const {
     return _expressions;
 }
 }

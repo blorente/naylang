@@ -6,7 +6,7 @@
 #include "Division.h"
 
 namespace naylang {
-Division::Division(std::shared_ptr<Expression> numerator, std::shared_ptr<Expression> denominator) {
+Division::Division(ExpressionPtr numerator, ExpressionPtr denominator) {
     _numerator = std::move(numerator);
     _denominator = std::move(denominator);
 }
@@ -15,19 +15,19 @@ void Division::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
-std::shared_ptr<Expression> Division::numerator() const {
+ExpressionPtr Division::numerator() const {
     return _numerator;
 }
 
-std::shared_ptr<Expression> Division::denominator() const {
+ExpressionPtr Division::denominator() const {
     return _denominator;
 }
 
-std::shared_ptr<Expression> Division::leftOperand() const {
+ExpressionPtr Division::leftOperand() const {
     return numerator();
 }
 
-std::shared_ptr<Expression> Division::rightOperand() const {
+ExpressionPtr Division::rightOperand() const {
     return denominator();
 }
 }

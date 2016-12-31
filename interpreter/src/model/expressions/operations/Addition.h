@@ -13,16 +13,16 @@ namespace naylang {
 
 class Addition : public BinaryOperation {
 
-    std::shared_ptr<Expression> _leftOperand;
-    std::shared_ptr<Expression> _rightOperand;
+    ExpressionPtr _leftOperand;
+    ExpressionPtr _rightOperand;
 
 public:
-    Addition(std::shared_ptr<Expression> lexp, std::shared_ptr<Expression> rexp);
+    Addition(ExpressionPtr lexp, ExpressionPtr rexp);
 
     virtual void accept(Evaluator &evaluator);
 
-    std::shared_ptr<Expression> leftOperand() const;
-    std::shared_ptr<Expression> rightOperand() const;
+    ExpressionPtr leftOperand() const;
+    ExpressionPtr rightOperand() const;
 };
 }
 

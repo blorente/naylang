@@ -11,6 +11,7 @@
 namespace naylang {
 
 class Evaluator;
+#define ExpressionPtr std::shared_ptr<Expression>
 
 class Expression {
 

@@ -14,21 +14,21 @@
 namespace naylang {
 class IfThenElse : public Expression {
 
-    std::shared_ptr<Expression> _condition;
-    std::shared_ptr<Expression> _then;
-    std::shared_ptr<Expression> _else;
+    ExpressionPtr _condition;
+    ExpressionPtr _then;
+    ExpressionPtr _else;
 
 public:
 
     IfThenElse(
-            std::shared_ptr<Expression> condition,
-            std::shared_ptr<Expression> thenExp,
-            std::shared_ptr<Expression> elseExp);
+            ExpressionPtr condition,
+            ExpressionPtr thenExp,
+            ExpressionPtr elseExp);
 
     virtual void accept(Evaluator &evaluator);
-    std::shared_ptr<Expression> condition() const;
-    std::shared_ptr<Expression> thenExpression() const;
-    std::shared_ptr<Expression> elseExpression() const;
+    ExpressionPtr condition() const;
+    ExpressionPtr thenExpression() const;
+    ExpressionPtr elseExpression() const;
 };
 }
 

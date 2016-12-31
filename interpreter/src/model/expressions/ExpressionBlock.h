@@ -14,15 +14,15 @@
 namespace naylang {
 class ExpressionBlock : public Expression {
 
-    std::vector<std::shared_ptr<Expression>> _expressions;
+    std::vector<ExpressionPtr> _expressions;
 
 public:
 
     ExpressionBlock();
 
     virtual void accept(Evaluator &evaluator);
-    void addExpression(std::shared_ptr<Expression> expression);
-    const std::vector<std::shared_ptr<Expression>> & expressions() const;
+    void addExpression(ExpressionPtr expression);
+    const std::vector<ExpressionPtr> & expressions() const;
 };
 }
 

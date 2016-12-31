@@ -7,9 +7,9 @@
 
 namespace naylang {
 IfThenElse::IfThenElse(
-        std::shared_ptr<Expression> condition,
-        std::shared_ptr<Expression> thenExp,
-        std::shared_ptr<Expression> elseExp) {
+        ExpressionPtr condition,
+        ExpressionPtr thenExp,
+        ExpressionPtr elseExp) {
     _condition = std::move(condition);
     _then = std::move(thenExp);
     _else = std::move(elseExp);
@@ -19,15 +19,15 @@ void IfThenElse::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
-std::shared_ptr<Expression> IfThenElse::condition() const {
+ExpressionPtr IfThenElse::condition() const {
     return _condition;
 }
 
-std::shared_ptr<Expression> IfThenElse::thenExpression() const {
+ExpressionPtr IfThenElse::thenExpression() const {
     return _then;
 }
 
-std::shared_ptr<Expression> IfThenElse::elseExpression() const {
+ExpressionPtr IfThenElse::elseExpression() const {
     return _else;
 }
 

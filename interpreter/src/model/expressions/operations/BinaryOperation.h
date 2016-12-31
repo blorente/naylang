@@ -12,8 +12,8 @@ class BinaryOperation : public Expression {
 
 public:
     virtual void accept(Evaluator &evaluator) = 0;
-    virtual std::shared_ptr<Expression> leftOperand() const = 0;
-    virtual std::shared_ptr<Expression> rightOperand() const = 0;
+    virtual ExpressionPtr leftOperand() const = 0;
+    virtual ExpressionPtr rightOperand() const = 0;
 };
 }
 
