@@ -77,4 +77,17 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE(eval.getPartialDouble() == 0.0);
     }
 
+    SECTION("The evaluator evaluates expresions in a block sequenatially") {
+        auto xDeclaration = std::make_shared<VariableDeclaration>("x");
+        auto xAssignment = std::make_shared<Assignment>("x", six);
+        auto xReference = std::make_shared<VariableReference>("x");
+
+        ExpressionBlock block;
+        block.addExpression(xDeclaration);
+        block.addExpression(xAssignment);
+        block.addExpression(xReference);
+
+        REQUIRE_NOTHROW(eval.evaluate(block));
+        REQUIRE(eval.getPartialDouble() == 6.0);
+    }
 }

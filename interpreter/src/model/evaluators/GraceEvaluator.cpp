@@ -92,4 +92,10 @@ void GraceEvaluator::evaluate(Division &expression) {
     }
     _partialDouble = numerator / denominator;
 }
+
+void GraceEvaluator::evaluate(ExpressionBlock &expression) {
+    for(auto exp : expression.expressions()) {
+        exp->accept(*this);
+    }
+}
 }
