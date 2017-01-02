@@ -8,23 +8,24 @@
 #include <memory>
 #include <map>
 #include "Value.h"
+#include "Identifier.h"
 
 namespace naylang {
 
 class Environment {
 
     std::shared_ptr<Environment> _parent;
-    std::map<std::string, Value> _scope;
+    std::map<Identifier, Value> _scope;
 
 public:
 
     Environment() = default;
     ~Environment() = default;
 
-    unsigned long size();
-    void bind(const std::string &identifier, const Value &value);
-    void change(const std::string &identifier, const Value &value);
-    const Value & get(const std::string &identifier) const;
+    unsigned long long int size();
+    void bind(const Identifier &identifier, const Value &value);
+    void change(const Identifier &identifier, const Value &value);
+    const Value & get(const Identifier &identifier) const;
 
 };
 

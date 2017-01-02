@@ -7,6 +7,7 @@
 
 #include "model/Evaluator.h"
 #include <model/environment/Environment.h>
+#include <model/environment/Identifier.h>
 
 #include <model/expressions/primitives/Number.h>
 #include <model/expressions/primitives/Boolean.h>

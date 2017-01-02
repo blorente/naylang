@@ -20,36 +20,41 @@ TEST_CASE("Environment", "[Environment]") {
     }
 
     SECTION("Trying to get an unbound value raises an exception") {
-        REQUIRE_THROWS(env.get("badIdentifier"));
+        Identifier badIdentifier("baaad");
+        REQUIRE_THROWS(env.get(badIdentifier));
     }
 
     SECTION("Once a value has been inserted, you can get() it") {
+        Identifier x("x");
         Value five(5.0);
-        env.bind("x", five);
-        REQUIRE(env.get("x").value() == five.value());
+        env.bind(x, five);
+        REQUIRE(env.get(x).value() == five.value());
     }
 
     SECTION("After bind(), the a value can be change()d") {
+        Identifier x("x");
         Value five(5.0);
         Value three(3.0);
-        env.bind("x", five);
-        REQUIRE(env.get("x").value() == five.value());
-        REQUIRE_THROWS(env.bind("x", three));
-        env.change("x", three);
-        REQUIRE(env.get("x").value() == three.value());
+        env.bind(x, five);
+        REQUIRE(env.get(x).value() == five.value());
+        REQUIRE_THROWS(env.bind(x, three));
+        env.change(x, three);
+        REQUIRE(env.get(x).value() == three.value());
     }
 
     SECTION("All calls to bind() after the first with an identifier throw") {
+        Identifier x("x");
         Value five(5.0);
         Value three(3.0);
-        env.bind("x", five);
-        REQUIRE_THROWS(env.bind("x", three));
-        REQUIRE_NOTHROW(env.bind("y", five));
+        env.bind(x, five);
+        REQUIRE_THROWS(env.bind(x, three));
+        REQUIRE_THROWS(env.bind(x, five));
     }
 
     SECTION("A call to change() will fail if the binding is not created") {
+        Identifier x("x");
         Value five(5.0);
-        REQUIRE_THROWS(env.change("x", five));
+        REQUIRE_THROWS(env.change(x, five));
     }
 
 }

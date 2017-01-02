@@ -5,28 +5,29 @@
 #include "Environment.h"
 
 #include "Value.h"
+#include "Identifier.h"
 
 namespace naylang {
 
-unsigned long Environment::size() {
+unsigned long long int Environment::size() {
     return _scope.size();
 }
 
-const Value &naylang::Environment::get(const std::string &identifier) const {
+const Value &naylang::Environment::get(const Identifier &identifier) const {
     if (_scope.find(identifier) == _scope.end()) {
         throw "Binding not found";
     }
     return _scope.at(identifier);
 }
 
-void Environment::bind(const std::string &identifier, const Value &value) {
+void Environment::bind(const Identifier &identifier, const Value &value) {
     if (_scope.find(identifier) != _scope.end()) {
         throw "Binding already created";
     }
     _scope[identifier] = value;
 }
 
-void Environment::change(const std::string &identifier, const Value &value) {
+void Environment::change(const Identifier &identifier, const Value &value) {
     if (_scope.find(identifier) == _scope.end()) {
         throw "Binding not found";
     }

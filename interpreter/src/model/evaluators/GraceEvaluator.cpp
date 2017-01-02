@@ -26,13 +26,15 @@ void GraceEvaluator::evaluate(Boolean &expression) {
 void GraceEvaluator::evaluate(Constant &expression) {
     expression.value()->accept(*this);
     auto partial = Value(_partialDouble);
-    _environment.bind(expression.identifier(), partial);
+    auto identifier = Identifier(expression.identifier());
+    _environment.bind(identifier, partial);
 }
 
 void GraceEvaluator::evaluate(Assignment &expression) {
     expression.value()->accept(*this);
     auto partial = Value(_partialDouble);
-    _environment.change(expression.identifier(), partial);
+    Identifier identifier(expression.identifier());
+    _environment.change(identifier, partial);
 }
 
 void GraceEvaluator::evaluate(Addition &expression) {
@@ -43,16 +45,17 @@ void GraceEvaluator::evaluate(Addition &expression) {
     _partialDouble = lop + rop;
 }
 
-
 void GraceEvaluator::evaluate(VariableDeclaration &expression) {
-    _environment.bind(expression.identifier(), INVALID_VALUE);
+    Identifier identifier(expression.identifier());
+    _environment.bind(identifier, INVALID_VALUE);
 }
 
 void GraceEvaluator::evaluate(VariableReference &expression) {
-    if (_environment.get(expression.identifier()) == INVALID_VALUE) {
+    Identifier identifier(expression.identifier());
+    if (_environment.get(identifier) == INVALID_VALUE) {
         throw "Variable not initialized";
     }
-    double currentValue = _environment.get(expression.identifier()).value();
+    double currentValue = _environment.get(identifier).value();
     _partialDouble = currentValue;
 }
 
