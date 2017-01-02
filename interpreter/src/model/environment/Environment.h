@@ -7,7 +7,7 @@
 
 #include <memory>
 #include <map>
-#include "Value.h"
+#include "GraceObject.h"
 #include "Identifier.h"
 
 namespace naylang {
@@ -15,7 +15,7 @@ namespace naylang {
 class Environment {
 
     std::shared_ptr<Environment> _parent;
-    std::map<Identifier, Value> _scope;
+    std::map<Identifier, GraceObject> _scope;
 
 public:
 
@@ -23,9 +23,9 @@ public:
     ~Environment() = default;
 
     unsigned long long int size();
-    void bind(const Identifier &identifier, const Value &value);
-    void change(const Identifier &identifier, const Value &value);
-    const Value & get(const Identifier &identifier) const;
+    void bind(const Identifier &identifier, const GraceObject &value);
+    void change(const Identifier &identifier, const GraceObject &value);
+    const GraceObject & get(const Identifier &identifier) const;
 
 };
 

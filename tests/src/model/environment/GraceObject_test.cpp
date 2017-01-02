@@ -5,20 +5,21 @@
 
 #include "catch.h"
 
-#include "model/environment/Value.h"
+#include "model/environment/GraceObject.h"
+#include "model/environment/GraceObjectFactory.h"
 
 using namespace naylang;
 
 TEST_CASE("Value", "[Environment]") {
     SECTION("A Value can only hold a double") {
-        Value five(5.0);
+        auto five = GraceObjectFactory::createNumber(5.0);
         REQUIRE(five.value() == 5.0);
     }
 
     SECTION("Two Values are equal iff their doubles are equal") {
-        Value five(5.0);
-        Value anotherFive(5.0);
-        Value one(1.0);
+        auto five = GraceObjectFactory::createNumber(5.0);
+        auto anotherFive = GraceObjectFactory::createNumber(5.0);
+        auto one = GraceObjectFactory::createNumber(1.0);
         REQUIRE(five == anotherFive);
         REQUIRE(!(five == one));
     }

@@ -3,6 +3,7 @@
 // Distributed under the GPLv3 license.
 //
 #include <iostream>
+#include <model/environment/GraceObjectFactory.h>
 #include "GraceEvaluator.h"
 
 namespace naylang {
@@ -25,14 +26,14 @@ void GraceEvaluator::evaluate(Boolean &expression) {
 
 void GraceEvaluator::evaluate(Constant &expression) {
     expression.value()->accept(*this);
-    auto partial = Value(_partialDouble);
+    auto partial = GraceObjectFactory::createNumber(_partialDouble);
     auto identifier = Identifier(expression.identifier());
     _environment.bind(identifier, partial);
 }
 
 void GraceEvaluator::evaluate(Assignment &expression) {
     expression.value()->accept(*this);
-    auto partial = Value(_partialDouble);
+    auto partial = GraceObjectFactory::createNumber(_partialDouble);
     Identifier identifier(expression.identifier());
     _environment.change(identifier, partial);
 }
@@ -47,12 +48,12 @@ void GraceEvaluator::evaluate(Addition &expression) {
 
 void GraceEvaluator::evaluate(VariableDeclaration &expression) {
     Identifier identifier(expression.identifier());
-    _environment.bind(identifier, INVALID_VALUE);
+    _environment.bind(identifier, GraceObjectFactory::createUndefined());
 }
 
 void GraceEvaluator::evaluate(VariableReference &expression) {
     Identifier identifier(expression.identifier());
-    if (_environment.get(identifier) == INVALID_VALUE) {
+    if (_environment.get(identifier) == GraceObjectFactory::createUndefined()) {
         throw "Variable not initialized";
     }
     double currentValue = _environment.get(identifier).value();

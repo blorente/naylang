@@ -5,9 +5,10 @@
 
 
 #include "catch.h"
-
 #include "model/environment/Environment.h"
-#include "model/environment/Value.h"
+
+#include "model/environment/GraceObject.h"
+#include <model/environment/GraceObjectFactory.h>
 
 using namespace naylang;
 
@@ -26,15 +27,15 @@ TEST_CASE("Environment", "[Environment]") {
 
     SECTION("Once a value has been inserted, you can get() it") {
         Identifier x("x");
-        Value five(5.0);
+        auto five = GraceObjectFactory::createNumber(5.0);
         env.bind(x, five);
         REQUIRE(env.get(x).value() == five.value());
     }
 
     SECTION("After bind(), the a value can be change()d") {
         Identifier x("x");
-        Value five(5.0);
-        Value three(3.0);
+        auto five = GraceObjectFactory::createNumber(5.0);
+        auto three = GraceObjectFactory::createNumber(3.0);
         env.bind(x, five);
         REQUIRE(env.get(x).value() == five.value());
         REQUIRE_THROWS(env.bind(x, three));
@@ -44,8 +45,8 @@ TEST_CASE("Environment", "[Environment]") {
 
     SECTION("All calls to bind() after the first with an identifier throw") {
         Identifier x("x");
-        Value five(5.0);
-        Value three(3.0);
+        auto five = GraceObjectFactory::createNumber(5.0);
+        auto three = GraceObjectFactory::createNumber(3.0);
         env.bind(x, five);
         REQUIRE_THROWS(env.bind(x, three));
         REQUIRE_THROWS(env.bind(x, five));
@@ -53,7 +54,7 @@ TEST_CASE("Environment", "[Environment]") {
 
     SECTION("A call to change() will fail if the binding is not created") {
         Identifier x("x");
-        Value five(5.0);
+        auto five = GraceObjectFactory::createNumber(5.0);
         REQUIRE_THROWS(env.change(x, five));
     }
 
