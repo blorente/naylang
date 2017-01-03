@@ -1,26 +1,25 @@
 //
-// Copyright (c) 2016 by Borja Lorente.
+// Copyright (c) 1/2/2017 by Borja Lorente.
 // Distributed under the GPLv3 license.
 //
 
 #include "catch.h"
 
-#include "model/environment/GraceObject.h"
-#include "model/environment/GraceObjectFactory.h"
+#include <model/environment/GraceObject.h>
 
 using namespace naylang;
 
-TEST_CASE("Value", "[Environment]") {
-    SECTION("A Value can only hold a double") {
-        auto five = GraceObjectFactory::createNumber(5.0);
-        REQUIRE(five.value() == 5.0);
+TEST_CASE("Grace Object", "[Environment]") {
+    GraceObject numFive(5.0);
+    GraceObject otherFive(5.0);
+    GraceObject numSix(6.0);
+
+    SECTION("Grace objects can be initialized with numbers") {
+        GraceObject zero(0.0);
     }
 
-    SECTION("Two Values are equal iff their doubles are equal") {
-        auto five = GraceObjectFactory::createNumber(5.0);
-        auto anotherFive = GraceObjectFactory::createNumber(5.0);
-        auto one = GraceObjectFactory::createNumber(1.0);
-        REQUIRE(five == anotherFive);
-        REQUIRE(!(five == one));
+    SECTION("Grace number objects are equal iff their numbers are the same") {
+        REQUIRE(numFive == otherFive);
+        REQUIRE(numSix != numFive);
     }
 }

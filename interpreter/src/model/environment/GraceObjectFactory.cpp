@@ -7,9 +7,7 @@
 
 namespace naylang {
 GraceObject GraceObjectFactory::createNumber(double value) {
-    GraceObject ret;
-    ret.addField(value);
-    return ret;
+    return GraceObject(value);
 }
 
 GraceObject GraceObjectFactory::createUndefined() {

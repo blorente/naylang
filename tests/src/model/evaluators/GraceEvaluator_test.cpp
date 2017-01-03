@@ -21,7 +21,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     auto tru = std::make_shared<Boolean>(true);
     auto fals = std::make_shared<Boolean>(false);
 
-    SECTION("A Number expression just stores the value") {
+    SECTION("A Number expression just stores the asNumber") {
         Number fiveNat(5.0);
         REQUIRE_NOTHROW(eval.evaluate(fiveNat));
         REQUIRE(eval.getPartialDouble() == fiveNat.value());
@@ -41,14 +41,14 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE_NOTHROW(eval.evaluate(xAssignment));
     }
 
-    SECTION("A variable reference throws if the value is invalid (not initialized)") {
+    SECTION("A variable reference throws if the asNumber is invalid (not initialized)") {
         VariableDeclaration xDeclaration("x");
         VariableReference xReference("x");
         REQUIRE_NOTHROW(eval.evaluate(xDeclaration));
         REQUIRE_THROWS(eval.evaluate(xReference));
     }
 
-    SECTION("A variable reference places the value in the partial") {
+    SECTION("A variable reference places the asNumber in the partial") {
         VariableDeclaration xDeclaration("x");
         VariableReference xReference("x");
         Assignment xAssignment("x", six);
@@ -63,7 +63,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE_THROWS(eval.evaluate(divideByZero));
     }
 
-    SECTION("The evaluator places the value of a Boolean in a partial") {
+    SECTION("The evaluator places the asNumber of a Boolean in a partial") {
         REQUIRE_NOTHROW(eval.evaluate(*tru));
         REQUIRE(eval.getPartialBool());
     }

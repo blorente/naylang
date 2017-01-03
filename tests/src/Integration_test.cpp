@@ -57,7 +57,7 @@ TEST_CASE("Arithmetic operations with assignments", "[Integration Tests]") {
     REQUIRE_NOTHROW(evaluator.evaluate(*assignX));  // y = 3; x = -7
     REQUIRE_NOTHROW(evaluator.evaluate(*reassignX));// y = 3; x = y * x = -21
 
-    // Check the value of X
+    // Check the asNumber of X
     REQUIRE_NOTHROW(evaluator.evaluate(*refX));
     REQUIRE(evaluator.getPartialDouble() == -21.0);
 }

@@ -6,30 +6,33 @@
 #include "GraceObject.h"
 
 namespace naylang {
-bool GraceObject::isDefined() {
-    return !_undefined;
+GraceObject::GraceObject() : _defined{false} {}
+
+GraceObject::GraceObject(double number) : _number{number}, _isNumber{true}, _defined{true} {}
+
+bool GraceObject::isUndefined() const {
+    return !_defined;
 }
 
-void GraceObject::addField(double number) {
-    _undefined = false;
-    _number = number;
-}
+double GraceObject::asNumber() const {
+    if (!_isNumber) {
+        throw "NaN";
+    }
 
-void GraceObject::addField(ExpressionPtr expression) {
-    _undefined = false;
-    _expression = expression;
-}
-
-double GraceObject::value() const {
     return _number;
+}
+
+bool GraceObject::operator==(const GraceObject &other) const {
+    if (_isNumber && other._isNumber)
+        return _number == other._number;
+
+    if (!_defined && !other._defined)
+        return true;
+
+    return false;
 }
 
 bool GraceObject::operator!=(const GraceObject &other) const {
     return !(other == *this);
-}
-
-bool GraceObject::operator==(const GraceObject &other) const {
-    return (_undefined && other._undefined) ||
-            ((_number == other._number) && (_expression == other._expression));
 }
 }

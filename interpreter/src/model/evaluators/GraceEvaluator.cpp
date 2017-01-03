@@ -53,10 +53,10 @@ void GraceEvaluator::evaluate(VariableDeclaration &expression) {
 
 void GraceEvaluator::evaluate(VariableReference &expression) {
     Identifier identifier(expression.identifier());
-    if (_environment.get(identifier) == GraceObjectFactory::createUndefined()) {
+    if (_environment.get(identifier).isUndefined()) {
         throw "Variable not initialized";
     }
-    double currentValue = _environment.get(identifier).value();
+    double currentValue = _environment.get(identifier).asNumber();
     _partialDouble = currentValue;
 }
 

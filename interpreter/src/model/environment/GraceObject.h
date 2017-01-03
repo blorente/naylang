@@ -6,29 +6,27 @@
 #ifndef NAYLANG_GRACEOBJECT_H
 #define NAYLANG_GRACEOBJECT_H
 
-
 #include <model/Expression.h>
 
 namespace naylang {
 
 class GraceObject {
 
-    bool _undefined = true;
+    bool _defined;
     double _number;
-    ExpressionPtr _expression;
+    bool _isNumber;
 
 public:
 
-    GraceObject() = default;
+    GraceObject();
+    GraceObject(double number);
 
-    bool isDefined();
-    void addField(double number);
-    void addField(ExpressionPtr expression);
-    double value() const;
-    //void addMethod();
+    virtual bool isUndefined() const;
+    virtual double asNumber() const;
 
     bool operator==(const GraceObject &other) const;
-    virtual bool operator!=(const GraceObject &other) const;
+    bool operator!=(const GraceObject &other) const;
+
 };
 }
 
