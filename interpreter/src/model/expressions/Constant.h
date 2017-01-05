@@ -27,5 +27,4 @@ public:
 
 }
 
-
 #endif //NAYLANG_CONSTANT_H

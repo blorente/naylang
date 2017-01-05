@@ -90,4 +90,11 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE_NOTHROW(eval.evaluate(block));
         REQUIRE(eval.getPartialDouble() == 6.0);
     }
+
+    SECTION("Evaluating a method declaration adds it to the environment") {
+        Identifier id{"myMethod"};
+        MethodDeclaration method(id, zero);
+
+        REQUIRE_NOTHROW(eval.evaluate(method));
+    }
 }

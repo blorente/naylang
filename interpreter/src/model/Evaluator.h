@@ -28,6 +28,8 @@ class Subtraction;
 class Multiplication;
 class Division;
 
+class MethodDeclaration;
+
 class Evaluator {
 
 public:
@@ -49,6 +51,8 @@ public:
     virtual void evaluate(Subtraction &expression) = 0;
     virtual void evaluate(Multiplication &expression) = 0;
     virtual void evaluate(Division &expression) = 0;
+
+    virtual void evaluate(MethodDeclaration &expression) = 0;
 };
 
 }

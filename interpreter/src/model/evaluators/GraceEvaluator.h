@@ -24,6 +24,8 @@
 #include <model/expressions/operations/Multiplication.h>
 #include <model/expressions/operations/Division.h>
 
+#include <model/expressions/methods/MethodDeclaration.h>
+
 namespace naylang {
 
 class GraceEvaluator : public Evaluator {
@@ -50,6 +52,8 @@ public:
     virtual void evaluate(Subtraction &expression);
     virtual void evaluate(Multiplication &expression);
     virtual void evaluate(Division &expression);
+
+    virtual void evaluate(MethodDeclaration &expression);
 
     double getPartialDouble() const;
     bool getPartialBool() const;

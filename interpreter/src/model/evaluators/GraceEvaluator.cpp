@@ -102,4 +102,9 @@ void GraceEvaluator::evaluate(ExpressionBlock &expression) {
         exp->accept(*this);
     }
 }
+
+void GraceEvaluator::evaluate(MethodDeclaration &expression) {
+    GraceObject body = GraceObjectFactory::createMethod(expression.getBody());
+    _environment.bind(expression.getCanonName(), body);
+}
 }
