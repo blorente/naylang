@@ -12,6 +12,8 @@
 
 namespace naylang {
 
+class GraceObject;
+
 class Environment {
 
     std::shared_ptr<Environment> _parent;
@@ -26,7 +28,6 @@ public:
     void bind(const Identifier &identifier, const GraceObject &value);
     void change(const Identifier &identifier, const GraceObject &value);
     const GraceObject & get(const Identifier &identifier) const;
-
 };
 
 }

@@ -15,6 +15,12 @@ TEST_CASE("Grace Object", "[Environment]") {
     GraceObject otherFive(5.0);
     GraceObject numSix(6.0);
 
+    SECTION("Empty objects are initially undefined") {
+        GraceObject undef;
+
+        REQUIRE(undef.isUndefined());
+    }
+
     SECTION("Grace objects can be initialized with numbers") {
         GraceObject zero(0.0);
     }

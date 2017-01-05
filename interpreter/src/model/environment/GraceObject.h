@@ -7,16 +7,27 @@
 #define NAYLANG_GRACEOBJECT_H
 
 #include <model/Expression.h>
+#include <model/environment/Environment.h>
 
 namespace naylang {
 
+class Identifier;
+class GraceObject;
+
+enum class GraceObjectKind {
+    NUMBER,
+    METHOD,
+    USER,
+    UNDEFINED
+};
+
 class GraceObject {
 
-    bool _defined;
-    double _number;
-    bool _isNumber;
+    GraceObjectKind _kind;
 
-    bool _isMethod;
+    std::map<Identifier, GraceObject> _self;
+
+    double _number;
     ExpressionPtr _body;
 
 public:
@@ -25,9 +36,12 @@ public:
     GraceObject(double number);
     GraceObject(ExpressionPtr body);
 
-    virtual bool isUndefined() const;
-    virtual double asNumber() const;
-    virtual ExpressionPtr asMethod() const;
+    bool isUndefined() const;
+    double asNumber() const;
+    ExpressionPtr asMethod() const;
+
+    //const std::map<Identifier, GraceObject> & getSelf() const;
+    //void addField(const Identifier &name, const GraceObject &value);
 
     bool operator==(const GraceObject &other) const;
     bool operator!=(const GraceObject &other) const;

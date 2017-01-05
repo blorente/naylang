@@ -6,11 +6,15 @@
 #include "GraceObjectFactory.h"
 
 namespace naylang {
+GraceObject GraceObjectFactory::createUndefined() {
+    return GraceObject();
+}
+
 GraceObject GraceObjectFactory::createNumber(double value) {
     return GraceObject(value);
 }
 
-GraceObject GraceObjectFactory::createUndefined() {
-    return GraceObject();
+GraceObject GraceObjectFactory::createMethod(ExpressionPtr body) {
+    return GraceObject(body);
 }
 }
