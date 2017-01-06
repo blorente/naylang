@@ -30,12 +30,13 @@ namespace naylang {
 
 class GraceEvaluator : public Evaluator {
 
-    Environment _environment;
+    std::shared_ptr<Environment> _environment;
     double _partialDouble;
     bool _partialBool;
 
 public:
 
+    GraceEvaluator();
     virtual ~GraceEvaluator() = default;
 
     virtual void evaluate(Number &expression);
