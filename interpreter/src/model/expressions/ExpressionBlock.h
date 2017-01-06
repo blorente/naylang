@@ -12,6 +12,8 @@
 #include <model/Expression.h>
 
 namespace naylang {
+
+#define ExpressionBlockPtr std::shared_ptr<ExpressionBlock>
 class ExpressionBlock : public Expression {
 
     std::vector<ExpressionPtr> _expressions;

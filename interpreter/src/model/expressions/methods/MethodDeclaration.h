@@ -9,21 +9,22 @@
 
 #include <model/Evaluator.h>
 #include <model/environment/Identifier.h>
+#include <model/expressions/ExpressionBlock.h>
 
 namespace naylang {
 class MethodDeclaration : public Expression {
 
     Identifier _name;
-    ExpressionPtr _body;
+    ExpressionBlockPtr _body;
 
 public:
 
-    MethodDeclaration(Identifier canonicalName, ExpressionPtr body);
+    MethodDeclaration(Identifier canonicalName, ExpressionBlockPtr body);
 
     virtual void accept(Evaluator &evaluator);
 
     const Identifier &getCanonName() const;
-    ExpressionPtr getBody() const;
+    ExpressionBlockPtr getBody() const;
 };
 }
 

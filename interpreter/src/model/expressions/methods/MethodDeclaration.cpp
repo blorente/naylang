@@ -6,7 +6,7 @@
 #include "MethodDeclaration.h"
 
 namespace naylang {
-MethodDeclaration::MethodDeclaration(Identifier canonicalName, ExpressionPtr body)
+MethodDeclaration::MethodDeclaration(Identifier canonicalName, ExpressionBlockPtr body)
     : _name{canonicalName} {
     _body = std::move(body);
 }
@@ -19,7 +19,7 @@ const Identifier &MethodDeclaration::getCanonName() const {
     return _name;
 }
 
-ExpressionPtr MethodDeclaration::getBody() const {
+ExpressionBlockPtr MethodDeclaration::getBody() const {
     return _body;
 }
 }

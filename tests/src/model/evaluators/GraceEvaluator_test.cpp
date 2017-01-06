@@ -93,7 +93,9 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
 
     SECTION("Evaluating a method declaration adds it to the environment") {
         Identifier id{"myMethod"};
-        MethodDeclaration method(id, zero);
+        auto methodBody = std::make_shared<ExpressionBlock>();
+        methodBody->addExpression(zero);
+        MethodDeclaration method(id, methodBody);
 
         REQUIRE_NOTHROW(eval.evaluate(method));
     }
