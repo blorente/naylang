@@ -13,16 +13,16 @@
 namespace naylang {
 class Subtraction : public BinaryOperation {
 
-    std::shared_ptr<Expression> _leftOperand;
-    std::shared_ptr<Expression> _rightOperand;
+    ExpressionPtr _leftOperand;
+    ExpressionPtr _rightOperand;
 
 public:
-    Subtraction(std::shared_ptr<Expression> lexp, std::shared_ptr<Expression> rexp);
+    Subtraction(ExpressionPtr lexp, ExpressionPtr rexp);
 
     virtual void accept(Evaluator &evaluator);
 
-    std::shared_ptr<Expression> leftOperand() const;
-    std::shared_ptr<Expression> rightOperand() const;
+    ExpressionPtr leftOperand() const;
+    ExpressionPtr rightOperand() const;
 };
 }
 

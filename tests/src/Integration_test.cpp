@@ -11,7 +11,7 @@
 
 using namespace naylang;
 
-TEST_CASE( "Composite arithmetic operations", "[Integration Tests]" ) {
+TEST_CASE("Composite arithmetic operations", "[Integration Tests]" ) {
     GraceEvaluator evaluator;
 
     auto two = std::make_shared<Number>(2.0);
@@ -26,11 +26,10 @@ TEST_CASE( "Composite arithmetic operations", "[Integration Tests]" ) {
     auto toThreePointFive = std::make_shared<Division>(toPlusSeven, two);
 
     REQUIRE_NOTHROW(evaluator.evaluate(*toThreePointFive));
-    REQUIRE(evaluator.getPartial() == 3.5);
+    REQUIRE(evaluator.getPartialDouble() == 3.5);
 }
 
-/*
-TEST_CASE( "Arithmetic operations with assignments", "[Integration Tests]") {
+TEST_CASE("Arithmetic operations with assignments", "[Integration Tests]") {
     GraceEvaluator evaluator;
 
     auto two = std::make_shared<Number>(2.0);
@@ -38,7 +37,7 @@ TEST_CASE( "Arithmetic operations with assignments", "[Integration Tests]") {
     auto minusSeven = std::make_shared<Number>(-7.0);
 
     // These are not evaluated directly
-    auto three = std::make_shared<PrimitiveOperation>(PrimitiveOperationType::SUBTRACT, two, minusOne);
+    auto three = std::make_shared<Subtraction>(two, minusOne);
 
     // Must be evaluated directly
     auto constY = std::make_shared<Constant>("y", three);
@@ -48,7 +47,7 @@ TEST_CASE( "Arithmetic operations with assignments", "[Integration Tests]") {
     // Not evaluated directly
     auto refY = std::make_shared<VariableReference>("y");
     auto refX = std::make_shared<VariableReference>("x");
-    auto yTimesX = std::make_shared<PrimitiveOperation>(PrimitiveOperationType::MULTIPLY, refY, refX);
+    auto yTimesX = std::make_shared<Multiplication>(refY, refX);
 
     auto reassignX = std::make_shared<Assignment>("x", yTimesX);
 
@@ -58,7 +57,80 @@ TEST_CASE( "Arithmetic operations with assignments", "[Integration Tests]") {
     REQUIRE_NOTHROW(evaluator.evaluate(*assignX));  // y = 3; x = -7
     REQUIRE_NOTHROW(evaluator.evaluate(*reassignX));// y = 3; x = y * x = -21
 
-    // Check the value of X
+    // Check the asNumber of X
     REQUIRE_NOTHROW(evaluator.evaluate(*refX));
-    REQUIRE(evaluator.getPartials().top() == -21.0);
-}*/
+    REQUIRE(evaluator.getPartialDouble() == -21.0);
+}
+
+TEST_CASE("ExpressionBlocks with IfThenElse Expressions", "[Integration Tests]") {
+    /* x=5; y=6;
+     * if (true) { x=x+1; }
+     * else { y=0; }
+     * y = y+1;
+     * if (false) { x=0; }
+     * else { x=y+1; y=y+1; }
+     * require(x == 8);
+     * require(y == 8);
+     */
+    GraceEvaluator evaluator;
+    auto xDeclaration = std::make_shared<VariableDeclaration>("x");
+    auto yDeclaration = std::make_shared<VariableDeclaration>("y");
+    auto xReference = std::make_shared<VariableReference>("x");
+    auto yReference = std::make_shared<VariableReference>("y");
+
+    auto tru = std::make_shared<Boolean>(true);
+    auto fals = std::make_shared<Boolean>(false);
+    auto one = std::make_shared<Number>(1.0);
+    auto zero = std::make_shared<Number>(0.0);
+    auto five = std::make_shared<Number>(5.0);
+    auto six = std::make_shared<Number>(6.0);
+
+    // x=5; y=6;
+    auto xEqualsFive = std::make_shared<Assignment>("x", five);
+    auto yEqualsSix = std::make_shared<Assignment>("y", six);
+
+    // if (true) { x=x+1; }
+    auto ITE1ThenBlock = std::make_shared<ExpressionBlock>();
+    auto xPlusOne = std::make_shared<Addition>(xReference, one);
+    auto xEqualsXPlusOne = std::make_shared<Assignment>("x", xPlusOne);
+    ITE1ThenBlock->addExpression(xEqualsXPlusOne);
+
+    // else { y=0; }
+    auto ITE1ElseBlock = std::make_shared<ExpressionBlock>();
+    auto yEqualsZero = std::make_shared<Assignment>("y", zero);
+    ITE1ElseBlock->addExpression(yEqualsZero);
+
+    auto ITE1 = std::make_shared<IfThenElse>(tru, ITE1ThenBlock, ITE1ElseBlock);
+
+    // y = y+1;
+    auto yPlusOne = std::make_shared<Addition>(yReference, one);
+    auto yEqualsYPlusOne = std::make_shared<Assignment>("y", yPlusOne);
+
+    // if (false) { x=0; }
+    auto ITE2ThenBlock = std::make_shared<ExpressionBlock>();
+    auto xEqualsZero = std::make_shared<Assignment>("x", zero);
+    ITE2ThenBlock->addExpression(xEqualsZero);
+
+    // else { x=y+1; y=y+1; }
+    auto ITE2ElseBlock = std::make_shared<ExpressionBlock>();
+    auto xEqualsYPlusOne = std::make_shared<Assignment>("x", yPlusOne);
+    ITE2ElseBlock->addExpression(xEqualsYPlusOne);
+    ITE2ElseBlock->addExpression(yEqualsYPlusOne);
+
+    auto ITE2 = std::make_shared<IfThenElse>(fals, ITE2ThenBlock, ITE2ElseBlock);
+
+    auto programBlock = std::make_shared<ExpressionBlock>();
+    programBlock->addExpression(xDeclaration);
+    programBlock->addExpression(yDeclaration);
+    programBlock->addExpression(xEqualsFive);
+    programBlock->addExpression(yEqualsSix);
+    programBlock->addExpression(ITE1);
+    programBlock->addExpression(yEqualsYPlusOne);
+    programBlock->addExpression(ITE2);
+
+    REQUIRE_NOTHROW(evaluator.evaluate(*programBlock));
+    REQUIRE_NOTHROW(xReference);
+    REQUIRE(evaluator.getPartialDouble() == 8.0);
+    REQUIRE_NOTHROW(yReference);
+    REQUIRE(evaluator.getPartialDouble() == 8.0);
+}

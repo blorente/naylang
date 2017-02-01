@@ -6,11 +6,13 @@
 #ifndef NAYLANG_EXPRESSION_H
 #define NAYLANG_EXPRESSION_H
 
+#include <memory>
 #include "model/Evaluator.h"
 
 namespace naylang {
 
 class Evaluator;
+#define ExpressionPtr std::shared_ptr<Expression>
 
 class Expression {
 

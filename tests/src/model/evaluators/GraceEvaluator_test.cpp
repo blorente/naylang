@@ -18,11 +18,13 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     auto minusOne = std::make_shared<Number>(-1.0);
     auto six = std::make_shared<Number>(6.0);
     auto zero = std::make_shared<Number>(0.0);
+    auto tru = std::make_shared<Boolean>(true);
+    auto fals = std::make_shared<Boolean>(false);
 
-    SECTION("A Number expression just stores the value") {
+    SECTION("A Number expression just stores the asNumber") {
         Number fiveNat(5.0);
         REQUIRE_NOTHROW(eval.evaluate(fiveNat));
-        REQUIRE(eval.getPartial() == fiveNat.value());
+        REQUIRE(eval.getPartialDouble() == fiveNat.value());
     }
 
     SECTION("If the identifier of a constant already exists in the environment, it throws an exception") {
@@ -39,21 +41,21 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE_NOTHROW(eval.evaluate(xAssignment));
     }
 
-    SECTION("A variable reference throws if the value is invalid (not initialized)") {
+    SECTION("A variable reference throws if the asNumber is invalid (not initialized)") {
         VariableDeclaration xDeclaration("x");
         VariableReference xReference("x");
         REQUIRE_NOTHROW(eval.evaluate(xDeclaration));
         REQUIRE_THROWS(eval.evaluate(xReference));
     }
 
-    SECTION("A variable reference places the value in the partial") {
+    SECTION("A variable reference places the asNumber in the partial") {
         VariableDeclaration xDeclaration("x");
         VariableReference xReference("x");
         Assignment xAssignment("x", six);
         REQUIRE_NOTHROW(eval.evaluate(xDeclaration));
         REQUIRE_NOTHROW(eval.evaluate(xAssignment));
         REQUIRE_NOTHROW(eval.evaluate(xReference));
-        REQUIRE(eval.getPartial() == 6.0);
+        REQUIRE(eval.getPartialDouble() == 6.0);
     }
 
     SECTION("The evaluator throws an exception when dividing by 0") {
@@ -61,4 +63,40 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE_THROWS(eval.evaluate(divideByZero));
     }
 
+    SECTION("The evaluator places the asNumber of a Boolean in a partial") {
+        REQUIRE_NOTHROW(eval.evaluate(*tru));
+        REQUIRE(eval.getPartialBool());
+    }
+
+    SECTION("The evaluator executes ITE blocks according to the condition") {
+        IfThenElse iteSix(tru, six, zero);
+        IfThenElse iteZero(fals, six, zero);
+        REQUIRE_NOTHROW(eval.evaluate(iteSix));
+        REQUIRE(eval.getPartialDouble() == 6.0);
+        REQUIRE_NOTHROW(eval.evaluate(iteZero));
+        REQUIRE(eval.getPartialDouble() == 0.0);
+    }
+
+    SECTION("The evaluator evaluates expresions in a block sequenatially") {
+        auto xDeclaration = std::make_shared<VariableDeclaration>("x");
+        auto xAssignment = std::make_shared<Assignment>("x", six);
+        auto xReference = std::make_shared<VariableReference>("x");
+
+        ExpressionBlock block;
+        block.addExpression(xDeclaration);
+        block.addExpression(xAssignment);
+        block.addExpression(xReference);
+
+        REQUIRE_NOTHROW(eval.evaluate(block));
+        REQUIRE(eval.getPartialDouble() == 6.0);
+    }
+
+    SECTION("Evaluating a method declaration adds it to the environment") {
+        Identifier id{"myMethod"};
+        auto methodBody = std::make_shared<ExpressionBlock>();
+        methodBody->addExpression(zero);
+        MethodDeclaration method(id, methodBody);
+
+        REQUIRE_NOTHROW(eval.evaluate(method));
+    }
 }

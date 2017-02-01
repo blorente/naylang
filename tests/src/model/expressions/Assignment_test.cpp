@@ -6,12 +6,12 @@
 #include "catch.h"
 
 #include "model/expressions/Assignment.h"
-#include "model/expressions/Number.h"
+#include "model/expressions/primitives/Number.h"
 
 using namespace naylang;
 
 TEST_CASE("Assignment Expressions", "[Expressions]") {
-    SECTION("Assignment Expressions can hold an identifier and a value") {
+    SECTION("Assignment Expressions can hold an identifier and a asNumber") {
         auto five = std::make_shared<Number>(5.0);
         auto name = "y";
         Assignment numberAssignment(name, five);

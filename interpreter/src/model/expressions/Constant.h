@@ -14,18 +14,17 @@ namespace naylang {
 class Constant : public Expression {
 
     std::string _identifier;
-    std::shared_ptr<Expression> _value;
+    ExpressionPtr _value;
 
 public:
 
-    Constant(const std::string &identifier, std::shared_ptr<Expression> value);
+    Constant(const std::string &identifier, ExpressionPtr value);
 
     virtual void accept(Evaluator &evaluator);
     const std::string &identifier() const;
-    std::shared_ptr<Expression> value() const;
+    ExpressionPtr value() const;
 };
 
 }
-
 
 #endif //NAYLANG_CONSTANT_H

@@ -6,7 +6,7 @@
 
 namespace naylang {
 
-Addition::Addition(std::shared_ptr<Expression> lexp, std::shared_ptr<Expression> rexp) {
+Addition::Addition(ExpressionPtr lexp, ExpressionPtr rexp) {
     _leftOperand = std::move(lexp);
     _rightOperand = std::move(rexp);
 }
@@ -15,11 +15,11 @@ void Addition::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
-std::shared_ptr<Expression> Addition::leftOperand() const {
+ExpressionPtr Addition::leftOperand() const {
     return _leftOperand;
 }
 
-std::shared_ptr<Expression> Addition::rightOperand() const {
+ExpressionPtr Addition::rightOperand() const {
     return _rightOperand;
 }
 }

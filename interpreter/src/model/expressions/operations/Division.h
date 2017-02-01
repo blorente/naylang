@@ -13,18 +13,18 @@
 namespace naylang {
 class Division : public BinaryOperation {
 
-    std::shared_ptr<Expression> _numerator;
-    std::shared_ptr<Expression> _denominator;
+    ExpressionPtr _numerator;
+    ExpressionPtr _denominator;
 
 public:
-    Division(std::shared_ptr<Expression> numerator, std::shared_ptr<Expression> denominator);
+    Division(ExpressionPtr numerator, ExpressionPtr denominator);
 
     virtual void accept(Evaluator &evaluator);
 
-    std::shared_ptr<Expression> leftOperand() const;
-    std::shared_ptr<Expression> rightOperand() const;
-    std::shared_ptr<Expression> numerator() const;
-    std::shared_ptr<Expression> denominator() const;
+    ExpressionPtr leftOperand() const;
+    ExpressionPtr rightOperand() const;
+    ExpressionPtr numerator() const;
+    ExpressionPtr denominator() const;
 };
 }
 
