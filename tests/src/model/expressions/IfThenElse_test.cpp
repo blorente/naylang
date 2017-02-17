@@ -4,7 +4,7 @@
 //
 #include "catch.h"
 
-#include <model/expressions/IfThenElse.h>
+#include <model/statements/IfThenElse.h>
 #include <model/expressions/primitives/Number.h>
 #include <model/expressions/operations/Subtraction.h>
 

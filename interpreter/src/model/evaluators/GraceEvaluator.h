@@ -12,11 +12,11 @@
 #include <model/expressions/primitives/Number.h>
 #include <model/expressions/primitives/Boolean.h>
 
-#include <model/expressions/Constant.h>
-#include <model/expressions/Assignment.h>
-#include <model/expressions/VariableDeclaration.h>
+#include <model/statements/Constant.h>
+#include <model/statements/Assignment.h>
+#include <model/statements/VariableDeclaration.h>
 #include <model/expressions/VariableReference.h>
-#include <model/expressions/IfThenElse.h>
+#include <model/statements/IfThenElse.h>
 #include <model/expressions/ExpressionBlock.h>
 
 #include <model/expressions/operations/Addition.h>

@@ -5,7 +5,7 @@
 
 #include "catch.h"
 
-#include "model/expressions/VariableDeclaration.h"
+#include "model/statements/VariableDeclaration.h"
 
 using namespace naylang;
 

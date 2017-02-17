@@ -5,7 +5,7 @@
 
 #include "catch.h"
 
-#include <model/expressions/VariableDeclaration.h>
+#include <model/statements/VariableDeclaration.h>
 #include <model/environment/GraceObject.h>
 
 using namespace naylang;
