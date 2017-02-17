@@ -7,8 +7,7 @@
 #define NAYLANG_ASSIGNMENT_H
 
 #include <memory>
-
-#include <model/Expression.h>
+#include <model/expressions/Expression.h>
 
 namespace naylang {
 

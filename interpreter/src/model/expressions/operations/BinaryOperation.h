@@ -5,7 +5,7 @@
 #ifndef NAYLANG_BINARYOPERATION_H
 #define NAYLANG_BINARYOPERATION_H
 
-#include <model/Expression.h>
+#include <model/expressions/Expression.h>
 
 namespace naylang {
 class BinaryOperation : public Expression {

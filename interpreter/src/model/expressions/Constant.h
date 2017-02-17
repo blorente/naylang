@@ -6,8 +6,9 @@
 #ifndef NAYLANG_CONSTANT_H
 #define NAYLANG_CONSTANT_H
 
-#include <model/Evaluator.h>
 #include <memory>
+#include <model/Evaluator.h>
+#include <model/expressions/Expression.h>
 
 namespace naylang {
 

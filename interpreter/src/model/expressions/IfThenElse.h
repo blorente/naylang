@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include <model/Expression.h>
+#include <model/expressions/Expression.h>
 #include <model/expressions/primitives/Boolean.h>
 
 namespace naylang {

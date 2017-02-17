@@ -6,8 +6,8 @@
 #ifndef NAYLANG_VARIABLEREFERENCE_H
 #define NAYLANG_VARIABLEREFERENCE_H
 
-#include <model/Expression.h>
 #include <string>
+#include <model/expressions/Expression.h>
 
 namespace naylang {
 

@@ -6,7 +6,7 @@
 #ifndef NAYLANG_NUMBER_H
 #define NAYLANG_NUMBER_H
 
-#include <model/Expression.h>
+#include <model/expressions/Expression.h>
 
 namespace naylang {
 

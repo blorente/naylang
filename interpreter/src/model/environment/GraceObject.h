@@ -6,8 +6,8 @@
 #ifndef NAYLANG_GRACEOBJECT_H
 #define NAYLANG_GRACEOBJECT_H
 
-#include <model/Expression.h>
 #include <model/environment/Environment.h>
+#include <model/expressions/Expression.h>
 
 namespace naylang {
 
@@ -39,9 +39,6 @@ public:
     bool isUndefined() const;
     double asNumber() const;
     ExpressionPtr asMethod() const;
-
-    //const std::map<Identifier, GraceObject> & getSelf() const;
-    //void addField(const Identifier &name, const GraceObject &value);
 
     bool operator==(const GraceObject &other) const;
     bool operator!=(const GraceObject &other) const;

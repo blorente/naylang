@@ -6,11 +6,11 @@
 #ifndef NAYLANG_EVALUATOR_H
 #define NAYLANG_EVALUATOR_H
 
-#include "model/Expression.h"
+#include "Evaluable.h"
 
 namespace naylang {
 
-class Expression;
+class Evaluable;
 
 class Number;
 class Boolean;

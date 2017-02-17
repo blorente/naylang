@@ -6,24 +6,17 @@
 #ifndef NAYLANG_EXPRESSION_H
 #define NAYLANG_EXPRESSION_H
 
-#include <memory>
-#include "model/Evaluator.h"
+#include <model/Evaluable.h>
 
-namespace naylang {
+namespace  naylang {
 
-class Evaluator;
 #define ExpressionPtr std::shared_ptr<Expression>
 
-class Expression {
-
+class Expression : public Evaluable {
 public:
-
-    Expression() = default;
-    ~Expression() = default;
 
     virtual void accept(Evaluator &evaluator) = 0;
 };
-
 }
 
 #endif //NAYLANG_EXPRESSION_H

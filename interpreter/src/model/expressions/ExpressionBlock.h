@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-#include <model/Expression.h>
+#include <model/expressions/Expression.h>
 
 namespace naylang {
 

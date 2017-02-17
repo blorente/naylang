@@ -6,7 +6,7 @@
 #ifndef NAYLANG_BOOLEAN_H
 #define NAYLANG_BOOLEAN_H
 
-#include <model/Expression.h>
+#include <model/expressions/Expression.h>
 
 namespace naylang {
 class Boolean : public Expression {

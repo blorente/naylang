@@ -6,7 +6,7 @@
 #ifndef NAYLANG_VARIABLEDECLARATION_H
 #define NAYLANG_VARIABLEDECLARATION_H
 
-#include <model/Expression.h>
+#include <model/expressions/Expression.h>
 #include <string>
 
 namespace naylang {
