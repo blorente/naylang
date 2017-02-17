@@ -14,7 +14,7 @@ public:
 
     static GraceObject createUndefined();
     static GraceObject createNumber(double value);
-    static GraceObject createMethod(ExpressionPtr body);
+    static GraceObject createMethod(ExpressionBlockPtr body);
 };
 }
 

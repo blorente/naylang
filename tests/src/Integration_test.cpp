@@ -93,12 +93,12 @@ TEST_CASE("ExpressionBlocks with IfThenElse Expressions", "[Integration Tests]")
     auto ITE1ThenBlock = std::make_shared<ExpressionBlock>();
     auto xPlusOne = std::make_shared<Addition>(xReference, one);
     auto xEqualsXPlusOne = std::make_shared<Assignment>("x", xPlusOne);
-    ITE1ThenBlock->addExpression(xEqualsXPlusOne);
+    ITE1ThenBlock->addInstruction(xEqualsXPlusOne);
 
     // else { y=0; }
     auto ITE1ElseBlock = std::make_shared<ExpressionBlock>();
     auto yEqualsZero = std::make_shared<Assignment>("y", zero);
-    ITE1ElseBlock->addExpression(yEqualsZero);
+    ITE1ElseBlock->addInstruction(yEqualsZero);
 
     auto ITE1 = std::make_shared<IfThenElse>(tru, ITE1ThenBlock, ITE1ElseBlock);
 
@@ -109,24 +109,24 @@ TEST_CASE("ExpressionBlocks with IfThenElse Expressions", "[Integration Tests]")
     // if (false) { x=0; }
     auto ITE2ThenBlock = std::make_shared<ExpressionBlock>();
     auto xEqualsZero = std::make_shared<Assignment>("x", zero);
-    ITE2ThenBlock->addExpression(xEqualsZero);
+    ITE2ThenBlock->addInstruction(xEqualsZero);
 
     // else { x=y+1; y=y+1; }
     auto ITE2ElseBlock = std::make_shared<ExpressionBlock>();
     auto xEqualsYPlusOne = std::make_shared<Assignment>("x", yPlusOne);
-    ITE2ElseBlock->addExpression(xEqualsYPlusOne);
-    ITE2ElseBlock->addExpression(yEqualsYPlusOne);
+    ITE2ElseBlock->addInstruction(xEqualsYPlusOne);
+    ITE2ElseBlock->addInstruction(yEqualsYPlusOne);
 
     auto ITE2 = std::make_shared<IfThenElse>(fals, ITE2ThenBlock, ITE2ElseBlock);
 
     auto programBlock = std::make_shared<ExpressionBlock>();
-    programBlock->addExpression(xDeclaration);
-    programBlock->addExpression(yDeclaration);
-    programBlock->addExpression(xEqualsFive);
-    programBlock->addExpression(yEqualsSix);
-    programBlock->addExpression(ITE1);
-    programBlock->addExpression(yEqualsYPlusOne);
-    programBlock->addExpression(ITE2);
+    programBlock->addInstruction(xDeclaration);
+    programBlock->addInstruction(yDeclaration);
+    programBlock->addInstruction(xEqualsFive);
+    programBlock->addInstruction(yEqualsSix);
+    programBlock->addInstruction(ITE1);
+    programBlock->addInstruction(yEqualsYPlusOne);
+    programBlock->addInstruction(ITE2);
 
     REQUIRE_NOTHROW(evaluator.evaluate(*programBlock));
     REQUIRE_NOTHROW(xReference);

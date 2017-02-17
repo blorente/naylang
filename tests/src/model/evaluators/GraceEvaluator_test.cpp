@@ -21,6 +21,10 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     auto tru = std::make_shared<Boolean>(true);
     auto fals = std::make_shared<Boolean>(false);
 
+    auto zeroBlock = std::make_shared<ExpressionBlock>(); zeroBlock->addInstruction(zero);
+    auto fiveBlock = std::make_shared<ExpressionBlock>(); fiveBlock->addInstruction(five);
+    auto sixBlock = std::make_shared<ExpressionBlock>(); sixBlock->addInstruction(six);
+
     SECTION("A Number expression just stores the asNumber") {
         Number fiveNat(5.0);
         REQUIRE_NOTHROW(eval.evaluate(fiveNat));
@@ -69,8 +73,8 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("The evaluator executes ITE blocks according to the condition") {
-        IfThenElse iteSix(tru, six, zero);
-        IfThenElse iteZero(fals, six, zero);
+        IfThenElse iteSix(tru, sixBlock, zeroBlock);
+        IfThenElse iteZero(fals, sixBlock, zeroBlock);
         REQUIRE_NOTHROW(eval.evaluate(iteSix));
         REQUIRE(eval.getPartialDouble() == 6.0);
         REQUIRE_NOTHROW(eval.evaluate(iteZero));
@@ -83,9 +87,9 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         auto xReference = std::make_shared<VariableReference>("x");
 
         ExpressionBlock block;
-        block.addExpression(xDeclaration);
-        block.addExpression(xAssignment);
-        block.addExpression(xReference);
+        block.addInstruction(xDeclaration);
+        block.addInstruction(xAssignment);
+        block.addInstruction(xReference);
 
         REQUIRE_NOTHROW(eval.evaluate(block));
         REQUIRE(eval.getPartialDouble() == 6.0);
@@ -94,7 +98,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     SECTION("Evaluating a method declaration adds it to the environment") {
         Identifier id{"myMethod"};
         auto methodBody = std::make_shared<ExpressionBlock>();
-        methodBody->addExpression(zero);
+        methodBody->addInstruction(zero);
         MethodDeclaration method(id, methodBody);
 
         REQUIRE_NOTHROW(eval.evaluate(method));

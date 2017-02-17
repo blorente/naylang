@@ -7,12 +7,12 @@
 #define NAYLANG_CONSTANT_H
 
 #include <memory>
-#include <model/Evaluator.h>
+#include <model/statements/Statement.h>
 #include <model/expressions/Expression.h>
 
 namespace naylang {
 
-class Constant : public Expression {
+class Constant : public Statement {
 
     std::string _identifier;
     ExpressionPtr _value;

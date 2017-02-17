@@ -6,12 +6,12 @@
 #ifndef NAYLANG_VARIABLEDECLARATION_H
 #define NAYLANG_VARIABLEDECLARATION_H
 
-#include <model/expressions/Expression.h>
 #include <string>
+#include <model/statements/Statement.h>
 
 namespace naylang {
 
-class VariableDeclaration : public Expression {
+class VariableDeclaration : public Statement {
 
     std::string _identifier;
 

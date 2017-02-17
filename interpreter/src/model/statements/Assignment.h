@@ -7,11 +7,12 @@
 #define NAYLANG_ASSIGNMENT_H
 
 #include <memory>
+#include <model/statements/Statement.h>
 #include <model/expressions/Expression.h>
 
 namespace naylang {
 
-class Assignment : public Expression {
+class Assignment : public Statement {
 
     std::string _identifier;
     ExpressionPtr _value;

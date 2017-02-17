@@ -14,7 +14,7 @@ GraceObject GraceObjectFactory::createNumber(double value) {
     return GraceObject(value);
 }
 
-GraceObject GraceObjectFactory::createMethod(ExpressionPtr body) {
+GraceObject GraceObjectFactory::createMethod(ExpressionBlockPtr body) {
     return GraceObject(body);
 }
 }

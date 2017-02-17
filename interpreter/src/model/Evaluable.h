@@ -12,6 +12,8 @@ namespace naylang {
 
 class Evaluator;
 
+#define EvaluablePtr std::shared_ptr<Evaluable>
+
 class Evaluable {
 
 public:

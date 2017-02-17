@@ -17,12 +17,12 @@ TEST_CASE("Methd Declarations", "[Expressions]") {
     auto numberBody = std::make_shared<ExpressionBlock>();
 
     SECTION("A method delaration takes an identifier and a body expression") {
-        numberBody->addExpression(five);
+        numberBody->addInstruction(five);
         MethodDeclaration method(name, numberBody);
     }
 
     SECTION("A method declaration returns it's name and body") {
-        numberBody->addExpression(five);
+        numberBody->addInstruction(five);
         MethodDeclaration method(name, numberBody);
 
         REQUIRE(method.getCanonName().identifier() == "myMethod");

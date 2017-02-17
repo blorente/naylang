@@ -6,6 +6,7 @@
 #include "catch.h"
 
 #include <model/statements/VariableDeclaration.h>
+#include <model/expressions/ExpressionBlock.h>
 #include <model/environment/GraceObject.h>
 
 using namespace naylang;
@@ -32,16 +33,23 @@ TEST_CASE("Grace Object", "[Environment]") {
 
     SECTION("Grace objects can be initialized with methods") {
         auto xDecl = std::make_shared<VariableDeclaration>("x");
-        GraceObject shortMethod(xDecl);
+        auto xShortBlock = std::make_shared<ExpressionBlock>();
+        xShortBlock->addInstruction(xDecl);
+        GraceObject shortMethod(xShortBlock);
     }
 
     SECTION("Two method objects are == iff they point to the same expression") {
         auto xDecl = std::make_shared<VariableDeclaration>("x");
-        auto yDecl = std::make_shared<VariableDeclaration>("y");
+        auto xBlock = std::make_shared<ExpressionBlock>();
+        xBlock->addInstruction(xDecl);
 
-        GraceObject methodOne(xDecl);
-        GraceObject methodTwo(yDecl);
-        GraceObject methodThree(xDecl);
+        auto yDecl = std::make_shared<VariableDeclaration>("y");
+        auto yBlock = std::make_shared<ExpressionBlock>();
+        yBlock->addInstruction(yDecl);
+
+        GraceObject methodOne(xBlock);
+        GraceObject methodTwo(yBlock);
+        GraceObject methodThree(xBlock);
 
         REQUIRE(methodOne == methodThree);
         REQUIRE(methodOne != methodTwo);

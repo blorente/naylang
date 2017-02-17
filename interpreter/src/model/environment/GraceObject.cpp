@@ -10,7 +10,7 @@ GraceObject::GraceObject() : _kind{GraceObjectKind::UNDEFINED} {}
 
 GraceObject::GraceObject(double number) : _kind{GraceObjectKind::NUMBER}, _number{number} {}
 
-GraceObject::GraceObject(ExpressionPtr body) : _kind{GraceObjectKind::METHOD} {
+GraceObject::GraceObject(ExpressionBlockPtr body) : _kind{GraceObjectKind::METHOD} {
     _body = std::move(body);
 }
 
@@ -25,7 +25,7 @@ double GraceObject::asNumber() const {
     return _number;
 }
 
-ExpressionPtr GraceObject::asMethod() const {
+ExpressionBlockPtr GraceObject::asMethod() const {
     if(_kind != GraceObjectKind::METHOD)
         throw "Not a Method";
 
@@ -51,14 +51,4 @@ bool GraceObject::operator==(const GraceObject &other) const {
 bool GraceObject::operator!=(const GraceObject &other) const {
     return !(other == *this);
 }
-
-/*
-const std::map<Identifier, GraceObject> & GraceObject::getSelf() const {
-    return _self;
-}
-
-void GraceObject::addField(const Identifier &name, const GraceObject &value) {
-    _self[name] = value;
-}
- */
 }

@@ -12,11 +12,11 @@ void ExpressionBlock::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
-void ExpressionBlock::addExpression(ExpressionPtr expression) {
+void ExpressionBlock::addInstruction(EvaluablePtr expression) {
     _expressions.push_back(std::move(expression));
 }
 
-const std::vector<ExpressionPtr> &ExpressionBlock::expressions() const {
+const std::vector<EvaluablePtr> &ExpressionBlock::expressions() const {
     return _expressions;
 }
 }

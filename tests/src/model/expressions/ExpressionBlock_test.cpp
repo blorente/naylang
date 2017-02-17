@@ -20,8 +20,8 @@ TEST_CASE("Expression Blocks tests", "[Expressions]") {
     SECTION("Expressions can be added in FIFO order to a block") {
         auto five = std::make_shared<Number>(5.0);
         auto six = std::make_shared<Number>(6.0);
-        block.addExpression(five);
-        block.addExpression(six);
+        block.addInstruction(five);
+        block.addInstruction(six);
 
         REQUIRE(static_cast<const Number&>(*(block.expressions()[0])).value() == 5.0);
         REQUIRE(static_cast<const Number&>(*(block.expressions()[1])).value() == 6.0);
