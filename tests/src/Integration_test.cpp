@@ -3,8 +3,6 @@
 // Distributed under the GPLv3 license.
 //
 
-#define CATCH_CONFIG_MAIN
-
 #include <model/Evaluator.h>
 #include <model/evaluators/GraceEvaluator.h>
 #include "catch.h"
