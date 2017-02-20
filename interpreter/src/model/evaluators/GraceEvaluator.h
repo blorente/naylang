@@ -25,6 +25,7 @@
 #include <model/expressions/operations/Division.h>
 
 #include <model/expressions/methods/MethodDeclaration.h>
+#include <model/expressions/methods/MethodCall.h>
 
 namespace naylang {
 
@@ -55,6 +56,7 @@ public:
     virtual void evaluate(Division &expression);
 
     virtual void evaluate(MethodDeclaration &expression);
+    virtual void evaluate(MethodCall &expression);
 
     double getPartialDouble() const;
     bool getPartialBool() const;

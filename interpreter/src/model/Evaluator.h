@@ -29,6 +29,7 @@ class Multiplication;
 class Division;
 
 class MethodDeclaration;
+class MethodCall;
 
 class Evaluator {
 
@@ -53,6 +54,7 @@ public:
     virtual void evaluate(Division &expression) = 0;
 
     virtual void evaluate(MethodDeclaration &expression) = 0;
+    virtual void evaluate(MethodCall &expression) = 0;
 };
 
 }

@@ -103,4 +103,23 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
 
         REQUIRE_NOTHROW(eval.evaluate(method));
     }
+
+    SECTION("Evaluating an undeclared method throws") {
+        Identifier id{"nonExistent"};
+        MethodCall wrongCall(id);
+
+        REQUIRE_THROWS(eval.evaluate(wrongCall));
+    }
+
+    SECTION("Evaluating a declared method executes it's block") {
+        Identifier id{"myMethod"};
+        auto methodBody = std::make_shared<ExpressionBlock>();
+        methodBody->addInstruction(five);
+        MethodDeclaration method(id, methodBody);
+        MethodCall rightCall(id);
+
+        REQUIRE_NOTHROW(eval.evaluate(method));
+        REQUIRE_NOTHROW(eval.evaluate(rightCall));
+        REQUIRE(eval.getPartialDouble() == 5.0);
+    }
 }

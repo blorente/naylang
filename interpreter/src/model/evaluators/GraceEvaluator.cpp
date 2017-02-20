@@ -114,4 +114,8 @@ void GraceEvaluator::evaluate(MethodDeclaration &expression) {
     GraceObject body = GraceObjectFactory::createMethod(expression.getBody());
     _environment->bind(expression.getCanonName(), body);
 }
+
+void GraceEvaluator::evaluate(MethodCall &expression) {
+    _environment->get(expression.getMethodName()).asMethod()->accept(*this);
+}
 }
