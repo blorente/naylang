@@ -25,6 +25,10 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     auto fiveBlock = std::make_shared<ExpressionBlock>(); fiveBlock->addInstruction(five);
     auto sixBlock = std::make_shared<ExpressionBlock>(); sixBlock->addInstruction(six);
 
+    auto xRef = std::make_shared<VariableReference>("x");
+
+    auto xRefBlock = std::make_shared<ExpressionBlock>(); xRefBlock->addInstruction(xRef);
+
     SECTION("A Number expression just stores the asNumber") {
         Number fiveNat(5.0);
         REQUIRE_NOTHROW(eval.evaluate(fiveNat));
@@ -111,7 +115,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE_THROWS(eval.evaluate(wrongCall));
     }
 
-    SECTION("Evaluating a declared method executes it's block") {
+    SECTION("Evaluating a declared method without void parameters executes it's block") {
         Identifier id{"myMethod"};
         auto methodBody = std::make_shared<ExpressionBlock>();
         methodBody->addInstruction(five);
@@ -120,6 +124,22 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
 
         REQUIRE_NOTHROW(eval.evaluate(method));
         REQUIRE_NOTHROW(eval.evaluate(rightCall));
+        REQUIRE(eval.getPartialDouble() == 5.0);
+    }
+
+    SECTION("Evaluating a method call with parameters stores the values in a new environment") {
+        std::vector<std::string> words {"myMethod", "parameters"};
+        Identifier id(words);
+
+        auto tempRef = std::make_shared<VariableReference>("temp0");
+
+        auto tempRefBlock = std::make_shared<ExpressionBlock>(); tempRefBlock->addInstruction(tempRef);
+
+        MethodDeclaration method(id, tempRefBlock);
+        MethodCall parameterCall(id, {five});
+
+        REQUIRE_NOTHROW(eval.evaluate(method));
+        REQUIRE_NOTHROW(eval.evaluate(parameterCall));
         REQUIRE(eval.getPartialDouble() == 5.0);
     }
 }

@@ -116,6 +116,21 @@ void GraceEvaluator::evaluate(MethodDeclaration &expression) {
 }
 
 void GraceEvaluator::evaluate(MethodCall &expression) {
+    auto parentEnv = _environment;
+    _environment = std::make_shared<Environment>(_environment);
+
+    auto id = expression.getMethodName();
+
+    int i = 0;
+    for (auto expr : expression.getParameters()) {
+        expr->accept(*this);
+        auto value = GraceObject{_partialDouble};
+        std::string tempid = "temp"+ std::to_string(i);
+        _environment->bind({tempid}, value);
+        i++;
+    }
     _environment->get(expression.getMethodName()).asMethod()->accept(*this);
+
+    _environment = parentEnv;
 }
 }
