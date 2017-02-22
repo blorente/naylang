@@ -25,8 +25,6 @@ class GraceObject {
 
     GraceObjectKind _kind;
 
-    std::map<Identifier, GraceObject> _self;
-
     double _number;
     ExpressionBlockPtr _body;
 

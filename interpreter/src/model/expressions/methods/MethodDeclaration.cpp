@@ -6,8 +6,8 @@
 #include "MethodDeclaration.h"
 
 namespace naylang {
-MethodDeclaration::MethodDeclaration(Identifier canonicalName, ExpressionBlockPtr body)
-    : _name{canonicalName} {
+MethodDeclaration::MethodDeclaration(std::unique_ptr<MethodIdentifier> canonicalName, ExpressionBlockPtr body) {
+    _name = std::move(canonicalName);
     _body = std::move(body);
 }
 
@@ -15,11 +15,12 @@ void MethodDeclaration::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
-const Identifier &MethodDeclaration::getCanonName() const {
+const std::unique_ptr<MethodIdentifier> & MethodDeclaration::getCanonName() const {
     return _name;
 }
 
 ExpressionBlockPtr MethodDeclaration::getBody() const {
     return _body;
 }
+
 }

@@ -8,22 +8,22 @@
 
 
 #include <model/Evaluator.h>
-#include <model/environment/Identifier.h>
+#include <model/environment/identifiers/MethodIdentifier.h>
 #include <model/expressions/ExpressionBlock.h>
 
 namespace naylang {
 class MethodDeclaration : public Expression {
 
-    Identifier _name;
+    std::unique_ptr<MethodIdentifier> _name;
     ExpressionBlockPtr _body;
 
 public:
 
-    MethodDeclaration(Identifier canonicalName, ExpressionBlockPtr body);
+    MethodDeclaration(std::unique_ptr<MethodIdentifier> canonicalName, ExpressionBlockPtr body);
 
     virtual void accept(Evaluator &evaluator);
 
-    const Identifier &getCanonName() const;
+    const std::unique_ptr<MethodIdentifier> &getCanonName() const;
     ExpressionBlockPtr getBody() const;
 };
 }

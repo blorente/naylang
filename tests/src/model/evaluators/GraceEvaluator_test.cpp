@@ -4,6 +4,7 @@
 //
 
 #include <iostream>
+#include <model/environment/identifiers/IdentifierFactory.h>
 #include "catch.h"
 
 #include "model/evaluators/GraceEvaluator.h"
@@ -35,7 +36,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE(eval.getPartialDouble() == fiveNat.value());
     }
 
-    SECTION("If the identifier of a constant already exists in the environment, it throws an exception") {
+    SECTION("If the canonName of a constant already exists in the environment, it throws an exception") {
         Constant xConstant("x", six);
         REQUIRE_NOTHROW(eval.evaluate(xConstant));
         REQUIRE_THROWS(eval.evaluate(xConstant));
@@ -100,27 +101,27 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("Evaluating a method declaration adds it to the environment") {
-        Identifier id{"myMethod"};
+        std::unique_ptr<MethodIdentifier> id = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         auto methodBody = std::make_shared<ExpressionBlock>();
         methodBody->addInstruction(zero);
-        MethodDeclaration method(id, methodBody);
+        MethodDeclaration method(std::move(id), methodBody);
 
         REQUIRE_NOTHROW(eval.evaluate(method));
     }
 
     SECTION("Evaluating an undeclared method throws") {
-        Identifier id{"nonExistent"};
-        MethodCall wrongCall(id);
+        std::unique_ptr<MethodIdentifier> id = IdentifierFactory::createMethodIdentifier("nonExistent", 0);
+        MethodCall wrongCall(std::move(id));
 
         REQUIRE_THROWS(eval.evaluate(wrongCall));
     }
 
     SECTION("Evaluating a declared method without void parameters executes it's block") {
-        Identifier id{"myMethod"};
+        std::unique_ptr<MethodIdentifier> id = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         auto methodBody = std::make_shared<ExpressionBlock>();
         methodBody->addInstruction(five);
-        MethodDeclaration method(id, methodBody);
-        MethodCall rightCall(id);
+        MethodDeclaration method(std::move(id), methodBody);
+        MethodCall rightCall(std::move(id));
 
         REQUIRE_NOTHROW(eval.evaluate(method));
         REQUIRE_NOTHROW(eval.evaluate(rightCall));
@@ -129,14 +130,16 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
 
     SECTION("Evaluating a method call with parameters stores the values in a new environment") {
         std::vector<std::string> words {"myMethod", "parameters"};
-        Identifier id(words);
+        std::vector<int> params {0, 0};
+        std::unique_ptr<MethodIdentifier> declarationId = IdentifierFactory::createMethodIdentifier(words, params);
+        std::unique_ptr<MethodIdentifier> callId = IdentifierFactory::createMethodIdentifier(declarationId);
 
         auto tempRef = std::make_shared<VariableReference>("temp0");
 
         auto tempRefBlock = std::make_shared<ExpressionBlock>(); tempRefBlock->addInstruction(tempRef);
 
-        MethodDeclaration method(id, tempRefBlock);
-        MethodCall parameterCall(id, {five});
+        MethodDeclaration method(std::move(declarationId), tempRefBlock);
+        MethodCall parameterCall(std::move(callId), {five});
 
         REQUIRE_NOTHROW(eval.evaluate(method));
         REQUIRE_NOTHROW(eval.evaluate(parameterCall));

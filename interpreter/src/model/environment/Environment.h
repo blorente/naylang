@@ -8,7 +8,7 @@
 #include <memory>
 #include <map>
 #include "GraceObject.h"
-#include "Identifier.h"
+#include "model/environment/identifiers/Identifier.h"
 
 namespace naylang {
 
@@ -17,7 +17,7 @@ class GraceObject;
 class Environment {
 
     std::shared_ptr<Environment> _parent = nullptr;
-    std::map<Identifier, GraceObject> _scope;
+    std::map<std::unique_ptr<Identifier>, GraceObject> _scope;
 
 public:
 
@@ -26,14 +26,14 @@ public:
     ~Environment() = default;
 
     unsigned long long int size();
-    void bind(const Identifier &identifier, const GraceObject &value);
-    void change(const Identifier &identifier, const GraceObject &value);
-    const GraceObject & get(const Identifier &identifier) const;
+    void bind(std::unique_ptr<Identifier> identifier, const GraceObject &value);
+    void change(const std::unique_ptr<Identifier> &identifier, const GraceObject &value);
+    const GraceObject & get(const std::unique_ptr<Identifier> &identifier) const;
 
 private:
 
-    bool bindingExistsHere(const Identifier &identifier) const;
-    bool bindingExistsAnywhere(const Identifier &identifier) const;
+    bool bindingExistsHere(const std::unique_ptr<Identifier> &identifier) const;
+    bool bindingExistsAnywhere(const std::unique_ptr<Identifier> &identifier) const;
 };
 
 }

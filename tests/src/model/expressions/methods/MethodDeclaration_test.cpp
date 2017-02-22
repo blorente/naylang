@@ -8,24 +8,26 @@
 #include <model/expressions/methods/MethodDeclaration.h>
 #include <model/expressions/primitives/Number.h>
 #include <model/expressions/ExpressionBlock.h>
+#include <model/environment/identifiers/IdentifierFactory.h>
 
 using namespace naylang;
 
-TEST_CASE("Methd Declarations", "[Expressions]") {
-    Identifier name("myMethod");
+TEST_CASE("Method Declarations", "[Expressions]") {
     auto five = std::make_shared<Number>(5.0);
     auto numberBody = std::make_shared<ExpressionBlock>();
 
-    SECTION("A method delaration takes an identifier and a body expression") {
+    SECTION("A method delaration takes an canonName and a body expression") {
+        auto name = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         numberBody->addInstruction(five);
-        MethodDeclaration method(name, numberBody);
+        MethodDeclaration method(std::move(name), numberBody);
     }
 
     SECTION("A method declaration returns it's name and body") {
+        auto name = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         numberBody->addInstruction(five);
-        MethodDeclaration method(name, numberBody);
+        MethodDeclaration method(std::move(name), numberBody);
 
-        REQUIRE(method.getCanonName().identifier() == "myMethod");
+        REQUIRE(method.getCanonName()->canonName() == "myMethod");
         REQUIRE(static_cast<Number &>(*(method.getBody()->expressions()[0])).value() == 5.0);
     }
 }

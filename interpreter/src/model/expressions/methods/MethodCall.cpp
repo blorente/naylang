@@ -9,20 +9,23 @@
 #include "MethodCall.h"
 
 namespace naylang {
-MethodCall::MethodCall(Identifier methodName) : _methodName{methodName}, _parameters{} {}
-MethodCall::MethodCall(Identifier methodName, std::vector<ExpressionPtr> parameters) :
-        _methodName(methodName),
-        _parameters{parameters} {}
+MethodCall::MethodCall(std::unique_ptr<MethodIdentifier> methodName) : _parameters{} {
+    _methodName = std::move(methodName);
+}
+MethodCall::MethodCall(std::unique_ptr<MethodIdentifier> methodName, std::vector<ExpressionPtr> parameters) :
+        _parameters{parameters} {
+    _methodName = std::move(methodName);
+}
 
 void MethodCall::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
-const Identifier &MethodCall::getMethodName() const {
-    return _methodName;
+const MethodIdentifier &MethodCall::getMethodName() const {
+    return *_methodName;
 }
 
-const std::vector<ExpressionPtr > &MethodCall::getParameters() const {
+const std::vector<ExpressionPtr> &MethodCall::getParameters() const {
     return _parameters;
 }
 

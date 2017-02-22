@@ -4,6 +4,8 @@
 //
 #include <iostream>
 #include <model/environment/GraceObjectFactory.h>
+#include <model/environment/identifiers/VariableIdentifier.h>
+#include <model/environment/identifiers/IdentifierFactory.h>
 #include "GraceEvaluator.h"
 
 namespace naylang {
@@ -31,14 +33,14 @@ void GraceEvaluator::evaluate(Boolean &expression) {
 void GraceEvaluator::evaluate(Constant &expression) {
     expression.value()->accept(*this);
     auto partial = GraceObjectFactory::createNumber(_partialDouble);
-    auto identifier = Identifier(expression.identifier());
-    _environment->bind(identifier, partial);
+    std::unique_ptr<Identifier> identifier = std::make_unique<VariableIdentifier>(expression.identifier());
+    _environment->bind(std::move(identifier), partial);
 }
 
 void GraceEvaluator::evaluate(Assignment &expression) {
     expression.value()->accept(*this);
     auto partial = GraceObjectFactory::createNumber(_partialDouble);
-    Identifier identifier(expression.identifier());
+    std::unique_ptr<Identifier> identifier = std::make_unique<VariableIdentifier>(expression.identifier());
     _environment->change(identifier, partial);
 }
 
@@ -51,12 +53,12 @@ void GraceEvaluator::evaluate(Addition &expression) {
 }
 
 void GraceEvaluator::evaluate(VariableDeclaration &expression) {
-    Identifier identifier(expression.identifier());
-    _environment->bind(identifier, GraceObjectFactory::createUndefined());
+    std::unique_ptr<Identifier> identifier = std::make_unique<VariableIdentifier>(expression.identifier());
+    _environment->bind(std::move(identifier), GraceObjectFactory::createUndefined());
 }
 
 void GraceEvaluator::evaluate(VariableReference &expression) {
-    Identifier identifier(expression.identifier());
+    std::unique_ptr<Identifier> identifier = std::make_unique<VariableIdentifier>(expression.identifier());
     if (_environment->get(identifier).isUndefined()) {
         throw "Variable not initialized";
     }
@@ -112,24 +114,24 @@ void GraceEvaluator::evaluate(ExpressionBlock &expression) {
 
 void GraceEvaluator::evaluate(MethodDeclaration &expression) {
     GraceObject body = GraceObjectFactory::createMethod(expression.getBody());
-    _environment->bind(expression.getCanonName(), body);
+    auto id = IdentifierFactory::createMethodIdentifier(expression.getCanonName());
+    _environment->bind(std::move(id), body);
 }
 
 void GraceEvaluator::evaluate(MethodCall &expression) {
     auto parentEnv = _environment;
     _environment = std::make_shared<Environment>(_environment);
 
-    auto id = expression.getMethodName();
-
     int i = 0;
     for (auto expr : expression.getParameters()) {
         expr->accept(*this);
         auto value = GraceObject{_partialDouble};
-        std::string tempid = "temp"+ std::to_string(i);
-        _environment->bind({tempid}, value);
+        std::string tempstring = "temp"+ std::to_string(i);
+        std::unique_ptr<Identifier> tempid = IdentifierFactory::createVariableIdentifier(tempstring);
+        _environment->bind(std::move(tempid), value);
         i++;
     }
-    _environment->get(expression.getMethodName()).asMethod()->accept(*this);
+    _environment->get(IdentifierFactory::createMethodIdentifier(expression.getMethodName())).asMethod()->accept(*this);
 
     _environment = parentEnv;
 }

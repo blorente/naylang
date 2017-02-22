@@ -7,24 +7,24 @@
 #define NAYLANG_METHODCALL_H
 
 
-#include <model/environment/Identifier.h>
 #include <model/expressions/Expression.h>
 #include <memory>
+#include <model/environment/identifiers/MethodIdentifier.h>
 
 namespace naylang {
 
 class MethodCall : public Expression {
 
-    Identifier _methodName;
+    std::unique_ptr<MethodIdentifier> _methodName;
     std::vector<ExpressionPtr> _parameters;
 
 public:
-    MethodCall(Identifier methodName);
-    MethodCall(Identifier methodName, std::vector<ExpressionPtr> parameters);
+    MethodCall(std::unique_ptr<MethodIdentifier> methodName);
+    MethodCall(std::unique_ptr<MethodIdentifier> methodName, std::vector<ExpressionPtr> parameters);
 
     virtual void accept(Evaluator &evaluator);
 
-    const Identifier &getMethodName() const;
+    const MethodIdentifier &getMethodName() const;
     const std::vector<ExpressionPtr> &getParameters() const;
 };
 

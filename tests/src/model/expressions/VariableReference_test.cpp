@@ -10,7 +10,7 @@
 using namespace naylang;
 
 TEST_CASE("VariableReference Expressions", "[Expressions]") {
-    SECTION("A variable reference just needs an identifier") {
+    SECTION("A variable reference just needs an canonName") {
         auto name = "y";
         VariableReference refenenceY(name);
 
