@@ -4,18 +4,24 @@
 //
 
 #include "VariableReference.h"
+#include <model/statements/VariableDeclaration.h>
 
 namespace naylang {
 
-VariableReference::VariableReference(const std::string &identifier)
-        : _identifier(identifier) {}
+VariableReference::VariableReference(std::shared_ptr<VariableDeclaration> declaration)
+        : _declaration(declaration) {}
 
 void VariableReference::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
 const std::string& VariableReference::identifier() const {
-    return _identifier;
+    return _declaration->identifier();
+}
+
+VariableReference::VariableReference(const std::string &constIdentifier) {
+    // Create a phantom declaration, which should be deleted once the constants are dealt with
+    _declaration = std::make_shared<VariableDeclaration>(constIdentifier);
 }
 
 }

@@ -26,7 +26,9 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     auto fiveBlock = std::make_shared<ExpressionBlock>(); fiveBlock->addInstruction(five);
     auto sixBlock = std::make_shared<ExpressionBlock>(); sixBlock->addInstruction(six);
 
-    auto xRef = std::make_shared<VariableReference>("x");
+    auto xDeclaration = std::make_shared<VariableDeclaration>("x");
+
+    auto xRef = std::make_shared<VariableReference>(xDeclaration);
 
     auto xRefBlock = std::make_shared<ExpressionBlock>(); xRefBlock->addInstruction(xRef);
 
@@ -44,24 +46,22 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
 
     SECTION("A variable declaration must be made before an assignment can be done") {
         Assignment xAssignment("x", six);
-        VariableDeclaration xDeclaration("x");
         REQUIRE_THROWS(eval.evaluate(xAssignment));
-        REQUIRE_NOTHROW(eval.evaluate(xDeclaration));
+        REQUIRE_NOTHROW(eval.evaluate(*xDeclaration));
         REQUIRE_NOTHROW(eval.evaluate(xAssignment));
     }
 
-    SECTION("A variable reference throws if the asNumber is invalid (not initialized)") {
-        VariableDeclaration xDeclaration("x");
-        VariableReference xReference("x");
-        REQUIRE_NOTHROW(eval.evaluate(xDeclaration));
+    SECTION("A variable reference throws if the value is invalid (not initialized)") {
+
+        VariableReference xReference(xDeclaration);
+        REQUIRE_NOTHROW(eval.evaluate(*xDeclaration));
         REQUIRE_THROWS(eval.evaluate(xReference));
     }
 
     SECTION("A variable reference places the asNumber in the partial") {
-        VariableDeclaration xDeclaration("x");
-        VariableReference xReference("x");
+        VariableReference xReference(xDeclaration);
         Assignment xAssignment("x", six);
-        REQUIRE_NOTHROW(eval.evaluate(xDeclaration));
+        REQUIRE_NOTHROW(eval.evaluate(*xDeclaration));
         REQUIRE_NOTHROW(eval.evaluate(xAssignment));
         REQUIRE_NOTHROW(eval.evaluate(xReference));
         REQUIRE(eval.getPartialDouble() == 6.0);
@@ -87,9 +87,8 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("The evaluator evaluates expresions in a block sequenatially") {
-        auto xDeclaration = std::make_shared<VariableDeclaration>("x");
         auto xAssignment = std::make_shared<Assignment>("x", six);
-        auto xReference = std::make_shared<VariableReference>("x");
+        auto xReference = std::make_shared<VariableReference>(xDeclaration);
 
         ExpressionBlock block;
         block.addInstruction(xDeclaration);
@@ -134,7 +133,9 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         auto declarationId = IdentifierFactory::createMethodIdentifier(words, params);
         auto callId = IdentifierFactory::createMethodIdentifier(declarationId);
 
-        auto tempRef = std::make_shared<VariableReference>("temp0");
+        auto tempDecl = std::make_shared<VariableDeclaration>("temp0");
+
+        auto tempRef = std::make_shared<VariableReference>(tempDecl);
 
         auto tempRefBlock = std::make_shared<ExpressionBlock>(); tempRefBlock->addInstruction(tempRef);
 

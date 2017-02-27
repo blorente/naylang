@@ -44,7 +44,7 @@ TEST_CASE("Arithmetic operations with assignments", "[Integration Tests]") {
 
     // Not evaluated directly
     auto refY = std::make_shared<VariableReference>("y");
-    auto refX = std::make_shared<VariableReference>("x");
+    auto refX = std::make_shared<VariableReference>(declareX);
     auto yTimesX = std::make_shared<Multiplication>(refY, refX);
 
     auto reassignX = std::make_shared<Assignment>("x", yTimesX);
@@ -73,8 +73,8 @@ TEST_CASE("ExpressionBlocks with IfThenElse Expressions", "[Integration Tests]")
     GraceEvaluator evaluator;
     auto xDeclaration = std::make_shared<VariableDeclaration>("x");
     auto yDeclaration = std::make_shared<VariableDeclaration>("y");
-    auto xReference = std::make_shared<VariableReference>("x");
-    auto yReference = std::make_shared<VariableReference>("y");
+    auto xReference = std::make_shared<VariableReference>(xDeclaration);
+    auto yReference = std::make_shared<VariableReference>(yDeclaration);
 
     auto tru = std::make_shared<Boolean>(true);
     auto fals = std::make_shared<Boolean>(false);

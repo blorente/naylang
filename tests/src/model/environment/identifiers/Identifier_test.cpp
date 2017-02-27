@@ -24,7 +24,7 @@ TEST_CASE("Identifier", "[Environment]") {
 
         REQUIRE(stringIdentifier == vectorIdentifier);
     }
-    
+
     SECTION("Method identifiers can be compared with Variable identifiers") {
         MethodIdentifier different("Hello", 0);
         MethodIdentifier same("x", 0);
