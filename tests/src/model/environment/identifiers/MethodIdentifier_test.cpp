@@ -20,5 +20,41 @@ TEST_CASE("Method Identifiers", "[Environment]") {
         REQUIRE(method.canonName() == expected);
     }
 
-    // The lists must be the same size
+    SECTION("A method identifier can accept a string vector and a number of parameters vector") {
+        std::vector<std::string> identifiers {
+                "Hello",
+                "World"
+        };
+        std::vector<int> params {
+                2, 0
+        };
+        MethodIdentifier method(identifiers, params);
+
+        REQUIRE_NOTHROW(method.canonName());
+
+        SECTION("The string list and param list must be the same size"){
+            std::vector<int> wrongParams {
+                    2, 0, 3
+            };
+            REQUIRE_THROWS(MethodIdentifier wrongMethod(identifiers, wrongParams););
+        }
+    }
+
+    SECTION("The canonical name of a method is the intercalation of identifiers and blanks") {
+        std::vector<std::string> identifiers {
+                "Hello",
+                "World"
+        };
+        std::vector<int> params {
+                2, 0
+        };
+
+        MethodIdentifier method(identifiers, params);
+        std::string expected{"Hello"};
+        expected.append(BLANK_IDENTIFIER).append(BLANK_IDENTIFIER);
+        expected.append("World");
+        // expected == "Hello(__)(__)World"
+
+        REQUIRE(method.canonName() == expected);
+    }
 }

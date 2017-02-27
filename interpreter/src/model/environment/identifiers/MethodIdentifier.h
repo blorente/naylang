@@ -18,7 +18,7 @@ class MethodIdentifier : public Identifier {
 public:
     MethodIdentifier(const std::string &name, int params) : _names{name}, _params{params} {}
     MethodIdentifier(const std::vector<std::string> &names, const std::vector<int> &params) {
-        if (_names.size() != _params.size()) {
+        if (names.size() != params.size()) {
             throw "Method identifier lists must be the same size";
         }
 
