@@ -17,14 +17,14 @@ class IdentifierFactory {
 
 public:
 
-    static std::unique_ptr<VariableIdentifier> createVariableIdentifier(std::string name);
-    static std::unique_ptr<MethodIdentifier> createMethodIdentifier(std::string name, int params);
-    static std::unique_ptr<MethodIdentifier> createMethodIdentifier(
+    static std::shared_ptr<VariableIdentifier> createVariableIdentifier(std::string name);
+    static std::shared_ptr<MethodIdentifier> createMethodIdentifier(std::string name, int params);
+    static std::shared_ptr<MethodIdentifier> createMethodIdentifier(
             const std::vector<std::string> &names,
             const std::vector<int> &params);
 
-    static std::unique_ptr<MethodIdentifier> createMethodIdentifier(const MethodIdentifier &original);
-    static std::unique_ptr<MethodIdentifier> createMethodIdentifier(const std::unique_ptr<MethodIdentifier> &original);
+    static std::shared_ptr<MethodIdentifier> createMethodIdentifier(const MethodIdentifier &original);
+    static std::shared_ptr<MethodIdentifier> createMethodIdentifier(const std::shared_ptr<MethodIdentifier> &original);
 };
 
 } // end namespace naylang

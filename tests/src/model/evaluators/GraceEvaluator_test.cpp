@@ -101,7 +101,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("Evaluating a method declaration adds it to the environment") {
-        std::unique_ptr<MethodIdentifier> id = IdentifierFactory::createMethodIdentifier("myMethod", 0);
+        auto id = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         auto methodBody = std::make_shared<ExpressionBlock>();
         methodBody->addInstruction(zero);
         MethodDeclaration method(std::move(id), methodBody);
@@ -110,18 +110,18 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("Evaluating an undeclared method throws") {
-        std::unique_ptr<MethodIdentifier> id = IdentifierFactory::createMethodIdentifier("nonExistent", 0);
+        auto id = IdentifierFactory::createMethodIdentifier("nonExistent", 0);
         MethodCall wrongCall(std::move(id));
 
         REQUIRE_THROWS(eval.evaluate(wrongCall));
     }
 
     SECTION("Evaluating a declared method without void parameters executes it's block") {
-        std::unique_ptr<MethodIdentifier> id = IdentifierFactory::createMethodIdentifier("myMethod", 0);
+        auto id = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         auto methodBody = std::make_shared<ExpressionBlock>();
         methodBody->addInstruction(five);
-        MethodDeclaration method(std::move(id), methodBody);
-        MethodCall rightCall(std::move(id));
+        MethodDeclaration method(id, methodBody);
+        MethodCall rightCall(id);
 
         REQUIRE_NOTHROW(eval.evaluate(method));
         REQUIRE_NOTHROW(eval.evaluate(rightCall));
@@ -131,15 +131,15 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     SECTION("Evaluating a method call with parameters stores the values in a new environment") {
         std::vector<std::string> words {"myMethod", "parameters"};
         std::vector<int> params {0, 0};
-        std::unique_ptr<MethodIdentifier> declarationId = IdentifierFactory::createMethodIdentifier(words, params);
-        std::unique_ptr<MethodIdentifier> callId = IdentifierFactory::createMethodIdentifier(declarationId);
+        auto declarationId = IdentifierFactory::createMethodIdentifier(words, params);
+        auto callId = IdentifierFactory::createMethodIdentifier(declarationId);
 
         auto tempRef = std::make_shared<VariableReference>("temp0");
 
         auto tempRefBlock = std::make_shared<ExpressionBlock>(); tempRefBlock->addInstruction(tempRef);
 
-        MethodDeclaration method(std::move(declarationId), tempRefBlock);
-        MethodCall parameterCall(std::move(callId), {five});
+        MethodDeclaration method(declarationId, tempRefBlock);
+        MethodCall parameterCall(callId, {five});
 
         REQUIRE_NOTHROW(eval.evaluate(method));
         REQUIRE_NOTHROW(eval.evaluate(parameterCall));

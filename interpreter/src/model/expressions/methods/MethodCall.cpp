@@ -9,12 +9,12 @@
 #include "MethodCall.h"
 
 namespace naylang {
-MethodCall::MethodCall(std::unique_ptr<MethodIdentifier> methodName) : _parameters{} {
-    _methodName = std::move(methodName);
+MethodCall::MethodCall(std::shared_ptr<MethodIdentifier> methodName) : _parameters{} {
+    _methodName = methodName;
 }
-MethodCall::MethodCall(std::unique_ptr<MethodIdentifier> methodName, std::vector<ExpressionPtr> parameters) :
+MethodCall::MethodCall(std::shared_ptr<MethodIdentifier> methodName, std::vector<ExpressionPtr> parameters) :
         _parameters{parameters} {
-    _methodName = std::move(methodName);
+    _methodName = methodName;
 }
 
 void MethodCall::accept(Evaluator &evaluator) {

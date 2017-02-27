@@ -24,42 +24,42 @@ TEST_CASE("Environment", "[Environment]") {
     }
 
     SECTION("Trying to get an unbound asNumber raises an exception") {
-        std::unique_ptr<Identifier> badIdentifier = IdentifierFactory::createVariableIdentifier("baaad");
+        auto badIdentifier = IdentifierFactory::createVariableIdentifier("baaad");
         REQUIRE_THROWS(env.get(badIdentifier));
     }
 
     SECTION("Once a asNumber has been inserted, you can get() it") {
-        std::unique_ptr<Identifier> x = IdentifierFactory::createVariableIdentifier("x");
-        env.bind(std::move(x), five);
+        auto x = IdentifierFactory::createVariableIdentifier("x");
+        env.bind(x, five);
         REQUIRE(env.get(x).asNumber() == five.asNumber());
     }
 
     SECTION("After bind(), the a asNumber can be change()d") {
-        std::unique_ptr<Identifier> x = IdentifierFactory::createVariableIdentifier("x");
-        env.bind(std::move(x), five);
+        auto x = IdentifierFactory::createVariableIdentifier("x");
+        env.bind(x, five);
         REQUIRE(env.get(x).asNumber() == five.asNumber());
-        REQUIRE_THROWS(env.bind(std::move(x), three));
+        REQUIRE_THROWS(env.bind(x, three));
         env.change(x, three);
         REQUIRE(env.get(x).asNumber() == three.asNumber());
     }
 
     SECTION("All calls to bind() after the first with the same canonName throw") {
-        std::unique_ptr<Identifier> x = IdentifierFactory::createVariableIdentifier("x");
-        env.bind(std::move(x), five);
-        REQUIRE_THROWS(env.bind(std::move(x), three));
-        REQUIRE_THROWS(env.bind(std::move(x), five));
+        auto x = IdentifierFactory::createVariableIdentifier("x");
+        env.bind(x, five);
+        REQUIRE_THROWS(env.bind(x, three));
+        REQUIRE_THROWS(env.bind(x, five));
     }
 
     SECTION("A call to change() will fail if the binding is not created") {
-        std::unique_ptr<Identifier> x = IdentifierFactory::createVariableIdentifier("x");
+        auto x = IdentifierFactory::createVariableIdentifier("x");
         REQUIRE_THROWS(env.change(x, five));
     }
 
     SECTION("An environment accepts a parent environment as a constructor parameter") {
-        std::unique_ptr<Identifier> x = IdentifierFactory::createVariableIdentifier("x");
-        std::unique_ptr<Identifier> y = IdentifierFactory::createVariableIdentifier("y");
+        auto x = IdentifierFactory::createVariableIdentifier("x");
+        auto y = IdentifierFactory::createVariableIdentifier("y");
         auto parent = std::make_shared<Environment>();
-        parent->bind(std::move(y), five);
+        parent->bind(y, five);
         Environment child(parent);
         child.bind(std::move(x), three);
 
@@ -67,12 +67,12 @@ TEST_CASE("Environment", "[Environment]") {
     }
 
     SECTION("A child environment can access the parent's bindings, but not vice versa") {
-        std::unique_ptr<Identifier> x = IdentifierFactory::createVariableIdentifier("x");
-        std::unique_ptr<Identifier> y = IdentifierFactory::createVariableIdentifier("y");
+        auto x = IdentifierFactory::createVariableIdentifier("x");
+        auto y = IdentifierFactory::createVariableIdentifier("y");
         auto parent = std::make_shared<Environment>();
-        parent->bind(std::move(y), five);
+        parent->bind(y, five);
         Environment child(parent);
-        child.bind(std::move(x), three);
+        child.bind(x, three);
 
         REQUIRE(parent->get(y).asNumber() == 5.0);
         REQUIRE_THROWS(parent->get(x));
@@ -81,14 +81,14 @@ TEST_CASE("Environment", "[Environment]") {
     }
 
     SECTION("A child environment cannot create bindings that are in the parent") {
-        std::unique_ptr<Identifier> x = IdentifierFactory::createVariableIdentifier("x");
-        std::unique_ptr<Identifier> y = IdentifierFactory::createVariableIdentifier("y");
+        auto x = IdentifierFactory::createVariableIdentifier("x");
+        auto y = IdentifierFactory::createVariableIdentifier("y");
         auto parent = std::make_shared<Environment>();
-        parent->bind(std::move(y), five);
+        parent->bind(y, five);
         Environment child(parent);
 
-        REQUIRE_NOTHROW(child.bind(std::move(x), three));
-        REQUIRE_THROWS(child.bind(std::move(y), three));
+        REQUIRE_NOTHROW(child.bind(x, three));
+        REQUIRE_THROWS(child.bind(y, three));
     }
 
 }

@@ -17,7 +17,7 @@ class GraceObject;
 class Environment {
 
     std::shared_ptr<Environment> _parent = nullptr;
-    std::map<std::unique_ptr<Identifier>, GraceObject> _scope;
+    std::map<std::shared_ptr<Identifier>, GraceObject, less_Identifier> _scope;
 
 public:
 
@@ -26,14 +26,14 @@ public:
     ~Environment() = default;
 
     unsigned long long int size();
-    void bind(std::unique_ptr<Identifier> identifier, const GraceObject &value);
-    void change(const std::unique_ptr<Identifier> &identifier, const GraceObject &value);
-    const GraceObject & get(const std::unique_ptr<Identifier> &identifier) const;
+    void bind(std::shared_ptr<Identifier> identifier, const GraceObject &value);
+    void change(const std::shared_ptr<Identifier> &identifier, const GraceObject &value);
+    const GraceObject & get(const std::shared_ptr<Identifier> &identifier) const;
 
 private:
 
-    bool bindingExistsHere(const std::unique_ptr<Identifier> &identifier) const;
-    bool bindingExistsAnywhere(const std::unique_ptr<Identifier> &identifier) const;
+    bool bindingExistsHere(const std::shared_ptr<Identifier> &identifier) const;
+    bool bindingExistsAnywhere(const std::shared_ptr<Identifier> &identifier) const;
 };
 
 }

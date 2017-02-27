@@ -33,14 +33,14 @@ void GraceEvaluator::evaluate(Boolean &expression) {
 void GraceEvaluator::evaluate(Constant &expression) {
     expression.value()->accept(*this);
     auto partial = GraceObjectFactory::createNumber(_partialDouble);
-    std::unique_ptr<Identifier> identifier = std::make_unique<VariableIdentifier>(expression.identifier());
-    _environment->bind(std::move(identifier), partial);
+    auto identifier = IdentifierFactory::createVariableIdentifier(expression.identifier());
+    _environment->bind(identifier, partial);
 }
 
 void GraceEvaluator::evaluate(Assignment &expression) {
     expression.value()->accept(*this);
     auto partial = GraceObjectFactory::createNumber(_partialDouble);
-    std::unique_ptr<Identifier> identifier = std::make_unique<VariableIdentifier>(expression.identifier());
+    auto identifier = IdentifierFactory::createVariableIdentifier(expression.identifier());
     _environment->change(identifier, partial);
 }
 
@@ -53,12 +53,12 @@ void GraceEvaluator::evaluate(Addition &expression) {
 }
 
 void GraceEvaluator::evaluate(VariableDeclaration &expression) {
-    std::unique_ptr<Identifier> identifier = std::make_unique<VariableIdentifier>(expression.identifier());
-    _environment->bind(std::move(identifier), GraceObjectFactory::createUndefined());
+    auto identifier = IdentifierFactory::createVariableIdentifier(expression.identifier());
+    _environment->bind(identifier, GraceObjectFactory::createUndefined());
 }
 
 void GraceEvaluator::evaluate(VariableReference &expression) {
-    std::unique_ptr<Identifier> identifier = std::make_unique<VariableIdentifier>(expression.identifier());
+    auto identifier = IdentifierFactory::createVariableIdentifier(expression.identifier());
     if (_environment->get(identifier).isUndefined()) {
         throw "Variable not initialized";
     }
@@ -115,7 +115,7 @@ void GraceEvaluator::evaluate(ExpressionBlock &expression) {
 void GraceEvaluator::evaluate(MethodDeclaration &expression) {
     GraceObject body = GraceObjectFactory::createMethod(expression.getBody());
     auto id = IdentifierFactory::createMethodIdentifier(expression.getCanonName());
-    _environment->bind(std::move(id), body);
+    _environment->bind(id, body);
 }
 
 void GraceEvaluator::evaluate(MethodCall &expression) {
@@ -127,8 +127,8 @@ void GraceEvaluator::evaluate(MethodCall &expression) {
         expr->accept(*this);
         auto value = GraceObject{_partialDouble};
         std::string tempstring = "temp"+ std::to_string(i);
-        std::unique_ptr<Identifier> tempid = IdentifierFactory::createVariableIdentifier(tempstring);
-        _environment->bind(std::move(tempid), value);
+        auto tempid = IdentifierFactory::createVariableIdentifier(tempstring);
+        _environment->bind(tempid, value);
         i++;
     }
     _environment->get(IdentifierFactory::createMethodIdentifier(expression.getMethodName())).asMethod()->accept(*this);

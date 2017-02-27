@@ -15,12 +15,12 @@ namespace naylang {
 
 class MethodCall : public Expression {
 
-    std::unique_ptr<MethodIdentifier> _methodName;
+    std::shared_ptr<MethodIdentifier> _methodName;
     std::vector<ExpressionPtr> _parameters;
 
 public:
-    MethodCall(std::unique_ptr<MethodIdentifier> methodName);
-    MethodCall(std::unique_ptr<MethodIdentifier> methodName, std::vector<ExpressionPtr> parameters);
+    MethodCall(std::shared_ptr<MethodIdentifier> methodName);
+    MethodCall(std::shared_ptr<MethodIdentifier> methodName, std::vector<ExpressionPtr> parameters);
 
     virtual void accept(Evaluator &evaluator);
 

@@ -14,16 +14,16 @@
 namespace naylang {
 class MethodDeclaration : public Expression {
 
-    std::unique_ptr<MethodIdentifier> _name;
+    std::shared_ptr<MethodIdentifier> _name;
     ExpressionBlockPtr _body;
 
 public:
 
-    MethodDeclaration(std::unique_ptr<MethodIdentifier> canonicalName, ExpressionBlockPtr body);
+    MethodDeclaration(std::shared_ptr<MethodIdentifier> canonicalName, ExpressionBlockPtr body);
 
     virtual void accept(Evaluator &evaluator);
 
-    const std::unique_ptr<MethodIdentifier> &getCanonName() const;
+    const std::shared_ptr<MethodIdentifier> &getCanonName() const;
     ExpressionBlockPtr getBody() const;
 };
 }
