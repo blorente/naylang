@@ -76,6 +76,16 @@ void GraceEvaluator::evaluate(IfThenElse &expression) {
     }
 }
 
+void GraceEvaluator::evaluate(WhileLoop &expression) {
+    expression.condition()->accept(*this);
+    auto condition = _partialBool;
+    while (condition) {
+        expression.body()->accept(*this);
+        expression.condition()->accept(*this);
+        condition = _partialBool;
+    }
+}
+
 void GraceEvaluator::evaluate(Subtraction &expression) {
     expression.leftOperand()->accept(*this);
     auto lop = _partialDouble;

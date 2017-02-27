@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <model/environment/identifiers/IdentifierFactory.h>
+#include <model/statements/control/WhileLoop.h>
 #include "catch.h"
 
 #include "model/evaluators/GraceEvaluator.h"
@@ -12,8 +13,6 @@
 using namespace naylang;
 
 TEST_CASE("Grace Evaluator", "[Evaluators]") {
-    GraceEvaluator eval;
-
     auto five = std::make_shared<Number>(5.0);
     auto two = std::make_shared<Number>(2.0);
     auto minusOne = std::make_shared<Number>(-1.0);
@@ -29,22 +28,24 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     auto xDeclaration = std::make_shared<VariableDeclaration>("x");
 
     auto xRef = std::make_shared<VariableReference>(xDeclaration);
-
     auto xRefBlock = std::make_shared<ExpressionBlock>(); xRefBlock->addInstruction(xRef);
 
     SECTION("A Number expression just stores the asNumber") {
+        GraceEvaluator eval;
         Number fiveNat(5.0);
         REQUIRE_NOTHROW(eval.evaluate(fiveNat));
         REQUIRE(eval.getPartialDouble() == fiveNat.value());
     }
 
     SECTION("If the canonName of a constant already exists in the environment, it throws an exception") {
+        GraceEvaluator eval;
         Constant xConstant("x", six);
         REQUIRE_NOTHROW(eval.evaluate(xConstant));
         REQUIRE_THROWS(eval.evaluate(xConstant));
     }
 
     SECTION("A variable declaration must be made before an assignment can be done") {
+        GraceEvaluator eval;
         Assignment xAssignment(xDeclaration, six);
         REQUIRE_THROWS(eval.evaluate(xAssignment));
         REQUIRE_NOTHROW(eval.evaluate(*xDeclaration));
@@ -52,6 +53,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("A variable reference throws if the value is invalid (not initialized)") {
+        GraceEvaluator eval;
 
         VariableReference xReference(xDeclaration);
         REQUIRE_NOTHROW(eval.evaluate(*xDeclaration));
@@ -59,6 +61,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("A variable reference places the asNumber in the partial") {
+        GraceEvaluator eval;
         VariableReference xReference(xDeclaration);
         Assignment xAssignment(xDeclaration, six);
         REQUIRE_NOTHROW(eval.evaluate(*xDeclaration));
@@ -68,16 +71,19 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("The evaluator throws an exception when dividing by 0") {
+        GraceEvaluator eval;
         Division divideByZero(six, zero);
         REQUIRE_THROWS(eval.evaluate(divideByZero));
     }
 
     SECTION("The evaluator places the asNumber of a Boolean in a partial") {
+        GraceEvaluator eval;
         REQUIRE_NOTHROW(eval.evaluate(*tru));
         REQUIRE(eval.getPartialBool());
     }
 
     SECTION("The evaluator executes ITE blocks according to the condition") {
+        GraceEvaluator eval;
         IfThenElse iteSix(tru, sixBlock, zeroBlock);
         IfThenElse iteZero(fals, sixBlock, zeroBlock);
         REQUIRE_NOTHROW(eval.evaluate(iteSix));
@@ -87,6 +93,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("The evaluator evaluates expresions in a block sequenatially") {
+        GraceEvaluator eval;
         auto xAssignment = std::make_shared<Assignment>(xDeclaration, six);
         auto xReference = std::make_shared<VariableReference>(xDeclaration);
 
@@ -100,6 +107,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("Evaluating a method declaration adds it to the environment") {
+        GraceEvaluator eval;
         auto id = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         auto methodBody = std::make_shared<ExpressionBlock>();
         methodBody->addInstruction(zero);
@@ -109,6 +117,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("Evaluating an undeclared method throws") {
+        GraceEvaluator eval;
         auto id = IdentifierFactory::createMethodIdentifier("nonExistent", 0);
         MethodCall wrongCall(std::move(id));
 
@@ -116,6 +125,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("Evaluating a declared method without void parameters executes it's block") {
+        GraceEvaluator eval;
         auto id = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         auto methodBody = std::make_shared<ExpressionBlock>();
         methodBody->addInstruction(five);
@@ -128,6 +138,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("Evaluating a method call with parameters stores the values in a new environment") {
+        GraceEvaluator eval;
         std::vector<std::string> words {"myMethod", "parameters"};
         std::vector<int> params {0, 0};
         auto declarationId = IdentifierFactory::createMethodIdentifier(words, params);
@@ -144,6 +155,33 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
 
         REQUIRE_NOTHROW(eval.evaluate(method));
         REQUIRE_NOTHROW(eval.evaluate(parameterCall));
+        REQUIRE(eval.getPartialDouble() == 5.0);
+    }
+
+    SECTION("Evaluating a while loop evaluates the body while condition is true") {
+        GraceEvaluator eval;
+        auto condDeclaration = std::make_shared<VariableDeclaration>("cond");
+        auto condReference = std::make_shared<VariableReference>(condDeclaration);
+        auto setCondToTrue = std::make_shared<Assignment>(condDeclaration, tru);
+        auto setCondToFalse = std::make_shared<Assignment>(condDeclaration, fals);
+
+        auto pushFiveAndCondFalse = std::make_shared<ExpressionBlock>();
+        pushFiveAndCondFalse->addInstruction(five);
+        pushFiveAndCondFalse->addInstruction(setCondToFalse);
+
+        WhileLoop getFive(condReference, pushFiveAndCondFalse);
+
+        /*
+         * cond = true;
+         * while(cond) {
+         *  5;
+         *  cond = false;
+         * }
+         */
+
+        REQUIRE_NOTHROW(eval.evaluate(*condDeclaration));
+        REQUIRE_NOTHROW(eval.evaluate(*setCondToTrue));
+        REQUIRE_NOTHROW(eval.evaluate(getFive));
         REQUIRE(eval.getPartialDouble() == 5.0);
     }
 }
