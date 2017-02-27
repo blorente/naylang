@@ -4,18 +4,19 @@
 //
 
 #include "Assignment.h"
+#include <model/statements/VariableDeclaration.h>
 
 namespace naylang {
 
-Assignment::Assignment(const std::string &identifier, std::shared_ptr <Expression> value)
-        : _identifier(identifier), _value(value) {}
+Assignment::Assignment(std::shared_ptr<VariableDeclaration> declaration, std::shared_ptr <Expression> value)
+        : _declaration(declaration), _value(value) {}
 
 void Assignment::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
 const std::string & Assignment::identifier() const {
-    return _identifier;
+    return _declaration->identifier();
 }
 
 ExpressionPtr Assignment::value() const {

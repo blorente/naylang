@@ -40,14 +40,14 @@ TEST_CASE("Arithmetic operations with assignments", "[Integration Tests]") {
     // Must be evaluated directly
     auto constY = std::make_shared<Constant>("y", three);
     auto declareX = std::make_shared<VariableDeclaration>("x");
-    auto assignX = std::make_shared<Assignment>("x", minusSeven);
+    auto assignX = std::make_shared<Assignment>(declareX, minusSeven);
 
     // Not evaluated directly
     auto refY = std::make_shared<VariableReference>("y");
     auto refX = std::make_shared<VariableReference>(declareX);
     auto yTimesX = std::make_shared<Multiplication>(refY, refX);
 
-    auto reassignX = std::make_shared<Assignment>("x", yTimesX);
+    auto reassignX = std::make_shared<Assignment>(declareX, yTimesX);
 
     // Evaluations
     REQUIRE_NOTHROW(evaluator.evaluate(*constY));   // y = 3;
@@ -84,34 +84,34 @@ TEST_CASE("ExpressionBlocks with IfThenElse Expressions", "[Integration Tests]")
     auto six = std::make_shared<Number>(6.0);
 
     // x=5; y=6;
-    auto xEqualsFive = std::make_shared<Assignment>("x", five);
-    auto yEqualsSix = std::make_shared<Assignment>("y", six);
+    auto xEqualsFive = std::make_shared<Assignment>(xDeclaration, five);
+    auto yEqualsSix = std::make_shared<Assignment>(yDeclaration, six);
 
     // if (true) { x=x+1; }
     auto ITE1ThenBlock = std::make_shared<ExpressionBlock>();
     auto xPlusOne = std::make_shared<Addition>(xReference, one);
-    auto xEqualsXPlusOne = std::make_shared<Assignment>("x", xPlusOne);
+    auto xEqualsXPlusOne = std::make_shared<Assignment>(xDeclaration, xPlusOne);
     ITE1ThenBlock->addInstruction(xEqualsXPlusOne);
 
     // else { y=0; }
     auto ITE1ElseBlock = std::make_shared<ExpressionBlock>();
-    auto yEqualsZero = std::make_shared<Assignment>("y", zero);
+    auto yEqualsZero = std::make_shared<Assignment>(yDeclaration, zero);
     ITE1ElseBlock->addInstruction(yEqualsZero);
 
     auto ITE1 = std::make_shared<IfThenElse>(tru, ITE1ThenBlock, ITE1ElseBlock);
 
     // y = y+1;
     auto yPlusOne = std::make_shared<Addition>(yReference, one);
-    auto yEqualsYPlusOne = std::make_shared<Assignment>("y", yPlusOne);
+    auto yEqualsYPlusOne = std::make_shared<Assignment>(yDeclaration, yPlusOne);
 
     // if (false) { x=0; }
     auto ITE2ThenBlock = std::make_shared<ExpressionBlock>();
-    auto xEqualsZero = std::make_shared<Assignment>("x", zero);
+    auto xEqualsZero = std::make_shared<Assignment>(xDeclaration, zero);
     ITE2ThenBlock->addInstruction(xEqualsZero);
 
     // else { x=y+1; y=y+1; }
     auto ITE2ElseBlock = std::make_shared<ExpressionBlock>();
-    auto xEqualsYPlusOne = std::make_shared<Assignment>("x", yPlusOne);
+    auto xEqualsYPlusOne = std::make_shared<Assignment>(xDeclaration, yPlusOne);
     ITE2ElseBlock->addInstruction(xEqualsYPlusOne);
     ITE2ElseBlock->addInstruction(yEqualsYPlusOne);
 

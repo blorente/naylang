@@ -45,7 +45,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("A variable declaration must be made before an assignment can be done") {
-        Assignment xAssignment("x", six);
+        Assignment xAssignment(xDeclaration, six);
         REQUIRE_THROWS(eval.evaluate(xAssignment));
         REQUIRE_NOTHROW(eval.evaluate(*xDeclaration));
         REQUIRE_NOTHROW(eval.evaluate(xAssignment));
@@ -60,7 +60,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
 
     SECTION("A variable reference places the asNumber in the partial") {
         VariableReference xReference(xDeclaration);
-        Assignment xAssignment("x", six);
+        Assignment xAssignment(xDeclaration, six);
         REQUIRE_NOTHROW(eval.evaluate(*xDeclaration));
         REQUIRE_NOTHROW(eval.evaluate(xAssignment));
         REQUIRE_NOTHROW(eval.evaluate(xReference));
@@ -87,7 +87,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     }
 
     SECTION("The evaluator evaluates expresions in a block sequenatially") {
-        auto xAssignment = std::make_shared<Assignment>("x", six);
+        auto xAssignment = std::make_shared<Assignment>(xDeclaration, six);
         auto xReference = std::make_shared<VariableReference>(xDeclaration);
 
         ExpressionBlock block;

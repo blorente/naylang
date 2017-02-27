@@ -14,12 +14,12 @@ namespace naylang {
 
 class Assignment : public Statement {
 
-    std::string _identifier;
+    std::shared_ptr<VariableDeclaration> _declaration;
     ExpressionPtr _value;
 
 public:
 
-    Assignment(const std::string &identifier, ExpressionPtr value);
+    Assignment(std::shared_ptr<VariableDeclaration> declaration, ExpressionPtr value);
 
     virtual void accept(Evaluator &evaluator);
     const std::string &identifier() const;
