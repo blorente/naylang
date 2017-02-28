@@ -22,10 +22,6 @@ bool GraceEvaluator::getPartialBool() const {
     return _partialBool;
 }
 
-const ExpressionPtr GraceEvaluator::getPartialExpression() const {
-    return _partialExpression;
-}
-
 void GraceEvaluator::evaluate(Number &expression) {
     _partialDouble = expression.value();
 }
@@ -180,7 +176,4 @@ void GraceEvaluator::evaluate(ParameterList &expression) {
     }
 }
 
-void GraceEvaluator::evaluate(Return &expression) {
-    _partialExpression = expression.expression();
-}
 }
