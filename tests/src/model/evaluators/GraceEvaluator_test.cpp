@@ -7,6 +7,9 @@
 #include <model/environment/identifiers/IdentifierFactory.h>
 #include <model/statements/control/WhileLoop.h>
 #include <model/statements/methods/ParameterList.h>
+#include <model/expressions/operations/boolean/BooleanAnd.h>
+#include <model/expressions/operations/boolean/BooleanOr.h>
+#include <model/expressions/operations/boolean/BooleanNot.h>
 #include "catch.h"
 
 #include "model/evaluators/GraceEvaluator.h"
@@ -77,10 +80,43 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE_THROWS(eval.evaluate(divideByZero));
     }
 
-    SECTION("The evaluator places the asNumber of a Boolean in a partial") {
+    SECTION("The evaluator places the value of a Boolean in a partial") {
         GraceEvaluator eval;
         REQUIRE_NOTHROW(eval.evaluate(*tru));
         REQUIRE(eval.getPartialBool());
+    }
+
+    SECTION("Boolean expressions place the result in the partial") {
+
+        SECTION("Boolean And") {
+            GraceEvaluator eval;
+            BooleanAnd trueAnd(tru, tru);
+            BooleanAnd falseAnd(fals, tru);
+            REQUIRE_NOTHROW(eval.evaluate(trueAnd));
+            REQUIRE(eval.getPartialBool());
+            REQUIRE_NOTHROW(eval.evaluate(falseAnd));
+            REQUIRE(!eval.getPartialBool());
+        }
+
+        SECTION("Boolean Or") {
+            GraceEvaluator eval;
+            BooleanOr trueOr(tru, fals);
+            BooleanOr falseOr(fals, fals);
+            REQUIRE_NOTHROW(eval.evaluate(trueOr));
+            REQUIRE(eval.getPartialBool());
+            REQUIRE_NOTHROW(eval.evaluate(falseOr));
+            REQUIRE(!eval.getPartialBool());
+        }
+
+        SECTION("Boolean Not") {
+            GraceEvaluator eval;
+            BooleanNot notTrue(tru);
+            BooleanNot notFalse(fals);
+            REQUIRE_NOTHROW(eval.evaluate(notTrue));
+            REQUIRE(!eval.getPartialBool());
+            REQUIRE_NOTHROW(eval.evaluate(notFalse));
+            REQUIRE(eval.getPartialBool());
+        }
     }
 
     SECTION("The evaluator executes ITE blocks according to the condition") {

@@ -21,10 +21,14 @@
 #include <model/statements/control/IfThenElse.h>
 #include <model/statements/control/WhileLoop.h>
 
-#include <model/expressions/operations/Addition.h>
-#include <model/expressions/operations/Subtraction.h>
-#include <model/expressions/operations/Multiplication.h>
-#include <model/expressions/operations/Division.h>
+#include <model/expressions/operations/arithmetic/Addition.h>
+#include <model/expressions/operations/arithmetic/Subtraction.h>
+#include <model/expressions/operations/arithmetic/Multiplication.h>
+#include <model/expressions/operations/arithmetic/Division.h>
+
+#include <model/expressions/operations/boolean/BooleanAnd.h>
+#include <model/expressions/operations/boolean/BooleanOr.h>
+#include <model/expressions/operations/boolean/BooleanNot.h>
 
 #include <model/statements/methods/MethodDeclaration.h>
 #include <model/expressions/methods/MethodCall.h>
@@ -59,6 +63,10 @@ public:
     virtual void evaluate(Subtraction &expression);
     virtual void evaluate(Multiplication &expression);
     virtual void evaluate(Division &expression);
+
+    virtual void evaluate(BooleanAnd &expression);
+    virtual void evaluate(BooleanOr &expression);
+    virtual void evaluate(BooleanNot &expression);
 
     virtual void evaluate(MethodDeclaration &expression);
     virtual void evaluate(MethodCall &expression);

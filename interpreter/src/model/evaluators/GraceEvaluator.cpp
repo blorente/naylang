@@ -113,6 +113,30 @@ void GraceEvaluator::evaluate(Division &expression) {
     _partialDouble = numerator / denominator;
 }
 
+void GraceEvaluator::evaluate(BooleanAnd &expression) {
+    expression.leftOperand()->accept(*this);
+    bool left = _partialBool;
+    expression.rightOperand()->accept(*this);
+    bool right = _partialBool;
+
+    _partialBool = left && right;
+}
+
+void GraceEvaluator::evaluate(BooleanOr &expression) {
+    expression.leftOperand()->accept(*this);
+    bool left = _partialBool;
+    expression.rightOperand()->accept(*this);
+    bool right = _partialBool;
+
+    _partialBool = left || right;
+}
+
+void GraceEvaluator::evaluate(BooleanNot &expression) {
+    expression.operand()->accept(*this);
+    bool operand = _partialBool;
+    _partialBool = !operand;
+}
+
 void GraceEvaluator::evaluate(ExpressionBlock &expression) {
     auto parentEnv = _environment;
     _environment = std::make_shared<Environment>(_environment);

@@ -30,6 +30,10 @@ class Subtraction;
 class Multiplication;
 class Division;
 
+class BooleanAnd;
+class BooleanOr;
+class BooleanNot;
+
 class MethodDeclaration;
 class MethodCall;
 class ParameterList;
@@ -57,6 +61,10 @@ public:
     virtual void evaluate(Subtraction &expression) = 0;
     virtual void evaluate(Multiplication &expression) = 0;
     virtual void evaluate(Division &expression) = 0;
+
+    virtual void evaluate(BooleanAnd &expression) = 0;
+    virtual void evaluate(BooleanOr &expression) = 0;
+    virtual void evaluate(BooleanNot &expression) = 0;
 
     virtual void evaluate(MethodDeclaration &expression) = 0;
     virtual void evaluate(MethodCall &expression) = 0;

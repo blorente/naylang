@@ -6,7 +6,7 @@
 
 #include <model/statements/control/IfThenElse.h>
 #include <model/expressions/primitives/Number.h>
-#include <model/expressions/operations/Subtraction.h>
+#include <model/expressions/operations/arithmetic/Subtraction.h>
 
 using namespace naylang;
 
