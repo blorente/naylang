@@ -10,7 +10,7 @@
 
 namespace naylang {
 
-GraceEvaluator::GraceEvaluator() {
+GraceEvaluator::GraceEvaluator() : _partialBool{false}, _partialDouble{0} {
     _environment = std::make_shared<Environment>();
 }
 
@@ -132,16 +132,16 @@ void GraceEvaluator::evaluate(MethodCall &expression) {
     auto parentEnv = _environment;
     _environment = std::make_shared<Environment>(_environment);
 
-    int i = 0;
-    for (auto expr : expression.getParameters()) {
-        expr->accept(*this);
-        auto value = GraceObject{_partialDouble};
-        std::string tempstring = "temp"+ std::to_string(i);
-        auto tempid = IdentifierFactory::createVariableIdentifier(tempstring);
-        _environment->bind(tempid, value);
-        i++;
+    // Declare every parameter
+    expression.declaration()->parameters()->accept(*this);
+
+    // Create bindings for the parameters
+    for (auto paramValue : expression.getParameters()) {
+        paramValue->accept(*this);
     }
-    _environment->get(IdentifierFactory::createMethodIdentifier(expression.getMethodName())).asMethod()->accept(*this);
+
+    // Execute the body
+    _environment->get(expression.declaration()->getCanonName()).asMethod()->accept(*this);
 
     _environment = parentEnv;
 }

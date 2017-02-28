@@ -9,24 +9,28 @@
 #include "MethodCall.h"
 
 namespace naylang {
-MethodCall::MethodCall(std::shared_ptr<MethodIdentifier> methodName) : _parameters{} {
-    _methodName = methodName;
+MethodCall::MethodCall(std::shared_ptr<MethodDeclaration> declaration) : _parameters{} {
+    _declaration = declaration;
 }
-MethodCall::MethodCall(std::shared_ptr<MethodIdentifier> methodName, std::vector<ExpressionPtr> parameters) :
+MethodCall::MethodCall(std::shared_ptr<MethodDeclaration> declaration, std::vector<std::shared_ptr<Assignment>> parameters) :
         _parameters{parameters} {
-    _methodName = methodName;
+    _declaration = declaration;
 }
 
 void MethodCall::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
-const MethodIdentifier &MethodCall::getMethodName() const {
-    return *_methodName;
+const std::shared_ptr<MethodIdentifier> & MethodCall::getMethodName() const {
+    return _declaration->getCanonName();
 }
 
-const std::vector<ExpressionPtr> &MethodCall::getParameters() const {
+const std::vector<std::shared_ptr<Assignment>> &MethodCall::getParameters() const {
     return _parameters;
+}
+
+const std::shared_ptr<MethodDeclaration> &MethodCall::declaration() const {
+    return _declaration;
 }
 
 }

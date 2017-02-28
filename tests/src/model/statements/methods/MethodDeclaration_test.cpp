@@ -18,7 +18,7 @@ TEST_CASE("Method Declarations", "[Expressions]") {
 
     auto emptyParams = std::make_shared<ParameterList>();
 
-    SECTION("A method delaration takes an canonName, a parameter list and a body block") {
+    SECTION("A method delaration takes an identifier, a parameter list and a body block") {
         auto name = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         numberBody->addInstruction(five);
         MethodDeclaration method(std::move(name), emptyParams, numberBody);

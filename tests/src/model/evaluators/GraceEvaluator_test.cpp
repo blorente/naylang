@@ -121,43 +121,47 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     SECTION("Evaluating an undeclared method throws") {
         GraceEvaluator eval;
         auto id = IdentifierFactory::createMethodIdentifier("nonExistent", 0);
-        MethodCall wrongCall(std::move(id));
+        auto methodBody = std::make_shared<ExpressionBlock>();
+        auto parameters = std::make_shared<ParameterList>();
+        auto method = std::make_shared<MethodDeclaration>(std::move(id), parameters, methodBody);
+        MethodCall wrongCall(method);
 
         REQUIRE_THROWS(eval.evaluate(wrongCall));
     }
 
-    SECTION("Evaluating a declared method without void parameters executes it's block") {
+    SECTION("Evaluating a declared method call without parameters executes it's block") {
         GraceEvaluator eval;
         auto id = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         auto parameters = std::make_shared<ParameterList>();
         auto methodBody = std::make_shared<ExpressionBlock>();
         methodBody->addInstruction(five);
-        MethodDeclaration method(id, parameters, methodBody);
-        MethodCall rightCall(id);
+        auto method = std::make_shared<MethodDeclaration>(id, parameters, methodBody);
+        MethodCall rightCall(method);
 
-        REQUIRE_NOTHROW(eval.evaluate(method));
+        REQUIRE_NOTHROW(eval.evaluate(*method));
         REQUIRE_NOTHROW(eval.evaluate(rightCall));
         REQUIRE(eval.getPartialDouble() == 5.0);
     }
 
-    SECTION("Evaluating a method call with parameters stores the values in a new environment") {
+    SECTION("Evaluating a method call with parameters declares the variables and stores the values in a new scope") {
         GraceEvaluator eval;
         std::vector<std::string> words {"myMethod", "parameters"};
-        std::vector<int> params {0, 0};
+        std::vector<int> params {1, 0};
         auto declarationId = IdentifierFactory::createMethodIdentifier(words, params);
         auto callId = IdentifierFactory::createMethodIdentifier(declarationId);
 
-        auto tempDecl = std::make_shared<VariableDeclaration>("temp0");
+        auto paramDecl = std::make_shared<VariableDeclaration>("param1");
+        auto paramRef = std::make_shared<VariableReference>(paramDecl);
+        auto paramRefBlock = std::make_shared<ExpressionBlock>(); paramRefBlock->addInstruction(paramRef);
+        auto paramEqualsFive = std::make_shared<Assignment>(paramDecl, five);
 
-        auto tempRef = std::make_shared<VariableReference>(tempDecl);
+        std::vector<std::shared_ptr<VariableDeclaration>> paramList{paramDecl};
+        auto parameters = std::make_shared<ParameterList>(paramList);
 
-        auto tempRefBlock = std::make_shared<ExpressionBlock>(); tempRefBlock->addInstruction(tempRef);
-        auto parameters = std::make_shared<ParameterList>();
+        auto method = std::make_shared<MethodDeclaration>(declarationId, parameters, paramRefBlock);
+        MethodCall parameterCall(method, {paramEqualsFive});
 
-        MethodDeclaration method(declarationId, parameters, tempRefBlock);
-        MethodCall parameterCall(callId, {five});
-
-        REQUIRE_NOTHROW(eval.evaluate(method));
+        REQUIRE_NOTHROW(eval.evaluate(*method));
         REQUIRE_NOTHROW(eval.evaluate(parameterCall));
         REQUIRE(eval.getPartialDouble() == 5.0);
     }

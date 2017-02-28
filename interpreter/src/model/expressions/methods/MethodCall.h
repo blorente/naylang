@@ -8,24 +8,26 @@
 
 
 #include <model/expressions/Expression.h>
+#include <model/statements/methods/MethodDeclaration.h>
 #include <memory>
-#include <model/environment/identifiers/MethodIdentifier.h>
+#include <vector>
 
 namespace naylang {
 
 class MethodCall : public Expression {
 
-    std::shared_ptr<MethodIdentifier> _methodName;
-    std::vector<ExpressionPtr> _parameters;
+    std::shared_ptr<MethodDeclaration> _declaration;
+    std::vector<std::shared_ptr<Assignment>> _parameters;
 
 public:
-    MethodCall(std::shared_ptr<MethodIdentifier> methodName);
-    MethodCall(std::shared_ptr<MethodIdentifier> methodName, std::vector<ExpressionPtr> parameters);
+    MethodCall(std::shared_ptr<MethodDeclaration> declaration);
+    MethodCall(std::shared_ptr<MethodDeclaration> declaration, std::vector<std::shared_ptr<Assignment>> parameters);
 
     virtual void accept(Evaluator &evaluator);
 
-    const MethodIdentifier &getMethodName() const;
-    const std::vector<ExpressionPtr> &getParameters() const;
+    const std::shared_ptr<MethodIdentifier> & getMethodName() const;
+    const std::shared_ptr<MethodDeclaration> & declaration() const;
+    const std::vector<std::shared_ptr<Assignment>> &getParameters() const;
 };
 
 } // end namespace naylang
