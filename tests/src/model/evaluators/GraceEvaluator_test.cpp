@@ -111,8 +111,9 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         GraceEvaluator eval;
         auto id = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         auto methodBody = std::make_shared<ExpressionBlock>();
+        auto parameters = std::make_shared<ParameterList>();
         methodBody->addInstruction(zero);
-        MethodDeclaration method(std::move(id), methodBody);
+        MethodDeclaration method(std::move(id), parameters, methodBody);
 
         REQUIRE_NOTHROW(eval.evaluate(method));
     }
@@ -128,9 +129,10 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     SECTION("Evaluating a declared method without void parameters executes it's block") {
         GraceEvaluator eval;
         auto id = IdentifierFactory::createMethodIdentifier("myMethod", 0);
+        auto parameters = std::make_shared<ParameterList>();
         auto methodBody = std::make_shared<ExpressionBlock>();
         methodBody->addInstruction(five);
-        MethodDeclaration method(id, methodBody);
+        MethodDeclaration method(id, parameters, methodBody);
         MethodCall rightCall(id);
 
         REQUIRE_NOTHROW(eval.evaluate(method));
@@ -150,8 +152,9 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         auto tempRef = std::make_shared<VariableReference>(tempDecl);
 
         auto tempRefBlock = std::make_shared<ExpressionBlock>(); tempRefBlock->addInstruction(tempRef);
+        auto parameters = std::make_shared<ParameterList>();
 
-        MethodDeclaration method(declarationId, tempRefBlock);
+        MethodDeclaration method(declarationId, parameters, tempRefBlock);
         MethodCall parameterCall(callId, {five});
 
         REQUIRE_NOTHROW(eval.evaluate(method));

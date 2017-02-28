@@ -6,8 +6,9 @@
 #include "MethodDeclaration.h"
 
 namespace naylang {
-MethodDeclaration::MethodDeclaration(std::shared_ptr<MethodIdentifier> canonicalName, ExpressionBlockPtr body) {
+MethodDeclaration::MethodDeclaration(std::shared_ptr<MethodIdentifier> canonicalName, std::shared_ptr<ParameterList> parameters, ExpressionBlockPtr body) {
     _name = canonicalName;
+    _parameters = parameters;
     _body = std::move(body);
 }
 
@@ -17,6 +18,10 @@ void MethodDeclaration::accept(Evaluator &evaluator) {
 
 const std::shared_ptr<MethodIdentifier> & MethodDeclaration::getCanonName() const {
     return _name;
+}
+
+const std::shared_ptr<ParameterList> &MethodDeclaration::parameters() const {
+    return _parameters;
 }
 
 ExpressionBlockPtr MethodDeclaration::getBody() const {

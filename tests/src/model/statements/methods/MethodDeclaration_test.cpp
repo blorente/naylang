@@ -16,18 +16,21 @@ TEST_CASE("Method Declarations", "[Expressions]") {
     auto five = std::make_shared<Number>(5.0);
     auto numberBody = std::make_shared<ExpressionBlock>();
 
-    SECTION("A method delaration takes an canonName and a body expression") {
+    auto emptyParams = std::make_shared<ParameterList>();
+
+    SECTION("A method delaration takes an canonName, a parameter list and a body block") {
         auto name = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         numberBody->addInstruction(five);
-        MethodDeclaration method(std::move(name), numberBody);
+        MethodDeclaration method(std::move(name), emptyParams, numberBody);
     }
 
-    SECTION("A method declaration returns it's name and body") {
+    SECTION("A method declaration returns it's name, parameters and body") {
         auto name = IdentifierFactory::createMethodIdentifier("myMethod", 0);
         numberBody->addInstruction(five);
-        MethodDeclaration method(std::move(name), numberBody);
+        MethodDeclaration method(std::move(name), emptyParams, numberBody);
 
         REQUIRE(method.getCanonName()->canonName() == "myMethod");
+        REQUIRE(*method.parameters() == *emptyParams);
         REQUIRE(static_cast<Number &>(*(method.getBody()->expressions()[0])).value() == 5.0);
     }
 }
