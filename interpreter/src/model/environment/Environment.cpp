@@ -2,6 +2,7 @@
 // Copyright (c) 2016 by Borja Lorente.
 // Distributed under the GPLv3 license.
 //
+#include <iostream>
 #include "Environment.h"
 
 namespace naylang {
@@ -51,6 +52,14 @@ bool Environment::bindingExistsAnywhere(const std::shared_ptr<Identifier> &ident
 
     if (_parent)
         return _parent->bindingExistsAnywhere(identifier);
+}
+
+void Environment::printBindings() const {
+    if (_parent)
+        _parent->printBindings();
+    for (auto ident : _scope) {
+        std::cout << ident.first->canonName() << std::endl;
+    }
 }
 
 }

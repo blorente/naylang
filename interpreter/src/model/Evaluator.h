@@ -37,7 +37,6 @@ class BooleanNot;
 class MethodDeclaration;
 class MethodCall;
 class ParameterList;
-class Return;
 
 class Evaluator {
 
@@ -70,7 +69,6 @@ public:
     virtual void evaluate(MethodDeclaration &expression) = 0;
     virtual void evaluate(MethodCall &expression) = 0;
     virtual void evaluate(ParameterList &expression) = 0;
-    virtual void evaluate(Return &expression) = 0;
 };
 
 }

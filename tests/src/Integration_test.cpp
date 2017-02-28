@@ -215,7 +215,7 @@ TEST_CASE("Method calls and definitions with assignments and boolean operators",
     auto xCallParam3 = std::make_shared<Assignment>(cDeclaration, fReference);
     auto xCallParams = {xCallParam1, xCallParam2, xCallParam3};
     auto xCall = std::make_shared<MethodCall>(methodDeclaration, xCallParams);
-    auto xToCall = std::make_shared<Assignment>(yDeclaration, xCall);
+    auto xToCall = std::make_shared<Assignment>(xDeclaration, xCall);
     // y = add(2)to(base)if_not(t);
     auto yCallParam1 = std::make_shared<Assignment>(aDeclaration, two);
     auto yCallParam2 = std::make_shared<Assignment>(bDeclaration, baseReference);
@@ -225,34 +225,17 @@ TEST_CASE("Method calls and definitions with assignments and boolean operators",
     auto yToCall = std::make_shared<Assignment>(yDeclaration, yCall);
 
     // Create program block
-
-
-    // method add(a)to(b)if_not(c) {
-    //      if(!c) {
-    //           return a + b;
-    //      } else {
-    //         return b;
-    //      }
-    // }
-    auto programBlock = std::make_shared<ExpressionBlock>();
-    programBlock->addInstruction(methodDeclaration);
-    // t = true;
-    programBlock->addInstruction(tDeclaration);
-    programBlock->addInstruction(tToTrue);
-    // f = false;
-    programBlock->addInstruction(fDeclaration);
-    programBlock->addInstruction(fToFalse);
-    // base = 5;
-    programBlock->addInstruction(baseDeclaration);
-    programBlock->addInstruction(baseToFive);
-    // x = add(3)to(base)if_not(f);
-    programBlock->addInstruction(xDeclaration);
-    programBlock->addInstruction(xToCall);
-    // y = add(2)to(base)if_not(t);
-    programBlock->addInstruction(yDeclaration);
-    programBlock->addInstruction(yToCall);
-
-    evaluator.evaluate(*programBlock);
+    evaluator.evaluate(*methodDeclaration);
+    evaluator.evaluate(*tDeclaration);
+    evaluator.evaluate(*tToTrue);
+    evaluator.evaluate(*fDeclaration);
+    evaluator.evaluate(*fToFalse);
+    evaluator.evaluate(*baseDeclaration);
+    evaluator.evaluate(*baseToFive);
+    evaluator.evaluate(*xDeclaration);
+    evaluator.evaluate(*xToCall);
+    evaluator.evaluate(*yDeclaration);
+    evaluator.evaluate(*yToCall);
 
     // require(x == 8);
     evaluator.evaluate(*xReference);

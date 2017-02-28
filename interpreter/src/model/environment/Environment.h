@@ -30,6 +30,8 @@ public:
     void change(const std::shared_ptr<Identifier> &identifier, const GraceObject &value);
     const GraceObject & get(const std::shared_ptr<Identifier> &identifier) const;
 
+    void printBindings() const;
+
 private:
 
     bool bindingExistsHere(const std::shared_ptr<Identifier> &identifier) const;
