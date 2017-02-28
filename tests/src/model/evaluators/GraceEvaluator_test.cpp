@@ -6,6 +6,7 @@
 #include <iostream>
 #include <model/environment/identifiers/IdentifierFactory.h>
 #include <model/statements/control/WhileLoop.h>
+#include <model/statements/ParameterList.h>
 #include "catch.h"
 
 #include "model/evaluators/GraceEvaluator.h"
@@ -182,6 +183,17 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE_NOTHROW(eval.evaluate(*condDeclaration));
         REQUIRE_NOTHROW(eval.evaluate(*setCondToTrue));
         REQUIRE_NOTHROW(eval.evaluate(getFive));
+        REQUIRE(eval.getPartialDouble() == 5.0);
+    }
+
+    SECTION("Evaluating a parameter list declares the variables in the environment") {
+        GraceEvaluator eval;
+        ParameterList xParams({xDeclaration});
+        Assignment xToFive(xDeclaration, five);
+
+        REQUIRE_NOTHROW(eval.evaluate(xParams));
+        REQUIRE_NOTHROW(eval.evaluate(xToFive));
+        REQUIRE_NOTHROW(eval.evaluate(*xRef));
         REQUIRE(eval.getPartialDouble() == 5.0);
     }
 }

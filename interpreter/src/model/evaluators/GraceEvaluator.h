@@ -28,6 +28,7 @@
 
 #include <model/expressions/methods/MethodDeclaration.h>
 #include <model/expressions/methods/MethodCall.h>
+#include <model/statements/ParameterList.h>
 
 namespace naylang {
 
@@ -61,6 +62,7 @@ public:
 
     virtual void evaluate(MethodDeclaration &expression);
     virtual void evaluate(MethodCall &expression);
+    virtual void evaluate(ParameterList &expression);
 
     double getPartialDouble() const;
     bool getPartialBool() const;

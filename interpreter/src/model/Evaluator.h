@@ -32,6 +32,7 @@ class Division;
 
 class MethodDeclaration;
 class MethodCall;
+class ParameterList;
 
 class Evaluator {
 
@@ -59,6 +60,7 @@ public:
 
     virtual void evaluate(MethodDeclaration &expression) = 0;
     virtual void evaluate(MethodCall &expression) = 0;
+    virtual void evaluate(ParameterList &expression) = 0;
 };
 
 }

@@ -145,4 +145,10 @@ void GraceEvaluator::evaluate(MethodCall &expression) {
 
     _environment = parentEnv;
 }
+
+void GraceEvaluator::evaluate(ParameterList &expression) {
+    for (auto exp : expression.parameters()) {
+        exp->accept(*this);
+    }
+}
 }
