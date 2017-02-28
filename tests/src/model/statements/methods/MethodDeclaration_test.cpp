@@ -12,7 +12,7 @@
 
 using namespace naylang;
 
-TEST_CASE("Method Declarations", "[Expressions]") {
+TEST_CASE("Method Declarations", "[Statements]") {
     auto five = std::make_shared<Number>(5.0);
     auto numberBody = std::make_shared<ExpressionBlock>();
 

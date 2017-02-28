@@ -10,7 +10,7 @@
 
 namespace naylang {
 
-GraceEvaluator::GraceEvaluator() : _partialBool{false}, _partialDouble{0} {
+GraceEvaluator::GraceEvaluator() : _partialBool{false}, _partialDouble{0}, _partialExpression{} {
     _environment = std::make_shared<Environment>();
 }
 
@@ -20,6 +20,10 @@ double GraceEvaluator::getPartialDouble() const {
 
 bool GraceEvaluator::getPartialBool() const {
     return _partialBool;
+}
+
+const ExpressionPtr GraceEvaluator::getPartialExpression() const {
+    return _partialExpression;
 }
 
 void GraceEvaluator::evaluate(Number &expression) {
@@ -174,5 +178,9 @@ void GraceEvaluator::evaluate(ParameterList &expression) {
     for (auto exp : expression.parameters()) {
         exp->accept(*this);
     }
+}
+
+void GraceEvaluator::evaluate(Return &expression) {
+    _partialExpression = expression.expression();
 }
 }

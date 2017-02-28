@@ -10,6 +10,7 @@
 #include <model/expressions/operations/boolean/BooleanAnd.h>
 #include <model/expressions/operations/boolean/BooleanOr.h>
 #include <model/expressions/operations/boolean/BooleanNot.h>
+#include <model/expressions/methods/Return.h>
 #include "catch.h"
 
 #include "model/evaluators/GraceEvaluator.h"
@@ -34,7 +35,7 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
     auto xRef = std::make_shared<VariableReference>(xDeclaration);
     auto xRefBlock = std::make_shared<ExpressionBlock>(); xRefBlock->addInstruction(xRef);
 
-    SECTION("A Number expression just stores the asNumber") {
+    SECTION("A Number expression just stores the value") {
         GraceEvaluator eval;
         Number fiveNat(5.0);
         REQUIRE_NOTHROW(eval.evaluate(fiveNat));
@@ -238,5 +239,13 @@ TEST_CASE("Grace Evaluator", "[Evaluators]") {
         REQUIRE_NOTHROW(eval.evaluate(xToFive));
         REQUIRE_NOTHROW(eval.evaluate(*xRef));
         REQUIRE(eval.getPartialDouble() == 5.0);
+    }
+
+    SECTION("Evaluating a Return statement places the expression in _partialExpression") {
+        GraceEvaluator eval;
+        Return returnFive(five);
+
+        REQUIRE_NOTHROW(eval.evaluate(returnFive));
+        REQUIRE(eval.getPartialExpression() == five);
     }
 }

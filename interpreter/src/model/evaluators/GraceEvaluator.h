@@ -33,6 +33,7 @@
 #include <model/statements/methods/MethodDeclaration.h>
 #include <model/expressions/methods/MethodCall.h>
 #include <model/statements/methods/ParameterList.h>
+#include <model/expressions/methods/Return.h>
 
 namespace naylang {
 
@@ -41,6 +42,7 @@ class GraceEvaluator : public Evaluator {
     std::shared_ptr<Environment> _environment;
     double _partialDouble;
     bool _partialBool;
+    ExpressionPtr _partialExpression;
 
 public:
 
@@ -71,9 +73,11 @@ public:
     virtual void evaluate(MethodDeclaration &expression);
     virtual void evaluate(MethodCall &expression);
     virtual void evaluate(ParameterList &expression);
+    virtual void evaluate(Return &expression);
 
     double getPartialDouble() const;
     bool getPartialBool() const;
+    const ExpressionPtr getPartialExpression() const;
 };
 
 }
