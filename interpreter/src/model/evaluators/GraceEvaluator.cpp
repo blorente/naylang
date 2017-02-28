@@ -4,11 +4,13 @@
 //
 #include <iostream>
 #include <model/environment/GraceObjectFactory.h>
+#include <model/environment/identifiers/VariableIdentifier.h>
+#include <model/environment/identifiers/IdentifierFactory.h>
 #include "GraceEvaluator.h"
 
 namespace naylang {
 
-GraceEvaluator::GraceEvaluator() {
+GraceEvaluator::GraceEvaluator() : _partialBool{false}, _partialDouble{0}, _partialExpression{} {
     _environment = std::make_shared<Environment>();
 }
 
@@ -31,14 +33,14 @@ void GraceEvaluator::evaluate(Boolean &expression) {
 void GraceEvaluator::evaluate(Constant &expression) {
     expression.value()->accept(*this);
     auto partial = GraceObjectFactory::createNumber(_partialDouble);
-    auto identifier = Identifier(expression.identifier());
+    auto identifier = IdentifierFactory::createVariableIdentifier(expression.identifier());
     _environment->bind(identifier, partial);
 }
 
 void GraceEvaluator::evaluate(Assignment &expression) {
     expression.value()->accept(*this);
     auto partial = GraceObjectFactory::createNumber(_partialDouble);
-    Identifier identifier(expression.identifier());
+    auto identifier = IdentifierFactory::createVariableIdentifier(expression.identifier());
     _environment->change(identifier, partial);
 }
 
@@ -51,12 +53,12 @@ void GraceEvaluator::evaluate(Addition &expression) {
 }
 
 void GraceEvaluator::evaluate(VariableDeclaration &expression) {
-    Identifier identifier(expression.identifier());
+    auto identifier = IdentifierFactory::createVariableIdentifier(expression.identifier());
     _environment->bind(identifier, GraceObjectFactory::createUndefined());
 }
 
 void GraceEvaluator::evaluate(VariableReference &expression) {
-    Identifier identifier(expression.identifier());
+    auto identifier = IdentifierFactory::createVariableIdentifier(expression.identifier());
     if (_environment->get(identifier).isUndefined()) {
         throw "Variable not initialized";
     }
@@ -71,6 +73,16 @@ void GraceEvaluator::evaluate(IfThenElse &expression) {
         expression.thenExpression()->accept(*this);
     } else {
         expression.elseExpression()->accept(*this);
+    }
+}
+
+void GraceEvaluator::evaluate(WhileLoop &expression) {
+    expression.condition()->accept(*this);
+    auto condition = _partialBool;
+    while (condition) {
+        expression.body()->accept(*this);
+        expression.condition()->accept(*this);
+        condition = _partialBool;
     }
 }
 
@@ -101,6 +113,30 @@ void GraceEvaluator::evaluate(Division &expression) {
     _partialDouble = numerator / denominator;
 }
 
+void GraceEvaluator::evaluate(BooleanAnd &expression) {
+    expression.leftOperand()->accept(*this);
+    bool left = _partialBool;
+    expression.rightOperand()->accept(*this);
+    bool right = _partialBool;
+
+    _partialBool = left && right;
+}
+
+void GraceEvaluator::evaluate(BooleanOr &expression) {
+    expression.leftOperand()->accept(*this);
+    bool left = _partialBool;
+    expression.rightOperand()->accept(*this);
+    bool right = _partialBool;
+
+    _partialBool = left || right;
+}
+
+void GraceEvaluator::evaluate(BooleanNot &expression) {
+    expression.operand()->accept(*this);
+    bool operand = _partialBool;
+    _partialBool = !operand;
+}
+
 void GraceEvaluator::evaluate(ExpressionBlock &expression) {
     auto parentEnv = _environment;
     _environment = std::make_shared<Environment>(_environment);
@@ -112,10 +148,32 @@ void GraceEvaluator::evaluate(ExpressionBlock &expression) {
 
 void GraceEvaluator::evaluate(MethodDeclaration &expression) {
     GraceObject body = GraceObjectFactory::createMethod(expression.getBody());
-    _environment->bind(expression.getCanonName(), body);
+    auto id = IdentifierFactory::createMethodIdentifier(expression.getCanonName());
+    _environment->bind(id, body);
 }
 
 void GraceEvaluator::evaluate(MethodCall &expression) {
-    _environment->get(expression.getMethodName()).asMethod()->accept(*this);
+    auto parentEnv = _environment;
+    _environment = std::make_shared<Environment>(_environment);
+
+    // Declare every parameter
+    expression.declaration()->parameters()->accept(*this);
+
+    // Create bindings for the parameters
+    for (auto paramValue : expression.getParameters()) {
+        paramValue->accept(*this);
+    }
+
+    // Execute the body
+    _environment->get(expression.declaration()->getCanonName()).asMethod()->accept(*this);
+
+    _environment = parentEnv;
 }
+
+void GraceEvaluator::evaluate(ParameterList &expression) {
+    for (auto exp : expression.parameters()) {
+        exp->accept(*this);
+    }
+}
+
 }

@@ -4,7 +4,7 @@
 //
 #include "catch.h"
 
-#include "model/expressions/operations/Subtraction.h"
+#include "model/expressions/operations/arithmetic/Subtraction.h"
 #include "model/expressions/primitives/Number.h"
 
 using namespace naylang;

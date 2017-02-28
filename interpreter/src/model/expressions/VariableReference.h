@@ -8,16 +8,18 @@
 
 #include <string>
 #include <model/expressions/Expression.h>
+#include <memory>
 
 namespace naylang {
 
 class VariableReference : public Expression {
 
-    std::string _identifier;
+    std::shared_ptr<VariableDeclaration> _declaration;
 
 public:
 
-    VariableReference(const std::string &identifier);
+    VariableReference(std::shared_ptr<VariableDeclaration> declaration);
+    VariableReference(const std::string &constIdentifier);
 
     virtual void accept(Evaluator &evaluator);
     const std::string &identifier() const;

@@ -6,14 +6,15 @@
 #include "catch.h"
 
 #include "model/expressions/VariableReference.h"
+#include <model/statements/VariableDeclaration.h>
 
 using namespace naylang;
 
 TEST_CASE("VariableReference Expressions", "[Expressions]") {
-    SECTION("A variable reference just needs an identifier") {
-        auto name = "y";
-        VariableReference refenenceY(name);
+    SECTION("A Variable Reference must be linked to a declaration") {
+        auto name = std::make_shared<VariableDeclaration>("y");
+        VariableReference referenceY(name);
 
-        REQUIRE(refenenceY.identifier() == "y");
+        REQUIRE(referenceY.identifier() == "y");
     }
 }

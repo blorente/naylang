@@ -7,7 +7,7 @@
 
 #include "model/Evaluator.h"
 #include <model/environment/Environment.h>
-#include <model/environment/Identifier.h>
+#include <model/environment/identifiers/Identifier.h>
 
 #include <model/expressions/primitives/Number.h>
 #include <model/expressions/primitives/Boolean.h>
@@ -16,16 +16,23 @@
 #include <model/statements/Assignment.h>
 #include <model/statements/VariableDeclaration.h>
 #include <model/expressions/VariableReference.h>
-#include <model/statements/IfThenElse.h>
 #include <model/expressions/ExpressionBlock.h>
 
-#include <model/expressions/operations/Addition.h>
-#include <model/expressions/operations/Subtraction.h>
-#include <model/expressions/operations/Multiplication.h>
-#include <model/expressions/operations/Division.h>
+#include <model/statements/control/IfThenElse.h>
+#include <model/statements/control/WhileLoop.h>
 
-#include <model/expressions/methods/MethodDeclaration.h>
+#include <model/expressions/operations/arithmetic/Addition.h>
+#include <model/expressions/operations/arithmetic/Subtraction.h>
+#include <model/expressions/operations/arithmetic/Multiplication.h>
+#include <model/expressions/operations/arithmetic/Division.h>
+
+#include <model/expressions/operations/boolean/BooleanAnd.h>
+#include <model/expressions/operations/boolean/BooleanOr.h>
+#include <model/expressions/operations/boolean/BooleanNot.h>
+
+#include <model/statements/methods/MethodDeclaration.h>
 #include <model/expressions/methods/MethodCall.h>
+#include <model/statements/methods/ParameterList.h>
 
 namespace naylang {
 
@@ -34,6 +41,7 @@ class GraceEvaluator : public Evaluator {
     std::shared_ptr<Environment> _environment;
     double _partialDouble;
     bool _partialBool;
+    ExpressionPtr _partialExpression;
 
 public:
 
@@ -47,16 +55,23 @@ public:
     virtual void evaluate(VariableReference &expression);
     virtual void evaluate(Assignment &expression);
     virtual void evaluate(VariableDeclaration &expression);
-    virtual void evaluate(IfThenElse &expression);
     virtual void evaluate(ExpressionBlock &expression);
+
+    virtual void evaluate(IfThenElse &expression);
+    virtual void evaluate(WhileLoop &expression);
 
     virtual void evaluate(Addition &expression);
     virtual void evaluate(Subtraction &expression);
     virtual void evaluate(Multiplication &expression);
     virtual void evaluate(Division &expression);
 
+    virtual void evaluate(BooleanAnd &expression);
+    virtual void evaluate(BooleanOr &expression);
+    virtual void evaluate(BooleanNot &expression);
+
     virtual void evaluate(MethodDeclaration &expression);
     virtual void evaluate(MethodCall &expression);
+    virtual void evaluate(ParameterList &expression);
 
     double getPartialDouble() const;
     bool getPartialBool() const;

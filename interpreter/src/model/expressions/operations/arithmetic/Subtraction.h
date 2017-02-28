@@ -7,7 +7,6 @@
 #define NAYLANG_SUBTRACTION_H
 
 #include <memory>
-
 #include <model/expressions/operations/BinaryOperation.h>
 
 namespace naylang {
