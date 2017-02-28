@@ -5,7 +5,7 @@
 
 #include "catch.h"
 
-#include <model/expressions/methods/MethodDeclaration.h>
+#include <model/statements/methods/MethodDeclaration.h>
 #include <model/expressions/primitives/Number.h>
 #include <model/expressions/ExpressionBlock.h>
 #include <model/environment/identifiers/IdentifierFactory.h>

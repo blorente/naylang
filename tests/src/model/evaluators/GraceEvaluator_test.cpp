@@ -6,7 +6,7 @@
 #include <iostream>
 #include <model/environment/identifiers/IdentifierFactory.h>
 #include <model/statements/control/WhileLoop.h>
-#include <model/statements/ParameterList.h>
+#include <model/statements/methods/ParameterList.h>
 #include "catch.h"
 
 #include "model/evaluators/GraceEvaluator.h"

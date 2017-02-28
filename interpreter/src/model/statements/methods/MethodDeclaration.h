@@ -8,11 +8,12 @@
 
 
 #include <model/Evaluator.h>
+#include <model/statements/Statement.h>
 #include <model/environment/identifiers/MethodIdentifier.h>
 #include <model/expressions/ExpressionBlock.h>
 
 namespace naylang {
-class MethodDeclaration : public Expression {
+class MethodDeclaration : public Statement {
 
     std::shared_ptr<MethodIdentifier> _name;
     ExpressionBlockPtr _body;

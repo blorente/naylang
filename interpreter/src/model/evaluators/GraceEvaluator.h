@@ -26,9 +26,9 @@
 #include <model/expressions/operations/Multiplication.h>
 #include <model/expressions/operations/Division.h>
 
-#include <model/expressions/methods/MethodDeclaration.h>
+#include <model/statements/methods/MethodDeclaration.h>
 #include <model/expressions/methods/MethodCall.h>
-#include <model/statements/ParameterList.h>
+#include <model/statements/methods/ParameterList.h>
 
 namespace naylang {
 

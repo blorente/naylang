@@ -5,7 +5,7 @@
 
 #include "catch.h"
 
-#include <model/statements/ParameterList.h>
+#include <model/statements/methods/ParameterList.h>
 #include <model/statements/VariableDeclaration.h>
 
 using namespace naylang;
