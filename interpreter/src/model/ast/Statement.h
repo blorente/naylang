@@ -10,6 +10,8 @@
 
 namespace  naylang {
 
+class Evaluator;
+
 #define StatementPtr std::shared_ptr<Statement>
 
 class Statement {

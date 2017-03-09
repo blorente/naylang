@@ -8,8 +8,8 @@
 namespace naylang {
 IfThenElse::IfThenElse(
         ExpressionPtr condition,
-        ExpressionBlockPtr thenExp,
-        ExpressionBlockPtr elseExp) {
+        BlockPtr thenExp,
+        BlockPtr elseExp) {
     _condition = std::move(condition);
     _then = std::move(thenExp);
     _else = std::move(elseExp);
@@ -23,11 +23,11 @@ ExpressionPtr IfThenElse::condition() const {
     return _condition;
 }
 
-ExpressionBlockPtr IfThenElse::thenExpression() const {
+BlockPtr IfThenElse::thenExpression() const {
     return _then;
 }
 
-ExpressionBlockPtr IfThenElse::elseExpression() const {
+BlockPtr IfThenElse::elseExpression() const {
     return _else;
 }
 

@@ -18,16 +18,16 @@ class CharLiteral;
 class StringLiteral;
 
 class ConstantDeclaration;
-class Assignment;
 class VariableDeclaration;
 class VariableReference;
 class Block;
 
+class IfThen;
 class IfThenElse;
-class WhileLoop;
+class While;
 
 class MethodDeclaration;
-class MethodCall;
+class Request;
 class ParameterList;
 
 class Evaluator {
@@ -43,16 +43,17 @@ public:
     virtual void evaluate(StringLiteral &expression) = 0;
 
     virtual void evaluate(ConstantDeclaration &expression) = 0;
-    virtual void evaluate(Assignment &expression) = 0;
     virtual void evaluate(VariableDeclaration &expression) = 0;
-    virtual void evaluate(VariableReference &expression) = 0;
-    virtual void evaluate(Block &expression) = 0;
-
-    virtual void evaluate(IfThenElse &expression) = 0;
-    virtual void evaluate(WhileLoop &expression) = 0;
-
     virtual void evaluate(MethodDeclaration &expression) = 0;
-    virtual void evaluate(MethodCall &expression) = 0;
+
+    virtual void evaluate(VariableReference &expression) = 0;
+
+    virtual void evaluate(Block &expression) = 0;
+    virtual void evaluate(IfThen &expression) = 0;
+    virtual void evaluate(IfThenElse &expression) = 0;
+
+    virtual void evaluate(While &expression) = 0;
+    virtual void evaluate(Request &expression) = 0;
     virtual void evaluate(ParameterList &expression) = 0;
 };
 

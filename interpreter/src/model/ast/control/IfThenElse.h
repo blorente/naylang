@@ -7,28 +7,27 @@
 #define NAYLANG_IFTHENELSE_H
 
 #include <memory>
-#include <model/statements/Statement.h>
-#include <model/expressions/primitives/Boolean.h>
-#include <model/expressions/ExpressionBlock.h>
+#include <model/ast/Statement.h>
+#include <model/ast/expressions/Block.h>
 
 namespace naylang {
 class IfThenElse : public Statement {
 
     ExpressionPtr _condition;
-    ExpressionBlockPtr _then;
-    ExpressionBlockPtr _else;
+    BlockPtr _then;
+    BlockPtr _else;
 
 public:
 
     IfThenElse(
             ExpressionPtr condition,
-            ExpressionBlockPtr thenExp,
-            ExpressionBlockPtr elseExp);
+            BlockPtr thenExp,
+            BlockPtr elseExp);
 
     virtual void accept(Evaluator &evaluator);
     ExpressionPtr condition() const;
-    ExpressionBlockPtr thenExpression() const;
-    ExpressionBlockPtr elseExpression() const;
+    BlockPtr thenExpression() const;
+    BlockPtr elseExpression() const;
 };
 }
 

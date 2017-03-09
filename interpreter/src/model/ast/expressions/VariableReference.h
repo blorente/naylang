@@ -7,21 +7,21 @@
 #define NAYLANG_VARIABLEREFERENCE_H
 
 #include <string>
-#include <model/expressions/Expression.h>
 #include <memory>
+#include <model/evaluators/Evaluator.h>
+#include <model/ast/expressions/Expression.h>
 
 namespace naylang {
 
 class VariableReference : public Expression {
 
-    std::shared_ptr<VariableDeclaration> _declaration;
+    std::string _name;
 
 public:
 
-    VariableReference(std::shared_ptr<VariableDeclaration> declaration);
-    VariableReference(const std::string &constIdentifier);
+    VariableReference(const std::string &name);
 
-    virtual void accept(Evaluator &evaluator);
+    void accept(Evaluator &evaluator) override;
     const std::string &identifier() const;
 };
 
