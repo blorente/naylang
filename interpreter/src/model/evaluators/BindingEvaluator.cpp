@@ -7,6 +7,10 @@
 
 namespace naylang {
 
+const std::map<std::string, Declaration *> &BindingEvaluator::symbolTable() const {
+    return _symbolTable;
+}
+
 void BindingEvaluator::evaluate(VariableReference &expression) {
     Evaluator::evaluate(expression);
 }
@@ -15,20 +19,25 @@ void BindingEvaluator::evaluate(Request &expression) {
     Evaluator::evaluate(expression);
 }
 
-const std::map<std::string, DeclarationPtr> &BindingEvaluator::symbolTable() const {
-    return _symbolTable;
-}
-
 void BindingEvaluator::evaluate(ConstantDeclaration &expression) {
-    Evaluator::evaluate(expression);
+    if(_symbolTable.find(expression.name()) != _symbolTable.end()) {
+        throw "Binding exists in symbol table";
+    }
+    _symbolTable[expression.name()] = &expression;
 }
 
 void BindingEvaluator::evaluate(VariableDeclaration &expression) {
-    Evaluator::evaluate(expression);
+    if(_symbolTable.find(expression.name()) != _symbolTable.end()) {
+        throw "Binding exists in symbol table";
+    }
+    _symbolTable[expression.name()] = &expression;
 }
 
 void BindingEvaluator::evaluate(MethodDeclaration &expression) {
-    Evaluator::evaluate(expression);
+    if(_symbolTable.find(expression.name()) != _symbolTable.end()) {
+        throw "Binding exists in symbol table";
+    }
+    _symbolTable[expression.name()] = &expression;
 }
 
 }

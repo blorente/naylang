@@ -5,11 +5,7 @@
 
 #include <model/evaluators/BindingEvaluator.h>
 #include "catch.h"
-#include <model/ast/declarations/ConstantDeclaration.h>
-#include <model/ast/declarations/VariableDeclaration.h>
-#include <model/ast/declarations/MethodDeclaration.h>
 #include <model/ast/expressions/primitives/NumberLiteral.h>
-#include <model/ast/expressions/Block.h>
 
 using namespace naylang;
 
@@ -33,8 +29,8 @@ TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
         REQUIRE_NOTHROW(eval.evaluate(*methodDecl););
         REQUIRE_NOTHROW(eval.evaluate(*constDecl););
 
-        REQUIRE(eval.symbolTable().at("x") == xDecl);
-        REQUIRE(eval.symbolTable().at("method") == methodDecl);
-        REQUIRE(eval.symbolTable().at("const") == constDecl);
+        REQUIRE(eval.symbolTable().at("x")->name() == xDecl->name());
+        REQUIRE(eval.symbolTable().at("method")->name() == methodDecl->name());
+        REQUIRE(eval.symbolTable().at("const")->name() == constDecl->name());
     }
 }
