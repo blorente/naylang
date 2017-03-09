@@ -10,6 +10,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <model/ast/declarations/MethodDeclaration.h>
 
 namespace naylang {
 
@@ -17,6 +18,7 @@ class Request : public Expression {
 
     std::string _name;
     std::vector<ExpressionPtr> _params;
+    MethodDeclarationPtr _binding;
 
 public:
 
@@ -24,8 +26,11 @@ public:
 
     void accept(Evaluator &evaluator) override;
 
+    void bindTo(MethodDeclarationPtr _binding);
+
     const std::string &method() const;
     const std::vector<ExpressionPtr> &params() const;
+    const MethodDeclarationPtr &declaration() const;
 };
 
 } // end namespace naylang

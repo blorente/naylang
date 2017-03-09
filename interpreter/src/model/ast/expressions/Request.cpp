@@ -24,4 +24,13 @@ const std::string &Request::method() const {
 const std::vector<ExpressionPtr> &Request::params() const {
     return _params;
 }
+
+const MethodDeclarationPtr &Request::declaration() const {
+    return _binding;
+}
+
+void Request::bindTo(MethodDeclarationPtr binding) {
+    _binding = binding;
+}
+
 }

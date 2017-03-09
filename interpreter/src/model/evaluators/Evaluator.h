@@ -17,18 +17,18 @@ class BooleanLiteral;
 class CharLiteral;
 class StringLiteral;
 
+class VariableReference;
+
 class ConstantDeclaration;
 class VariableDeclaration;
-class VariableReference;
-class Block;
+class MethodDeclaration;
 
 class IfThen;
 class IfThenElse;
 class While;
 
-class MethodDeclaration;
 class Request;
-class ParameterList;
+class Block;
 
 class Evaluator {
 
@@ -37,24 +37,29 @@ public:
     Evaluator() = default;
     virtual ~Evaluator() = default;
 
-    virtual void evaluate(NumberLiteral &expression) = 0;
-    virtual void evaluate(BooleanLiteral &expression) = 0;
-    virtual void evaluate(CharLiteral &expression) = 0;
-    virtual void evaluate(StringLiteral &expression) = 0;
+    // Methods left blank to be overridden by the subclasses.
+    // For example, a Binding Evaluator might be only interested in
+    // evaluating VariableReference and Request Statements
 
-    virtual void evaluate(ConstantDeclaration &expression) = 0;
-    virtual void evaluate(VariableDeclaration &expression) = 0;
-    virtual void evaluate(MethodDeclaration &expression) = 0;
+    // Expressions
+    virtual void evaluate(NumberLiteral &expression) {}
+    virtual void evaluate(BooleanLiteral &expression) {}
+    virtual void evaluate(CharLiteral &expression) {}
+    virtual void evaluate(StringLiteral &expression) {}
 
-    virtual void evaluate(VariableReference &expression) = 0;
+    virtual void evaluate(VariableReference &expression) {}
+    virtual void evaluate(Request &expression) {}
+    virtual void evaluate(Block &expression) {}
 
-    virtual void evaluate(Block &expression) = 0;
-    virtual void evaluate(IfThen &expression) = 0;
-    virtual void evaluate(IfThenElse &expression) = 0;
+    //Declarations
+    virtual void evaluate(ConstantDeclaration &expression) {}
+    virtual void evaluate(VariableDeclaration &expression) {}
+    virtual void evaluate(MethodDeclaration &expression) {}
 
-    virtual void evaluate(While &expression) = 0;
-    virtual void evaluate(Request &expression) = 0;
-    virtual void evaluate(ParameterList &expression) = 0;
+    // Control structures
+    virtual void evaluate(IfThen &expression) {}
+    virtual void evaluate(IfThenElse &expression) {}
+    virtual void evaluate(While &expression) {}
 };
 
 }

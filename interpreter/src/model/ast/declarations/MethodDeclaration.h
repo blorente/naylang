@@ -12,6 +12,8 @@
 
 namespace naylang {
 
+#define MethodDeclarationPtr std::shared_ptr<MethodDeclaration>
+
 class MethodDeclaration : public Declaration {
 
     BlockPtr _body;
