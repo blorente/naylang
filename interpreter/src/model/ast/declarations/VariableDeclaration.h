@@ -7,11 +7,11 @@
 #define NAYLANG_VARIABLEDECLARATION_H
 
 #include <string>
-#include <model/statements/Statement.h>
+#include <model/ast/declarations/Declaration.h>
 
 namespace naylang {
 
-class VariableDeclaration : public Statement {
+class VariableDeclaration : public Declaration {
 
     std::string _identifier;
 
@@ -20,7 +20,7 @@ public:
     VariableDeclaration(const std::string &identifier);
 
     virtual void accept(Evaluator &evaluator);
-    const std::string &identifier() const;
+    const std::string &name() const;
 };
 
 }

@@ -17,11 +17,11 @@ class BooleanLiteral;
 class CharLiteral;
 class StringLiteral;
 
-class Constant;
+class ConstantDeclaration;
 class Assignment;
 class VariableDeclaration;
 class VariableReference;
-class ExpressionBlock;
+class Block;
 
 class IfThenElse;
 class WhileLoop;
@@ -42,11 +42,11 @@ public:
     virtual void evaluate(CharLiteral &expression) = 0;
     virtual void evaluate(StringLiteral &expression) = 0;
 
-    virtual void evaluate(Constant &expression) = 0;
+    virtual void evaluate(ConstantDeclaration &expression) = 0;
     virtual void evaluate(Assignment &expression) = 0;
     virtual void evaluate(VariableDeclaration &expression) = 0;
     virtual void evaluate(VariableReference &expression) = 0;
-    virtual void evaluate(ExpressionBlock &expression) = 0;
+    virtual void evaluate(Block &expression) = 0;
 
     virtual void evaluate(IfThenElse &expression) = 0;
     virtual void evaluate(WhileLoop &expression) = 0;
