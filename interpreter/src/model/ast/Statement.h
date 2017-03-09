@@ -6,13 +6,13 @@
 #ifndef NAYLANG_STATEMENT_H
 #define NAYLANG_STATEMENT_H
 
-#include <model/Evaluable.h>
+#include <model/evaluators/Evaluator.h>
 
 namespace  naylang {
 
 #define StatementPtr std::shared_ptr<Statement>
 
-class Statement : public Evaluable {
+class Statement {
 public:
 
     virtual void accept(Evaluator &evaluator) = 0;

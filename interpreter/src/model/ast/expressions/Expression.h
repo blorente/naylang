@@ -6,13 +6,13 @@
 #ifndef NAYLANG_EXPRESSION_H
 #define NAYLANG_EXPRESSION_H
 
-#include <model/Evaluable.h>
+#include <model/ast/Statement.h>
 
 namespace  naylang {
 
 #define ExpressionPtr std::shared_ptr<Expression>
 
-class Expression : public Evaluable {
+class Expression : public Statement {
 public:
 
     virtual void accept(Evaluator &evaluator) = 0;

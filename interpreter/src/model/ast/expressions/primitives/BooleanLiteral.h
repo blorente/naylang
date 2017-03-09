@@ -6,21 +6,21 @@
 #ifndef NAYLANG_BOOLEAN_H
 #define NAYLANG_BOOLEAN_H
 
-#include <model/expressions/Expression.h>
+#include <model/ast/expressions/Expression.h>
 
 namespace naylang {
-class Boolean : public Expression {
+class BooleanLiteral : public Expression {
 
     bool _value;
 
 public:
 
-    Boolean(bool value);
+    BooleanLiteral(bool value);
 
     virtual void accept(Evaluator &evaluator);
 
-    virtual bool operator==(const Boolean &other);
-    bool value();
+    virtual bool operator==(const BooleanLiteral &other);
+    bool value() const;
 };
 }
 

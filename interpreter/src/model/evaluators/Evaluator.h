@@ -6,33 +6,25 @@
 #ifndef NAYLANG_EVALUATOR_H
 #define NAYLANG_EVALUATOR_H
 
-#include "Evaluable.h"
+#include <model/ast/Statement.h>
 
 namespace naylang {
 
-class Evaluable;
+class Statement;
 
-class Number;
-class Boolean;
+class NumberLiteral;
+class BooleanLiteral;
+class CharLiteral;
+class StringLiteral;
 
 class Constant;
 class Assignment;
-class PrimitiveOperation;
 class VariableDeclaration;
 class VariableReference;
 class ExpressionBlock;
 
 class IfThenElse;
 class WhileLoop;
-
-class Addition;
-class Subtraction;
-class Multiplication;
-class Division;
-
-class BooleanAnd;
-class BooleanOr;
-class BooleanNot;
 
 class MethodDeclaration;
 class MethodCall;
@@ -45,8 +37,10 @@ public:
     Evaluator() = default;
     virtual ~Evaluator() = default;
 
-    virtual void evaluate(Number &expression) = 0;
-    virtual void evaluate(Boolean &expression) = 0;
+    virtual void evaluate(NumberLiteral &expression) = 0;
+    virtual void evaluate(BooleanLiteral &expression) = 0;
+    virtual void evaluate(CharLiteral &expression) = 0;
+    virtual void evaluate(StringLiteral &expression) = 0;
 
     virtual void evaluate(Constant &expression) = 0;
     virtual void evaluate(Assignment &expression) = 0;
@@ -56,15 +50,6 @@ public:
 
     virtual void evaluate(IfThenElse &expression) = 0;
     virtual void evaluate(WhileLoop &expression) = 0;
-
-    virtual void evaluate(Addition &expression) = 0;
-    virtual void evaluate(Subtraction &expression) = 0;
-    virtual void evaluate(Multiplication &expression) = 0;
-    virtual void evaluate(Division &expression) = 0;
-
-    virtual void evaluate(BooleanAnd &expression) = 0;
-    virtual void evaluate(BooleanOr &expression) = 0;
-    virtual void evaluate(BooleanNot &expression) = 0;
 
     virtual void evaluate(MethodDeclaration &expression) = 0;
     virtual void evaluate(MethodCall &expression) = 0;

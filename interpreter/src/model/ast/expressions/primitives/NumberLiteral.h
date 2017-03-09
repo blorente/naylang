@@ -6,20 +6,20 @@
 #ifndef NAYLANG_NUMBER_H
 #define NAYLANG_NUMBER_H
 
-#include <model/expressions/Expression.h>
+#include <model/ast/expressions/Expression.h>
 
 namespace naylang {
 
-class Number : public Expression {
+class NumberLiteral : public Expression {
 
     double _value;
 
 public:
 
-    Number(double value);
+    NumberLiteral(double value);
     virtual void accept(Evaluator &evaluator);
 
-    virtual bool operator==(const Number &other);
+    virtual bool operator==(const NumberLiteral &other);
     double value() const;
 
 };
