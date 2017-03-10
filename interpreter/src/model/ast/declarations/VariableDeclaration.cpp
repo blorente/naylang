@@ -15,7 +15,7 @@ void VariableDeclaration::accept(Evaluator &evaluator) {
 }
 
 const std::string & VariableDeclaration::name() const {
-        return _identifier;
+    return _identifier;
 }
 
 }

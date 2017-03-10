@@ -29,6 +29,7 @@ class While;
 
 class Request;
 class Block;
+class Lineup;
 
 class Evaluator {
 
@@ -50,6 +51,7 @@ public:
     virtual void evaluate(VariableReference &expression) {}
     virtual void evaluate(Request &expression) {}
     virtual void evaluate(Block &expression) {}
+    virtual void evaluate(Lineup &expression) {}
 
     //Declarations
     virtual void evaluate(ConstantDeclaration &expression) {}
