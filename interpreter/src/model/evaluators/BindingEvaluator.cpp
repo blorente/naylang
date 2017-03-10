@@ -12,11 +12,17 @@ const std::map<std::string, Declaration *> &BindingEvaluator::symbolTable() cons
 }
 
 void BindingEvaluator::evaluate(VariableReference &expression) {
-    Evaluator::evaluate(expression);
+    if(_symbolTable.find(expression.identifier()) == _symbolTable.end()) {
+        throw "Binding not found in symbol table";
+    }
+    expression.bindTo(*_symbolTable[expression.identifier()]);
 }
 
 void BindingEvaluator::evaluate(Request &expression) {
-    Evaluator::evaluate(expression);
+    if (_symbolTable.find(expression.identifier()) == _symbolTable.end()) {
+        throw "Binding not found in symbol table";
+    }
+    expression.bindTo(static_cast<MethodDeclaration &>(*_symbolTable[expression.identifier()]));
 }
 
 void BindingEvaluator::evaluate(ConstantDeclaration &expression) {

@@ -10,6 +10,8 @@
 #include <model/ast/declarations/ConstantDeclaration.h>
 #include <model/ast/declarations/VariableDeclaration.h>
 #include <model/ast/declarations/MethodDeclaration.h>
+#include <model/ast/expressions/Request.h>
+#include <model/ast/expressions/VariableReference.h>
 #include <map>
 #include <memory>
 

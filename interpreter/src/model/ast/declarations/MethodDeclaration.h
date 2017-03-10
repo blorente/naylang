@@ -21,6 +21,7 @@ class MethodDeclaration : public Declaration {
 
 public:
 
+    MethodDeclaration() = default;
     MethodDeclaration(const std::string &_name, const std::shared_ptr<Block> &_body);
 
     void accept(Evaluator &evaluator) override;

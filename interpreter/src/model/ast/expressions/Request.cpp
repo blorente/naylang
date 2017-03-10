@@ -10,14 +10,17 @@
 
 namespace naylang {
 
+Request::Request(const std::string &methodName) :
+        _name{methodName}, _declaration{nullptr} {}
+
 Request::Request(const std::string &methodName, const std::vector<ExpressionPtr> params) :
-    _name{methodName}, _params{params} {}
+    _name{methodName}, _params{params}, _declaration{nullptr} {}
 
 void Request::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
-const std::string &Request::method() const {
+const std::string &Request::identifier() const {
     return _name;
 }
 
@@ -25,12 +28,12 @@ const std::vector<ExpressionPtr> &Request::params() const {
     return _params;
 }
 
-const MethodDeclarationPtr &Request::declaration() const {
-    return _binding;
+const MethodDeclaration &Request::declaration() const {
+    return *_declaration;
 }
 
-void Request::bindTo(MethodDeclarationPtr binding) {
-    _binding = binding;
+void Request::bindTo(MethodDeclaration &binding) {
+    _declaration = &binding;
 }
 
 }

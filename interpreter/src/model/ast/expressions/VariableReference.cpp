@@ -8,7 +8,7 @@
 namespace naylang {
 
 VariableReference::VariableReference(const std::string &name) :
-        _name{name} {}
+        _name{name}, _declaration{nullptr} {}
 
 void VariableReference::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
@@ -16,6 +16,14 @@ void VariableReference::accept(Evaluator &evaluator) {
 
 const std::string& VariableReference::identifier() const {
     return _name;
+}
+
+void VariableReference::bindTo(Declaration &declaration) {
+    _declaration = &declaration;
+}
+
+const Declaration &VariableReference::declaration() const {
+    return *_declaration;
 }
 
 }

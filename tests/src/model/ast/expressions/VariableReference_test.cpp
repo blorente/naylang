@@ -6,6 +6,7 @@
 #include "catch.h"
 
 #include <model/ast/expressions/VariableReference.h>
+#include <model/ast/declarations/VariableDeclaration.h>
 
 using namespace naylang;
 
@@ -18,5 +19,12 @@ TEST_CASE("Variable Reference Expressions", "[Expressions]") {
         VariableReference referenceY("y");
 
         REQUIRE(referenceY.identifier() == "y");
+    }
+
+    SECTION("A Variable Reference can be bound to a Declaration") {
+        auto decY = std::make_shared<VariableDeclaration>("y");
+        VariableReference refY("y");
+        refY.bindTo(*decY);
+        REQUIRE(&refY.declaration() == decY.get());
     }
 }

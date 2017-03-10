@@ -18,21 +18,25 @@ TEST_CASE("Request Expressions", "[Expressions]") {
     fiveBlock->addStatement(five);
     auto fiveMethod = std::make_shared<MethodDeclaration>("myMethod", fiveBlock);
 
-    SECTION("A Request has a target method name and parameter expressions") {
+    SECTION("A Request has a target identifier name and parameter expressions") {
         REQUIRE_NOTHROW(Request req("myMethod", {five}););
     }
 
-    SECTION("A Request can return the method name and parameter expressions") {
+    SECTION("A Request can have an empty parameter list") {
+        REQUIRE_NOTHROW(Request req("myMethod"););
+    }
+
+    SECTION("A Request can return the identifier name and parameter expressions") {
         Request req("myMethod", {five});
-        REQUIRE(req.method() == "myMethod");
+        REQUIRE(req.identifier() == "myMethod");
         REQUIRE(req.params() == std::vector<ExpressionPtr>{five});
     }
 
-    SECTION("A Request can be bound to a method declaration") {
+    SECTION("A Request can be bound to a identifier declaration") {
         Request req("myMethod", {five});
-        req.bindTo(fiveMethod);
+        req.bindTo(*fiveMethod);
 
-        REQUIRE(req.declaration() == fiveMethod);
+        REQUIRE(&req.declaration() == fiveMethod.get());
     }
 }
 
