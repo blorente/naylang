@@ -5,14 +5,15 @@
 
 #include <model/ast/expressions/Lineup.h>
 #include <model/ast/expressions/primitives/NumberLiteral.h>
+#include <model/ast/NodeFactory.h>
 #include "catch.h"
 
 using namespace naylang;
 
 TEST_CASE("Lineups", "[Expressions]") {
 
-    auto five = std::make_shared<NumberLiteral>(5);
-    auto six = std::make_shared<NumberLiteral>(6);
+    auto five = make_node<NumberLiteral>(5.0);
+    auto six = make_node<NumberLiteral>(6.0);
     auto fiveSix = {five, six};
 
     SECTION("A Lineup accepts an expression list") {

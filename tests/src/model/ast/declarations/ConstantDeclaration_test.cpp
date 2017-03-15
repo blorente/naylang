@@ -5,13 +5,14 @@
 
 #include <model/ast/declarations/ConstantDeclaration.h>
 #include <model/ast/expressions/primitives/NumberLiteral.h>
+#include <model/ast/NodeFactory.h>
 #include "catch.h"
 
 using namespace naylang;
 
 TEST_CASE("Constant Declaration Statements", "[Declarations]") {
     auto name = "x";
-    auto five = std::make_shared<NumberLiteral>(5);
+    auto five = make_node<NumberLiteral>(5.0);
 
     SECTION("A constant declaration needs a name and a value (Expression)") {
         ConstantDeclaration constX(name, five);

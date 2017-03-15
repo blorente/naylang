@@ -5,14 +5,15 @@
 
 #include <model/ast/expressions/primitives/NumberLiteral.h>
 #include <model/ast/declarations/MethodDeclaration.h>
+#include <model/ast/NodeFactory.h>
 #include "catch.h"
 
 
 using namespace naylang;
 
 TEST_CASE("Method Declaration", "[Declarations]") {
-    auto five = std::make_shared<NumberLiteral>(5.0);
-    auto numberBody = std::make_shared<Block>();
+    auto five = make_node<NumberLiteral>(5.0);
+    auto numberBody = make_node<Block>();
 
     SECTION("A Method Declaration takes a canonicalName and a body block") {
         MethodDeclaration decl("myMethod", numberBody);

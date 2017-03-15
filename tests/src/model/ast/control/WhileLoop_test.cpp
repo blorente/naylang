@@ -9,17 +9,18 @@
 #include <model/ast/expressions/Block.h>
 #include <model/ast/expressions/primitives/NumberLiteral.h>
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
+#include <model/ast/NodeFactory.h>
 
 using namespace naylang;
 
 TEST_CASE("While Loop", "[Control]") {
 
-    auto tru = std::make_shared<BooleanLiteral>(true);
-    auto truBlock = std::make_shared<Block>();
+    auto tru = make_node<BooleanLiteral>(true);
+    auto truBlock = make_node<Block>();
     truBlock->addStatement(tru);
 
-    auto five = std::make_shared<NumberLiteral>(5.0);
-    auto fiveBlock = std::make_shared<Block>();
+    auto five = make_node<NumberLiteral>(5.0);
+    auto fiveBlock = make_node<Block>();
     fiveBlock->addStatement(five);
 
     SECTION("A while loop accepts a condition block and a body block") {

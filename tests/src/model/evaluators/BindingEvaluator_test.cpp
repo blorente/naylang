@@ -6,17 +6,18 @@
 #include <model/evaluators/BindingEvaluator.h>
 #include "catch.h"
 #include <model/ast/expressions/primitives/NumberLiteral.h>
+#include <model/ast/NodeFactory.h>
 
 using namespace naylang;
 
 TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
 
-    auto five = std::make_shared<NumberLiteral>(5);
-    auto fiveBlock = std::make_shared<Block>(); fiveBlock->addStatement(five);
+    auto five = make_node<NumberLiteral>(5.0);
+    auto fiveBlock = make_node<Block>(); fiveBlock->addStatement(five);
 
-    auto xDecl = std::make_shared<VariableDeclaration>("x");
-    auto methodDecl = std::make_shared<MethodDeclaration>("identifier", fiveBlock);
-    auto constDecl = std::make_shared<ConstantDeclaration>("const", five);
+    auto xDecl = make_node<VariableDeclaration>("x");
+    auto methodDecl = make_node<MethodDeclaration>("identifier", fiveBlock);
+    auto constDecl = make_node<ConstantDeclaration>("const", five);
 
     SECTION("A BindingEvaluator can return a symbol table with all declarations") {
         BindingEvaluator eval;
@@ -36,15 +37,15 @@ TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
 
     SECTION("Evaluating a VariableReference or Request throws if the symbol is not in the table") {
         BindingEvaluator eval;
-        auto wrongVar = std::make_shared<VariableReference>("wrongVar");
-        auto wrongMethod = std::make_shared<Request>("wrongMethod");
+        auto wrongVar = make_node<VariableReference>("wrongVar");
+        auto wrongMethod = make_node<Request>("wrongMethod");
         REQUIRE_THROWS(eval.evaluate(*wrongVar));
         REQUIRE_THROWS(eval.evaluate(*wrongMethod));
     }
 
     SECTION("If a Request is evaluated after a MethodDeclaration with the same name, it binds to it") {
         BindingEvaluator eval;
-        auto rightMethod = std::make_shared<Request>("identifier");
+        auto rightMethod = make_node<Request>("identifier");
 
         eval.evaluate(*methodDecl);
         REQUIRE_NOTHROW(eval.evaluate(*rightMethod));
@@ -54,7 +55,7 @@ TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
 
     SECTION("If a Request is evaluated after a MethodDeclaration with the same name, it binds to it") {
         BindingEvaluator eval;
-        auto xVar = std::make_shared<VariableReference>("x");
+        auto xVar = make_node<VariableReference>("x");
 
         eval.evaluate(*xDecl);
         REQUIRE_NOTHROW(eval.evaluate(*xVar));

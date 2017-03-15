@@ -7,6 +7,7 @@
 
 #include <model/ast/expressions/VariableReference.h>
 #include <model/ast/declarations/VariableDeclaration.h>
+#include <model/ast/NodeFactory.h>
 
 using namespace naylang;
 
@@ -22,7 +23,7 @@ TEST_CASE("Variable Reference Expressions", "[Expressions]") {
     }
 
     SECTION("A Variable Reference can be bound to a Declaration") {
-        auto decY = std::make_shared<VariableDeclaration>("y");
+        auto decY = make_node<VariableDeclaration>("y");
         VariableReference refY("y");
         refY.bindTo(*decY);
         REQUIRE(&refY.declaration() == decY.get());

@@ -8,15 +8,16 @@
 #include <model/ast/expressions/Request.h>
 #include <model/ast/expressions/primitives/NumberLiteral.h>
 #include <model/ast/expressions/Block.h>
+#include <model/ast/NodeFactory.h>
 
 using namespace naylang;
 
 TEST_CASE("Request Expressions", "[Expressions]") {
 
-    auto five = std::make_shared<NumberLiteral>(5);
-    auto fiveBlock = std::make_shared<Block>();
+    auto five = make_node<NumberLiteral>(5.0);
+    auto fiveBlock = make_node<Block>();
     fiveBlock->addStatement(five);
-    auto fiveMethod = std::make_shared<MethodDeclaration>("myMethod", fiveBlock);
+    auto fiveMethod = make_node<MethodDeclaration>("myMethod", fiveBlock);
 
     SECTION("A Request has a target identifier name and parameter expressions") {
         REQUIRE_NOTHROW(Request req("myMethod", {five}););

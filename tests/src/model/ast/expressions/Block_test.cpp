@@ -5,6 +5,7 @@
 
 #include <model/ast/expressions/primitives/NumberLiteral.h>
 #include <model/ast/declarations/VariableDeclaration.h>
+#include <model/ast/NodeFactory.h>
 #include "catch.h"
 
 #include "model/ast/expressions/Block.h"
@@ -25,14 +26,14 @@ TEST_CASE("Block Expressions", "[Expressions]") {
 
     SECTION("A statement can be added to the block body") {
         Block b;
-        auto one = std::make_shared<NumberLiteral>(1);
+        auto one = make_node<NumberLiteral>(1.0);
         b.addStatement(one);
         REQUIRE(b.body().size() == 1);
     }
 
     SECTION("A parameter can be added to the block parameters") {
         Block b;
-        auto x = std::make_shared<VariableDeclaration>("x");
+        auto x = make_node<VariableDeclaration>("x");
         b.addParameter(x);
         REQUIRE(b.params().size() == 1);
     }
