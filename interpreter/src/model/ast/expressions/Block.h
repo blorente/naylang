@@ -13,7 +13,9 @@
 
 namespace naylang {
 
-#define BlockPtr std::shared_ptr<Block>
+class Block;
+
+typedef std::shared_ptr<Block> BlockPtr;
 
 class Block : public Expression {
 

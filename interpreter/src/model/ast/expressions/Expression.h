@@ -10,7 +10,9 @@
 
 namespace  naylang {
 
-#define ExpressionPtr std::shared_ptr<Expression>
+class Expression;
+
+typedef std::shared_ptr<Expression> ExpressionPtr;
 
 class Expression : public Statement {
 public:

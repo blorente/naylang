@@ -7,12 +7,14 @@
 #define NAYLANG_STATEMENT_H
 
 #include <model/evaluators/Evaluator.h>
+#include <memory>
 
 namespace  naylang {
 
 class Evaluator;
+class Statement;
 
-#define StatementPtr std::shared_ptr<Statement>
+typedef std::shared_ptr<Statement> StatementPtr;
 
 class Statement {
 public:

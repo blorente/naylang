@@ -11,7 +11,9 @@
 
 namespace naylang {
 
-#define DeclarationPtr std::shared_ptr<Declaration>
+class Declaration;
+
+typedef std::shared_ptr<Declaration> DeclarationPtr;
 
 class Declaration : public Statement {
 public:
