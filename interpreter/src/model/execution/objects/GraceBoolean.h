@@ -8,17 +8,30 @@
 #define NAYLANG_BOOLEANOBJECT_H
 
 #include <model/execution/objects/GraceObject.h>
+#include <map>
+#include <model/ast/NodeFactory.h>
+#include "Method.h"
 
 namespace naylang {
 
-class BooleanObject : public GraceObject {
+class GraceBoolean : public GraceObject {
+
+    bool _value;
+    std::map<std::string, MethodPtr> _methodTable;
 
 public:
 
-    bool _value;
+    GraceBoolean(bool value);
 
-    BooleanObject(bool value);
+    virtual void dispatch(const std::string &methodName, Evaluator &eval);
+
+    virtual const GraceBoolean &asBoolean() const;
+
+    bool value() const;
+
+private:
 };
+
 } // end namespace naylang
 
 #endif //NAYLANG_BOOLEANOBJECT_H

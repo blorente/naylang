@@ -13,7 +13,6 @@ static std::shared_ptr<T> make_node(Args&&...args) {
     return std::shared_ptr<T>{new T{std::forward<Args>(args)...}};
 };
 
-
 }
 
 #endif //NAYLANG_NODEFACTORY_H
