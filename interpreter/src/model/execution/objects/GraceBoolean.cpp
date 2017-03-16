@@ -42,4 +42,11 @@ GraceObjectPtr GraceBoolean::PrefixNot::respond(GraceObject &self, MethodRequest
     }
     return GraceTrue;
 }
+
+GraceObjectPtr GraceBoolean::AndAnd::respond(GraceObject &self, MethodRequest &request) {
+    if (self.asBoolean().value() && request.params()[0]->asBoolean().value()) {
+        return GraceTrue;
+    }
+    return GraceFalse;
+}
 }
