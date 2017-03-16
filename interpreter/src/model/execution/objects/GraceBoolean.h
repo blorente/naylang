@@ -34,7 +34,7 @@ public:
 
     class PrefixNot : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(Evaluator &context, GraceObject &self);
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
     };
 
 };

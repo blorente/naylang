@@ -16,9 +16,9 @@ class NativeMethod : public Method {
 
 public:
 
-    virtual GraceObjectPtr respond(Evaluator &context, GraceObject &self) = 0;
+    virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request) = 0;
     virtual GraceObjectPtr respond(Evaluator &context, GraceObject &self, MethodRequest &request) {
-        return respond(context, self);
+        return respond(self, request);
     }
 
 };

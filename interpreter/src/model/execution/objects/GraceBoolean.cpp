@@ -36,7 +36,7 @@ bool GraceBoolean::operator!=(const GraceObject &rhs) const {
     return !(*this == rhs);
 }
 
-GraceObjectPtr GraceBoolean::PrefixNot::respond(Evaluator &context, GraceObject &self) {
+GraceObjectPtr GraceBoolean::PrefixNot::respond(GraceObject &self, MethodRequest &request) {
     if (self.asBoolean().value()) {
         return GraceFalse;
     }
