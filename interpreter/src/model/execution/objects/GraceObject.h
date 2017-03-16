@@ -17,13 +17,21 @@ class GraceBoolean;
 typedef std::shared_ptr<GraceObject> GraceObjectPtr;
 
 class GraceObject {
-
 public:
     GraceObject() = default;
 
     virtual void dispatch(const std::string &methodName, Evaluator &eval) = 0;
 
     virtual const GraceBoolean &asBoolean() const;
+    virtual bool isUndefined() const;
+    virtual bool isDone() const;
+};
+
+class GraceDone : public GraceObject {
+public:
+
+    virtual void dispatch(const std::string &methodName, Evaluator &eval);
+    bool isDone() const;
 };
 } // end namespace naylang
 

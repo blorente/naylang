@@ -10,7 +10,7 @@
 #include <model/execution/objects/GraceObject.h>
 #include <map>
 #include <model/ast/NodeFactory.h>
-#include "Method.h"
+#include "model/execution/Method.h"
 
 namespace naylang {
 

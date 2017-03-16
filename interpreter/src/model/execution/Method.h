@@ -8,6 +8,9 @@
 
 #include <memory>
 #include <model/ast/expressions/Block.h>
+#include <model/execution/objects/GraceObject.h>
+#include <model/execution/objects/GraceObjectFactory.h>
+#include "MethodRequest.h"
 
 namespace naylang {
 
@@ -21,6 +24,8 @@ class Method {
 public:
 
     Method(BlockPtr code);
+
+    GraceObjectPtr respond(Evaluator &context, GraceObject &self, MethodRequest &request);
 
     const BlockPtr &code() const;
 
