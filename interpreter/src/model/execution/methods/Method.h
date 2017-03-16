@@ -22,10 +22,10 @@ class Method {
     BlockPtr _code;
 
 public:
-
+    Method() = default;
     Method(BlockPtr code);
 
-    GraceObjectPtr respond(Evaluator &context, GraceObject &self, MethodRequest &request);
+    virtual GraceObjectPtr respond(Evaluator &context, GraceObject &self, MethodRequest &request);
 
     const BlockPtr &code() const;
 

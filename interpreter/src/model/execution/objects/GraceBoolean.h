@@ -3,14 +3,14 @@
 // Distributed under the GPLv3 license.
 //
 
-
 #ifndef NAYLANG_BOOLEANOBJECT_H
 #define NAYLANG_BOOLEANOBJECT_H
 
 #include <model/execution/objects/GraceObject.h>
 #include <map>
 #include <model/ast/NodeFactory.h>
-#include "model/execution/Method.h"
+#include <model/execution/methods/NativeMethod.h>
+#include "model/execution/methods/Method.h"
 
 namespace naylang {
 
@@ -29,8 +29,18 @@ public:
 
     bool value() const;
 
-private:
+    bool operator==(const GraceObject &rhs) const;
+    bool operator!=(const GraceObject &rhs) const;
+
+    class PrefixNot : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(Evaluator &context, GraceObject &self);
+    };
+
 };
+
+static const std::shared_ptr<GraceBoolean> GraceTrue = make_obj<GraceBoolean>(true);
+static const std::shared_ptr<GraceBoolean> GraceFalse= make_obj<GraceBoolean>(false);
 
 } // end namespace naylang
 

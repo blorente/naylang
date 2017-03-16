@@ -3,17 +3,15 @@
 // Distributed under the GPLv3 license.
 //
 
-#include <model/execution/Method.h>
-#include <model/ast/expressions/Block.h>
+#include <model/execution/methods/Method.h>
 #include <model/ast/NodeFactory.h>
 #include <model/evaluators/ExecutionEvaluator.h>
 #include <model/execution/objects/GraceBoolean.h>
-#include <model/execution/MethodRequest.h>
 #include "catch.h"
 
 using namespace naylang;
 
-TEST_CASE("Method", "[GraceObjects]") {
+TEST_CASE("Method", "[Methods]") {
 
     auto fiveBlock = make_node<Block>();
     SECTION("A method takes a Block") {
@@ -25,11 +23,11 @@ TEST_CASE("Method", "[GraceObjects]") {
         REQUIRE(meth.code() == fiveBlock);
     }
 
-    SECTION("A method has a respond function") {
+    SECTION("A method has a respond function, that returns Done by default") {
         Method meth(fiveBlock);
         ExecutionEvaluator eval;
         GraceBoolean tru(true);
-        MethodRequest req("prefix!");
+        MethodRequest req("self");
         auto ret = meth.respond(eval, tru, req);
         REQUIRE(ret->isDone());
     }

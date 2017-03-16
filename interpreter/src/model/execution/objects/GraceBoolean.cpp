@@ -27,4 +27,19 @@ bool GraceBoolean::value() const {
 void GraceBoolean::dispatch(const std::string &methodName, Evaluator &eval) {
     eval.evaluate(*_methodTable[methodName]->code());
 }
+
+bool GraceBoolean::operator==(const GraceObject &rhs) const {
+    return rhs.asBoolean()._value == _value;
+}
+
+bool GraceBoolean::operator!=(const GraceObject &rhs) const {
+    return !(*this == rhs);
+}
+
+GraceObjectPtr GraceBoolean::PrefixNot::respond(Evaluator &context, GraceObject &self) {
+    if (self.asBoolean().value()) {
+        return GraceFalse;
+    }
+    return GraceTrue;
+}
 }
