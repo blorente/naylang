@@ -28,18 +28,18 @@ TEST_CASE("Grace Boolean", "[GraceObjects]") {
 }
 
 TEST_CASE("Predefined methods in GraceBoolean", "[GraceBoolean]") {
-    ExecutionEvaluator eval;
+    MethodRequest req("prefix!");
 
     SECTION("PrefixNot") {
         GraceBoolean::PrefixNot method;
 
         SECTION("Calling PrefixNot with self == GraceTrue returns GraceFalse") {
-            GraceObjectPtr val = method.respond(eval, *GraceTrue);
+            GraceObjectPtr val = method.respond(*GraceTrue, req);
             REQUIRE(*GraceFalse == *val);
         }
 
         SECTION("Calling PrefixNot with self == GraceFalse returns GraceTrue") {
-            GraceObjectPtr val = method.respond(eval, *GraceFalse);
+            GraceObjectPtr val = method.respond(*GraceFalse, req);
             REQUIRE(*GraceTrue == *val);
         }
     }
