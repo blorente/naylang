@@ -46,4 +46,11 @@ void BindingEvaluator::evaluate(MethodDeclaration &expression) {
     _symbolTable[expression.name()] = &expression;
 }
 
+void BindingEvaluator::evaluate(ExplicitRequestNode &expression) {
+    if (_symbolTable.find(expression.identifier()) == _symbolTable.end()) {
+        throw "Binding not found in symbol table";
+    }
+    expression.bindTo(static_cast<MethodDeclaration &>(*_symbolTable[expression.identifier()]));
+}
+
 }
