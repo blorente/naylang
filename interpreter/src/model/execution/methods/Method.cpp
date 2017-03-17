@@ -13,7 +13,7 @@ const BlockPtr &Method::code() const {
 }
 
 GraceObjectPtr Method::respond(Evaluator &context, GraceObject &self, MethodRequest &request) {
-    return make_obj<GraceDone>();
+    return GraceDone;
 }
 
 int Method::numParams() {

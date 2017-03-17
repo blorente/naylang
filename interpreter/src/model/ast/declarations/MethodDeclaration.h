@@ -25,7 +25,7 @@ public:
     void accept(Evaluator &evaluator) override;
     const std::string &name() const override;
 
-    const std::shared_ptr<Block> &body() const;
+    BlockPtr body() const;
 
 };
 

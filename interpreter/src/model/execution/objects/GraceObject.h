@@ -12,6 +12,7 @@
 #include <model/evaluators/ExecutionEvaluator.h>
 #include <model/execution/methods/Method.h>
 #include <model/execution/Definitions.h>
+#include <model/execution/objects/GraceObjectFactory.h>
 
 namespace naylang {
 
@@ -21,26 +22,44 @@ class ExecutionEvaluator;
 class GraceObject {
 protected:
     std::map<std::string, MethodPtr> _nativeMethods;
+    std::map<std::string, MethodPtr> _userMethods;
 public:
     GraceObject() = default;
 
-    virtual GraceObjectPtr dispatch(const std::string &methodName, ExecutionEvaluator &eval);
+    virtual GraceObjectPtr
+    dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
     virtual void addDefaultMethods() = 0;
+    virtual void addMethod(const std::string &name, MethodPtr method);
 
     virtual const GraceBoolean &asBoolean() const;
     virtual bool isUndefined() const;
     virtual bool isDone() const;
 };
 
-class GraceDone : public GraceObject {
+class GraceDoneDef : public GraceObject {
 public:
-    GraceDone() = default;
+    GraceDoneDef() = default;
 
-    virtual GraceObjectPtr dispatch(const std::string &methodName, ExecutionEvaluator &eval);
-
+    virtual GraceObjectPtr
+    dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
     virtual void addDefaultMethods();
 
+    bool operator==(const GraceObject& rhs) const;
+    bool operator!=(const GraceObject& rhs) const;
+
     bool isDone() const;
+};
+
+static const auto GraceDone = make_obj<GraceDoneDef>();
+
+class GraceScope : public GraceObject {
+public:
+    GraceScope() = default;
+
+    virtual GraceObjectPtr
+    dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
+
+    virtual void addDefaultMethods();
 };
 } // end namespace naylang
 

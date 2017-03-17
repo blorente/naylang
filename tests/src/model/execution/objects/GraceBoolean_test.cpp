@@ -18,9 +18,9 @@ TEST_CASE("Grace Boolean", "[GraceObjects]") {
 
     SECTION("A GraceBoolean can dispatch the prefix! and &&(_) methods as predefined") {
         ExecutionEvaluator eval;
-        REQUIRE(*GraceFalse == *bul.dispatch("prefix!", eval));
+        REQUIRE(*GraceFalse == *bul.dispatch("prefix!", eval, {}));
         eval.evaluate(*make_node<BooleanLiteral>(true));
-        REQUIRE(*GraceTrue == *bul.dispatch("&&(_)", eval));
+        REQUIRE(*GraceTrue == *bul.dispatch("&&(_)", eval, {eval.partial()}));
     }
 
     SECTION("GraceTrue and GraceFalse constants are predefined") {

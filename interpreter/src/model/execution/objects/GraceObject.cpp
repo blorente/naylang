@@ -23,29 +23,50 @@ bool GraceObject::isDone() const {
     return false;
 }
 
-GraceObjectPtr GraceObject::dispatch(const std::string &methodName, ExecutionEvaluator &eval) {
-    if (_nativeMethods.find(methodName) == _nativeMethods.end())
-        throw "Method not found";
-
-    MethodPtr meth = _nativeMethods[methodName];
-    std::vector<GraceObjectPtr> params;
-    for (int i = 0; i < meth->numParams(); i++) {
-        params.push_back(std::move(eval.objectStack().top()));
+GraceObjectPtr GraceObject::dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) {
+    MethodPtr meth = nullptr;
+    if (_userMethods.find(methodName) != _userMethods.end()) {
+        meth = _userMethods[methodName];
+    } else {
+        if (_nativeMethods.find(methodName) != _nativeMethods.end()) {
+            meth = _nativeMethods[methodName];
+        } else {
+            throw "Method not found in native methods";
+        }
     }
-    MethodRequest req(methodName, params);
-
+    MethodRequest req(methodName, paramValues);
     return meth->respond(eval, *this, req);
 }
 
-bool GraceDone::isDone() const {
+void GraceObject::addMethod(const std::string &name, MethodPtr method) {
+    _userMethods[name] = method;
+}
+
+bool GraceDoneDef::isDone() const {
     return true;
 }
 
-void GraceDone::addDefaultMethods() {
+void GraceDoneDef::addDefaultMethods() {
     // Some methods
 }
 
-GraceObjectPtr GraceDone::dispatch(const std::string &methodName, ExecutionEvaluator &eval) {
-    return GraceObject::dispatch(methodName, eval);
+GraceObjectPtr GraceDoneDef::dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) {
+    return GraceObject::dispatch(methodName, eval, paramValues);
+}
+
+bool GraceDoneDef::operator==(const GraceObject &rhs) const {
+    return rhs.isDone();
+}
+
+bool GraceDoneDef::operator!=(const GraceObject &rhs) const {
+    return !(*this == rhs);
+}
+
+void GraceScope::addDefaultMethods() {
+    // Do nothing
+}
+
+GraceObjectPtr GraceScope::dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) {
+    return GraceObject::dispatch(methodName, eval, paramValues);
 }
 }

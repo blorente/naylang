@@ -21,7 +21,8 @@ public:
 
     GraceBoolean(bool value);
 
-    virtual GraceObjectPtr dispatch(const std::string &methodName, ExecutionEvaluator &eval);
+    virtual GraceObjectPtr
+    dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
     virtual void addDefaultMethods();
 
     virtual const GraceBoolean &asBoolean() const;

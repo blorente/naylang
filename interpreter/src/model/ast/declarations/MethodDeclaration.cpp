@@ -18,7 +18,7 @@ const std::string &MethodDeclaration::name() const {
     return _name;
 }
 
-const std::shared_ptr<Block> &MethodDeclaration::body() const {
+BlockPtr MethodDeclaration::body() const {
     return _body;
 }
 }

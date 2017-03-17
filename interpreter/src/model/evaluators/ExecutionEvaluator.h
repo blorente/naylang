@@ -16,13 +16,18 @@ namespace naylang {
 class ExecutionEvaluator : public Evaluator {
 
     std::stack<GraceObjectPtr> _objStack;
-
+    GraceObjectPtr _partial;
+    GraceObjectPtr _currentScope;
 public:
 
+    ExecutionEvaluator();
+
     const std::stack<GraceObjectPtr> &objectStack() const;
+    const GraceObjectPtr &partial() const;
 
     virtual void evaluate(BooleanLiteral &expression);
     virtual void evaluate(RequestNode &expression);
+    virtual void evaluate(MethodDeclaration &expression);
 };
 } // end namespace naylang
 
