@@ -7,7 +7,7 @@
 #define NAYLANG_EXECUTIONEVALUATOR_H
 
 #include <model/evaluators/Evaluator.h>
-#include <model/ast/expressions/RequestNode.h>
+#include <model/ast/expressions/requests/ImplicitRequestNode.h>
 #include <stack>
 #include <model/execution/Definitions.h>
 
@@ -27,7 +27,7 @@ public:
     void restoreScope();
 
     virtual void evaluate(BooleanLiteral &expression);
-    virtual void evaluate(RequestNode &expression);
+    virtual void evaluate(ImplicitRequestNode &expression);
     virtual void evaluate(MethodDeclaration &expression);
 };
 } // end namespace naylang

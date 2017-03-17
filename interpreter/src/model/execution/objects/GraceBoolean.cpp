@@ -3,12 +3,8 @@
 // Distributed under the GPLv3 license.
 //
 
-
-
-
 #include <model/evaluators/ExecutionEvaluator.h>
 #include "GraceBoolean.h"
-#include "GraceObjectFactory.h"
 
 namespace naylang {
 

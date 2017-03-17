@@ -6,8 +6,6 @@
 #include "ExecutionEvaluator.h"
 
 #include <model/execution/objects/GraceBoolean.h>
-#include <model/execution/objects/GraceObjectFactory.h>
-
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
 
 namespace naylang {
@@ -16,7 +14,7 @@ void ExecutionEvaluator::evaluate(BooleanLiteral &expression) {
     _partial = make_obj<GraceBoolean>(expression.value());
 }
 
-void ExecutionEvaluator::evaluate(RequestNode &expression) {
+void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
     expression.params()[0]->accept(*this);
     GraceObjectPtr self = _partial;
 

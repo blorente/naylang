@@ -6,7 +6,7 @@
 #include "catch.h"
 #include <model/evaluators/ExecutionEvaluator.h>
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
-#include <model/ast/expressions/RequestNode.h>
+#include <model/ast/expressions/requests/ImplicitRequestNode.h>
 #include <model/ast/expressions/VariableReference.h>
 #include <model/ast/declarations/Declaration.h>
 #include <model/execution/objects/GraceBoolean.h>
@@ -53,7 +53,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             ExecutionEvaluator eval;
             auto tru = make_node<BooleanLiteral>(true);
             std::vector<ExpressionPtr> prefParams{tru};
-            auto prefNot = make_node<RequestNode>("prefix!", prefParams);
+            auto prefNot = make_node<ImplicitRequestNode>("prefix!", prefParams);
             eval.evaluate(*prefNot);
 
             REQUIRE(*GraceFalse == *eval.partial());
@@ -64,7 +64,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             auto tru = make_node<BooleanLiteral>(true);
             auto fal = make_node<BooleanLiteral>(false);
             std::vector<ExpressionPtr> prefParams{tru, fal};
-            auto prefNot = make_node<RequestNode>("&&(_)", prefParams);
+            auto prefNot = make_node<ImplicitRequestNode>("&&(_)", prefParams);
             eval.evaluate(*prefNot);
 
             REQUIRE(*GraceFalse == *eval.partial());
@@ -77,7 +77,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
 //            auto tru = make_node<VariableReference>("tru");
 //            auto fal = make_node<VariableReference>("fal");
 //            std::vector<ExpressionPtr> andParams{tru, fal};
-//            auto andReq = make_node<RequestNode>("&&(_)", andParams);
+//            auto andReq = make_node<ImplicitRequestNode>("&&(_)", andParams);
 //            // self.my&&(other) == (self && other)
 //            auto myAndBlock = make_node<Block>();
 //            myAndBlock->addStatement(andReq);
@@ -86,7 +86,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
 //            auto trueLiteral = make_node<BooleanLiteral>(true);
 //            auto falseLiteral = make_node<BooleanLiteral>(false);
 //            std::vector<ExpressionPtr> requestParams{trueLiteral, falseLiteral};
-//            auto myAndReq = make_node<RequestNode>("my&&(_)", requestParams);
+//            auto myAndReq = make_node<ImplicitRequestNode>("my&&(_)", requestParams);
 //
 //            eval.evaluate(*myAndMeth);
 //            eval.evaluate(*myAndReq);

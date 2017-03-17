@@ -10,15 +10,11 @@
 
 namespace naylang {
 
-RequestNode::RequestNode(const std::string &methodName) :
+RequestNode::RequestNode(const std::string &methodName)  :
         _name{methodName}, _declaration{nullptr} {}
 
 RequestNode::RequestNode(const std::string &methodName, const std::vector<ExpressionPtr> &params) :
-    _name{methodName}, _params{params}, _declaration{nullptr} {}
-
-void RequestNode::accept(Evaluator &evaluator) {
-    evaluator.evaluate(*this);
-}
+        _name{methodName}, _params{params}, _declaration{nullptr} {}
 
 const std::string &RequestNode::identifier() const {
     return _name;
@@ -35,5 +31,4 @@ const MethodDeclaration &RequestNode::declaration() const {
 void RequestNode::bindTo(MethodDeclaration &binding) {
     _declaration = &binding;
 }
-
 }
