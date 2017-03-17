@@ -25,13 +25,26 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
         REQUIRE(eval.objectStack().top()->asBoolean().value());
     }
 
-    SECTION("Evaluating {!true} places GraceFalse on top of the stack") {
-        ExecutionEvaluator eval;
-        auto tru = make_node<BooleanLiteral>(true);
-        std::vector<ExpressionPtr> prefParams{tru};
-        auto prefNot = make_node<RequestNode>("prefix!", prefParams);
-        eval.evaluate(*prefNot);
+    SECTION("Native methods") {
+        SECTION("Evaluating {!true} places GraceFalse on top of the stack") {
+            ExecutionEvaluator eval;
+            auto tru = make_node<BooleanLiteral>(true);
+            std::vector<ExpressionPtr> prefParams{tru};
+            auto prefNot = make_node<RequestNode>("prefix!", prefParams);
+            eval.evaluate(*prefNot);
 
-        REQUIRE(*GraceFalse == *eval.objectStack().top());
+            REQUIRE(*GraceFalse == *eval.objectStack().top());
+        }
+
+        SECTION("Evaluating {true && false} places GraceFalse on top of the stack") {
+            ExecutionEvaluator eval;
+            auto tru = make_node<BooleanLiteral>(true);
+            auto fal = make_node<BooleanLiteral>(false);
+            std::vector<ExpressionPtr> prefParams{tru, fal};
+            auto prefNot = make_node<RequestNode>("&&(_)", prefParams);
+            eval.evaluate(*prefNot);
+
+            REQUIRE(*GraceFalse == *eval.objectStack().top());
+        }
     }
 }
