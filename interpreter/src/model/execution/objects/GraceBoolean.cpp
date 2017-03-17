@@ -6,14 +6,14 @@
 
 
 
+#include <model/evaluators/ExecutionEvaluator.h>
 #include "GraceBoolean.h"
 #include "GraceObjectFactory.h"
 
 namespace naylang {
 
 GraceBoolean::GraceBoolean(bool value) : _value{value} {
-
-        _methodTable["prefix!"] = make_meth(make_node<Block>());
+    addDefaultMethods();
 }
 
 const GraceBoolean & GraceBoolean::asBoolean() const {
@@ -24,8 +24,12 @@ bool GraceBoolean::value() const {
     return _value;
 }
 
-void GraceBoolean::dispatch(const std::string &methodName, Evaluator &eval) {
-    eval.evaluate(*_methodTable[methodName]->code());
+GraceObjectPtr GraceBoolean::dispatch(const std::string &methodName, ExecutionEvaluator &eval) {
+   GraceObject::dispatch(methodName, eval);
+}
+void GraceBoolean::addDefaultMethods() {
+    _nativeMethods["prefix!"] = make_native<PrefixNot>();
+    _nativeMethods["&&(_)"] = make_native<AndAnd>();
 }
 
 bool GraceBoolean::operator==(const GraceObject &rhs) const {
@@ -43,10 +47,18 @@ GraceObjectPtr GraceBoolean::PrefixNot::respond(GraceObject &self, MethodRequest
     return GraceTrue;
 }
 
+int GraceBoolean::PrefixNot::numParams() {
+    return 0;
+}
+
 GraceObjectPtr GraceBoolean::AndAnd::respond(GraceObject &self, MethodRequest &request) {
     if (self.asBoolean().value() && request.params()[0]->asBoolean().value()) {
         return GraceTrue;
     }
     return GraceFalse;
+}
+
+int GraceBoolean::AndAnd::numParams() {
+    return 1;
 }
 }

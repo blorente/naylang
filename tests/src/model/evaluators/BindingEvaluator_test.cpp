@@ -35,17 +35,17 @@ TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
         REQUIRE(eval.symbolTable().at("const")->name() == constDecl->name());
     }
 
-    SECTION("Evaluating a VariableReference or Request throws if the symbol is not in the table") {
+    SECTION("Evaluating a VariableReference or RequestNode throws if the symbol is not in the table") {
         BindingEvaluator eval;
         auto wrongVar = make_node<VariableReference>("wrongVar");
-        auto wrongMethod = make_node<Request>("wrongMethod");
+        auto wrongMethod = make_node<RequestNode>("wrongMethod");
         REQUIRE_THROWS(eval.evaluate(*wrongVar));
         REQUIRE_THROWS(eval.evaluate(*wrongMethod));
     }
 
-    SECTION("If a Request is evaluated after a MethodDeclaration with the same name, it binds to it") {
+    SECTION("If a RequestNode is evaluated after a MethodDeclaration with the same name, it binds to it") {
         BindingEvaluator eval;
-        auto rightMethod = make_node<Request>("identifier");
+        auto rightMethod = make_node<RequestNode>("identifier");
 
         eval.evaluate(*methodDecl);
         REQUIRE_NOTHROW(eval.evaluate(*rightMethod));
@@ -53,7 +53,7 @@ TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
         REQUIRE(&rightMethod->declaration() == methodDecl.get());
     }
 
-    SECTION("If a Request is evaluated after a MethodDeclaration with the same name, it binds to it") {
+    SECTION("If a RequestNode is evaluated after a MethodDeclaration with the same name, it binds to it") {
         BindingEvaluator eval;
         auto xVar = make_node<VariableReference>("x");
 

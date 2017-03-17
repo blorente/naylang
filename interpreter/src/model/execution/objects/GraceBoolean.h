@@ -7,23 +7,22 @@
 #define NAYLANG_BOOLEANOBJECT_H
 
 #include <model/execution/objects/GraceObject.h>
-#include <map>
 #include <model/ast/NodeFactory.h>
-#include <model/execution/methods/NativeMethod.h>
-#include "model/execution/methods/Method.h"
+#include <model/evaluators/ExecutionEvaluator.h>
+#include "model/execution/methods/NativeMethod.h"
 
 namespace naylang {
 
 class GraceBoolean : public GraceObject {
 
     bool _value;
-    std::map<std::string, MethodPtr> _methodTable;
 
 public:
 
     GraceBoolean(bool value);
 
-    virtual void dispatch(const std::string &methodName, Evaluator &eval);
+    virtual GraceObjectPtr dispatch(const std::string &methodName, ExecutionEvaluator &eval);
+    virtual void addDefaultMethods();
 
     virtual const GraceBoolean &asBoolean() const;
 
@@ -35,11 +34,13 @@ public:
     class PrefixNot : public NativeMethod {
     public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        virtual int numParams();
     };
 
     class AndAnd : public NativeMethod {
     public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        virtual int numParams();
     };
 
 };

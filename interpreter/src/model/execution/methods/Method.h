@@ -14,10 +14,6 @@
 
 namespace naylang {
 
-class Method;
-
-typedef std::shared_ptr<Method> MethodPtr;
-
 class Method {
     BlockPtr _code;
 
@@ -26,6 +22,8 @@ public:
     Method(BlockPtr code);
 
     virtual GraceObjectPtr respond(Evaluator &context, GraceObject &self, MethodRequest &request);
+
+    virtual int numParams();
 
     const BlockPtr &code() const;
 

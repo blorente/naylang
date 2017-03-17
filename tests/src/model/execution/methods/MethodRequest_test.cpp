@@ -10,7 +10,7 @@
 
 using namespace naylang;
 
-TEST_CASE("Method Request", "[Methods]") {
+TEST_CASE("Method RequestNode", "[Methods]") {
     SECTION("A method request accepts a name") {
         MethodRequest req("prefix!");
     }

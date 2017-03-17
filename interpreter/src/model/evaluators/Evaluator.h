@@ -27,7 +27,7 @@ class IfThen;
 class IfThenElse;
 class While;
 
-class Request;
+class RequestNode;
 class Block;
 class Lineup;
 
@@ -49,7 +49,7 @@ public:
     virtual void evaluate(StringLiteral &expression) {}
 
     virtual void evaluate(VariableReference &expression) {}
-    virtual void evaluate(Request &expression) {}
+    virtual void evaluate(RequestNode &expression) {}
     virtual void evaluate(Block &expression) {}
     virtual void evaluate(Lineup &expression) {}
 

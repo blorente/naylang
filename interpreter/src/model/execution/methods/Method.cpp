@@ -13,7 +13,11 @@ const BlockPtr &Method::code() const {
 }
 
 GraceObjectPtr Method::respond(Evaluator &context, GraceObject &self, MethodRequest &request) {
-
     return make_obj<GraceDone>();
 }
+
+int Method::numParams() {
+    throw "Default params num not implemented";
+}
+
 }

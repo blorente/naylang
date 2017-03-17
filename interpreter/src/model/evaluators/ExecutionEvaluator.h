@@ -7,8 +7,9 @@
 #define NAYLANG_EXECUTIONEVALUATOR_H
 
 #include <model/evaluators/Evaluator.h>
-#include <model/execution/objects/GraceObject.h>
+#include <model/ast/expressions/RequestNode.h>
 #include <stack>
+#include <model/execution/Definitions.h>
 
 namespace naylang {
 
@@ -21,6 +22,7 @@ public:
     const std::stack<GraceObjectPtr> &objectStack() const;
 
     virtual void evaluate(BooleanLiteral &expression);
+    virtual void evaluate(RequestNode &expression);
 };
 } // end namespace naylang
 

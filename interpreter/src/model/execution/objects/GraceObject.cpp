@@ -6,6 +6,7 @@
 
 
 
+#include <model/evaluators/ExecutionEvaluator.h>
 #include "GraceObject.h"
 
 namespace naylang {
@@ -22,11 +23,29 @@ bool GraceObject::isDone() const {
     return false;
 }
 
-void GraceDone::dispatch(const std::string &methodName, Evaluator &eval) {
-    return;
+GraceObjectPtr GraceObject::dispatch(const std::string &methodName, ExecutionEvaluator &eval) {
+    if (_nativeMethods.find(methodName) == _nativeMethods.end())
+        throw "Method not found";
+
+    MethodPtr meth = _nativeMethods[methodName];
+    std::vector<GraceObjectPtr> params;
+    for (int i = 0; i < meth->numParams(); i++) {
+        params.push_back(std::move(eval.objectStack().top()));
+    }
+    MethodRequest req(methodName, params);
+
+    return meth->respond(eval, *this, req);
 }
 
 bool GraceDone::isDone() const {
     return true;
+}
+
+void GraceDone::addDefaultMethods() {
+    // Some methods
+}
+
+GraceObjectPtr GraceDone::dispatch(const std::string &methodName, ExecutionEvaluator &eval) {
+    return GraceObject::dispatch(methodName, eval);
 }
 }

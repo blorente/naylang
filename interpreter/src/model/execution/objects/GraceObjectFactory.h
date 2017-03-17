@@ -18,5 +18,10 @@ static std::unique_ptr<Method> make_meth(std::shared_ptr<Block> &&block) {
     return std::make_unique<Method>(block);
 }
 
+template <typename T, typename... Args>
+static std::shared_ptr<T> make_native(Args&&...args) {
+    return std::shared_ptr<T>{new T{std::forward<Args>(args)...}};
+};
+
 }
 #endif //NAYLANG_GRACEOBJECTFACTORY_H

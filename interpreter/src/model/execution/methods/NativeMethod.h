@@ -20,6 +20,7 @@ public:
     virtual GraceObjectPtr respond(Evaluator &context, GraceObject &self, MethodRequest &request) {
         return respond(self, request);
     }
+    virtual int numParams() = 0;
 
 };
 } // end namespace naylang

@@ -8,19 +8,24 @@
 
 #include <memory>
 #include <model/evaluators/Evaluator.h>
+#include <map>
+#include <model/evaluators/ExecutionEvaluator.h>
+#include <model/execution/methods/Method.h>
+#include <model/execution/Definitions.h>
 
 namespace naylang {
 
-class GraceObject;
 class GraceBoolean;
-
-typedef std::shared_ptr<GraceObject> GraceObjectPtr;
+class ExecutionEvaluator;
 
 class GraceObject {
+protected:
+    std::map<std::string, MethodPtr> _nativeMethods;
 public:
     GraceObject() = default;
 
-    virtual void dispatch(const std::string &methodName, Evaluator &eval) = 0;
+    virtual GraceObjectPtr dispatch(const std::string &methodName, ExecutionEvaluator &eval);
+    virtual void addDefaultMethods() = 0;
 
     virtual const GraceBoolean &asBoolean() const;
     virtual bool isUndefined() const;
@@ -29,8 +34,12 @@ public:
 
 class GraceDone : public GraceObject {
 public:
+    GraceDone() = default;
 
-    virtual void dispatch(const std::string &methodName, Evaluator &eval);
+    virtual GraceObjectPtr dispatch(const std::string &methodName, ExecutionEvaluator &eval);
+
+    virtual void addDefaultMethods();
+
     bool isDone() const;
 };
 } // end namespace naylang

@@ -14,7 +14,7 @@
 
 namespace naylang {
 
-class Request : public Expression {
+class RequestNode : public Expression {
 
     std::string _name;
     std::vector<ExpressionPtr> _params;
@@ -26,8 +26,8 @@ class Request : public Expression {
 
 public:
 
-    Request(const std::string &methodName);
-    Request(const std::string &methodName, const std::vector<ExpressionPtr> params);
+    RequestNode(const std::string &methodName);
+    RequestNode(const std::string &methodName, const std::vector<ExpressionPtr> &params);
 
     void accept(Evaluator &evaluator) override;
 

@@ -18,7 +18,7 @@ void BindingEvaluator::evaluate(VariableReference &expression) {
     expression.bindTo(*_symbolTable[expression.identifier()]);
 }
 
-void BindingEvaluator::evaluate(Request &expression) {
+void BindingEvaluator::evaluate(RequestNode &expression) {
     if (_symbolTable.find(expression.identifier()) == _symbolTable.end()) {
         throw "Binding not found in symbol table";
     }

@@ -4,7 +4,7 @@
 //
 
 #include <model/execution/objects/GraceBoolean.h>
-#include <model/evaluators/ExecutionEvaluator.h>
+#include <model/ast/expressions/primitives/BooleanLiteral.h>
 #include "catch.h"
 
 using namespace naylang;
@@ -16,9 +16,11 @@ TEST_CASE("Grace Boolean", "[GraceObjects]") {
         REQUIRE(bul.value());
     }
 
-    SECTION("A GraceBoolean can dispatch the prefix! method as predefined") {
+    SECTION("A GraceBoolean can dispatch the prefix! and &&(_) methods as predefined") {
         ExecutionEvaluator eval;
-        bul.dispatch("prefix!", eval);
+        REQUIRE(*GraceFalse == *bul.dispatch("prefix!", eval));
+        eval.evaluate(*make_node<BooleanLiteral>(true));
+        REQUIRE(*GraceTrue == *bul.dispatch("&&(_)", eval));
     }
 
     SECTION("GraceTrue and GraceFalse constants are predefined") {
