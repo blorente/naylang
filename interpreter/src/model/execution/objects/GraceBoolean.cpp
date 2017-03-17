@@ -25,7 +25,7 @@ bool GraceBoolean::value() const {
 }
 
 GraceObjectPtr GraceBoolean::dispatch(const std::string &methodName, ExecutionEvaluator &eval) {
-   GraceObject::dispatch(methodName, eval);
+   return GraceObject::dispatch(methodName, eval);
 }
 void GraceBoolean::addDefaultMethods() {
     _nativeMethods["prefix!"] = make_native<PrefixNot>();
