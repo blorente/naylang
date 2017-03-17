@@ -12,10 +12,6 @@
 
 namespace naylang {
 
-const std::stack<GraceObjectPtr> &ExecutionEvaluator::objectStack() const {
-    return _objStack;
-}
-
 void ExecutionEvaluator::evaluate(BooleanLiteral &expression) {
     _partial = make_obj<GraceBoolean>(expression.value());
 }
@@ -44,5 +40,20 @@ ExecutionEvaluator::ExecutionEvaluator() : _currentScope{make_obj<GraceScope>()}
 
 const GraceObjectPtr &ExecutionEvaluator::partial() const {
     return _partial;
+}
+
+GraceObjectPtr ExecutionEvaluator::currentScope() const {
+    return _currentScope;
+}
+
+GraceObjectPtr ExecutionEvaluator::createNewScope() {
+    GraceObjectPtr newScope = make_obj<GraceScope>();
+    newScope->setOuter(_currentScope);
+    _currentScope = newScope;
+    return newScope;
+}
+
+void ExecutionEvaluator::restoreScope() {
+    _currentScope = _currentScope->outer();
 }
 }

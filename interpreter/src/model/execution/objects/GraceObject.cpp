@@ -42,6 +42,18 @@ void GraceObject::addMethod(const std::string &name, MethodPtr method) {
     _userMethods[name] = method;
 }
 
+bool GraceObject::isScope() const {
+    return false;
+}
+
+GraceObjectPtr GraceObject::outer() {
+    return _outer;
+}
+
+void GraceObject::setOuter(GraceObjectPtr outer) {
+    _outer = outer;
+}
+
 bool GraceDoneDef::isDone() const {
     return true;
 }
@@ -68,5 +80,9 @@ void GraceScope::addDefaultMethods() {
 
 GraceObjectPtr GraceScope::dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) {
     return GraceObject::dispatch(methodName, eval, paramValues);
+}
+
+bool GraceScope::isScope() const {
+    return true;
 }
 }

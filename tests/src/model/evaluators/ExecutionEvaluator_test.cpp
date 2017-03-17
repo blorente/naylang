@@ -27,6 +27,27 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
         REQUIRE(eval.partial()->asBoolean().value());
     }
 
+    SECTION("Environment") {
+        SECTION("The evaluator has a GraceScope environment object") {
+            ExecutionEvaluator eval;
+            REQUIRE(eval.currentScope()->isScope());
+        }
+
+        SECTION("An Execution Evaluator can create a scope") {
+            ExecutionEvaluator eval;
+            GraceObjectPtr newEnv = eval.createNewScope();
+            REQUIRE(newEnv == eval.currentScope());
+        }
+
+        SECTION("An Execution Evaluator can restore a scope") {
+            ExecutionEvaluator eval;
+            GraceObjectPtr oldEnv = eval.currentScope();
+            GraceObjectPtr newEnv = eval.createNewScope();
+            eval.restoreScope();
+            REQUIRE(oldEnv == eval.currentScope());
+        }
+    }
+
     SECTION("Native methods") {
         SECTION("Evaluating {!true} places GraceFalse on the partial") {
             ExecutionEvaluator eval;
@@ -66,9 +87,10 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
 //            auto falseLiteral = make_node<BooleanLiteral>(false);
 //            std::vector<ExpressionPtr> requestParams{trueLiteral, falseLiteral};
 //            auto myAndReq = make_node<RequestNode>("my&&(_)", requestParams);
+//
 //            eval.evaluate(*myAndMeth);
 //            eval.evaluate(*myAndReq);
-//            REQUIRE(*GraceFalse  == *eval.objectStack().top());
+//            REQUIRE(*GraceFalse  == *eval.partial());
 //        }
 //    }
 }

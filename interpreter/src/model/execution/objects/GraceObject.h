@@ -23,6 +23,9 @@ class GraceObject {
 protected:
     std::map<std::string, MethodPtr> _nativeMethods;
     std::map<std::string, MethodPtr> _userMethods;
+
+    GraceObjectPtr _outer;
+
 public:
     GraceObject() = default;
 
@@ -34,6 +37,10 @@ public:
     virtual const GraceBoolean &asBoolean() const;
     virtual bool isUndefined() const;
     virtual bool isDone() const;
+    virtual bool isScope() const;
+
+    virtual GraceObjectPtr outer();
+    virtual void setOuter(GraceObjectPtr outer);
 };
 
 class GraceDoneDef : public GraceObject {
@@ -56,10 +63,10 @@ class GraceScope : public GraceObject {
 public:
     GraceScope() = default;
 
-    virtual GraceObjectPtr
-    dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
-
+    virtual GraceObjectPtr dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
     virtual void addDefaultMethods();
+
+    virtual bool isScope() const;
 };
 } // end namespace naylang
 
