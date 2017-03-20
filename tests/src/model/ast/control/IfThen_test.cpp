@@ -12,7 +12,7 @@
 
 using namespace naylang;
 
-TEST_CASE("If Then Expressions", "[Expressions]") {
+TEST_CASE("If Then Expressions", "[Control]") {
     auto tru = make_node<BooleanLiteral>(true);
     auto five = make_node<NumberLiteral>(5.0);
     auto six = make_node<NumberLiteral>(6.0);
