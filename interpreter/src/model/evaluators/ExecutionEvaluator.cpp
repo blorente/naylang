@@ -15,16 +15,15 @@ void ExecutionEvaluator::evaluate(BooleanLiteral &expression) {
 }
 
 void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
-    expression.params()[0]->accept(*this);
-    GraceObjectPtr self = _partial;
+//    expression.params()[0]->accept(*this);
+//    GraceObjectPtr self = _partial;
 
     std::vector<GraceObjectPtr> paramValues;
-    for (int i = 1; i < expression.params().size(); i++) {
-        expression.params()[i]->accept(*this);
+    for (auto param : expression.params()) {
+        param->accept(*this);
         paramValues.push_back(_partial);
     }
-    // A this point, all the parameters are in the stack
-    GraceObjectPtr ret = self->dispatch(expression.identifier(), *this, paramValues);
+    GraceObjectPtr ret = _currentScope->dispatch(expression.identifier(), *this, paramValues);
     // ret might be GraceDone
     _partial = ret;
 }
@@ -53,5 +52,23 @@ GraceObjectPtr ExecutionEvaluator::createNewScope() {
 
 void ExecutionEvaluator::restoreScope() {
     _currentScope = _currentScope->outer();
+}
+
+void ExecutionEvaluator::evaluate(Return &expression) {
+    return;
+}
+
+void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
+    expression.receiver()->accept(*this);
+    GraceObjectPtr self = _partial;
+
+    std::vector<GraceObjectPtr> paramValues;
+    for (auto param : expression.params()) {
+        param->accept(*this);
+        paramValues.push_back(_partial);
+    }
+    GraceObjectPtr ret = self->dispatch(expression.identifier(), *this, paramValues);
+    // ret might be GraceDone
+    _partial = ret;
 }
 }

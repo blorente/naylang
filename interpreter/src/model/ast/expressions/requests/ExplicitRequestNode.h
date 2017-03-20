@@ -7,6 +7,7 @@
 #define NAYLANG_EXPLICITREQUESTNODE_H
 
 #include <model/ast/expressions/requests/RequestNode.h>
+#include <model/ast/expressions/Expression.h>
 
 namespace naylang {
 

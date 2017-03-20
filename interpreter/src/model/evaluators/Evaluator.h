@@ -26,6 +26,7 @@ class MethodDeclaration;
 class IfThen;
 class IfThenElse;
 class While;
+class Return;
 
 class ImplicitRequestNode;
 class ExplicitRequestNode;
@@ -64,6 +65,7 @@ public:
     virtual void evaluate(IfThen &expression) {}
     virtual void evaluate(IfThenElse &expression) {}
     virtual void evaluate(While &expression) {}
+    virtual void evaluate(Return &expression) {}
 };
 
 }

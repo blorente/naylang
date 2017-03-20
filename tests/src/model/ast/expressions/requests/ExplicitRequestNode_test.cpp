@@ -22,10 +22,11 @@ TEST_CASE("Explicit Request Node expressions", "[Requests]") {
         REQUIRE_NOTHROW(ExplicitRequestNode req("myMethod", five););
     }
 
-    SECTION("A ExplicitRequestNode can return the identifier name and parameter expressions") {
+    SECTION("A ExplicitRequestNode can return the identifier name, receiver and parameter expressions") {
         ExplicitRequestNode req("myMethod", five, {five});
         REQUIRE(req.identifier() == "myMethod");
         REQUIRE(req.params() == std::vector<ExpressionPtr>{five});
+        REQUIRE(req.receiver() == five);
     }
 
     SECTION("A ExplicitRequestNode can be bound to a identifier declaration") {

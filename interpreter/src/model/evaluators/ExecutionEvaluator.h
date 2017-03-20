@@ -8,6 +8,8 @@
 
 #include <model/evaluators/Evaluator.h>
 #include <model/ast/expressions/requests/ImplicitRequestNode.h>
+#include <model/ast/expressions/requests/ExplicitRequestNode.h>
+#include <model/ast/control/Return.h>
 #include <stack>
 #include <model/execution/Definitions.h>
 
@@ -28,7 +30,9 @@ public:
 
     virtual void evaluate(BooleanLiteral &expression);
     virtual void evaluate(ImplicitRequestNode &expression);
+    virtual void evaluate(ExplicitRequestNode &expression);
     virtual void evaluate(MethodDeclaration &expression);
+    virtual void evaluate(Return &expression);
 };
 } // end namespace naylang
 
