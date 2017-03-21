@@ -23,11 +23,12 @@ class GraceObject {
 protected:
     std::map<std::string, MethodPtr> _nativeMethods;
     std::map<std::string, MethodPtr> _userMethods;
+    std::map<std::string, GraceObjectPtr> _fields;
 
     GraceObjectPtr _outer;
 
 public:
-    GraceObject() = default;
+    GraceObject();
 
     virtual GraceObjectPtr
     dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
@@ -42,6 +43,11 @@ public:
 
     virtual GraceObjectPtr outer();
     virtual void setOuter(GraceObjectPtr outer);
+
+    virtual bool hasField(const std::string &name) const;
+    virtual bool hasMethod(const std::string &name) const;
+
+    virtual void setField(const std::string &name, GraceObjectPtr value);
 };
 
 class GraceDoneDef : public GraceObject {

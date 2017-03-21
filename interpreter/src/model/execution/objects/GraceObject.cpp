@@ -11,6 +11,8 @@
 
 namespace naylang {
 
+GraceObject::GraceObject() : _outer{nullptr} {}
+
 const GraceBoolean & GraceObject::asBoolean() const {
     throw "Trying to cast a generic GraceObject as GraceBoolean";
 }
@@ -56,6 +58,22 @@ void GraceObject::setOuter(GraceObjectPtr outer) {
 
 bool GraceObject::isClosure() const {
     return false;
+}
+
+bool GraceObject::hasField(const std::string &name) const {
+    return _fields.find(name) != _fields.end();
+}
+
+bool GraceObject::hasMethod(const std::string &name) const {
+    bool found = false;
+    found = found || (_outer != nullptr && _outer->hasMethod(name));
+    found = found || _nativeMethods.find(name) != _nativeMethods.end();
+    found = found || _userMethods.find(name) != _userMethods.end();
+    return found;
+}
+
+void GraceObject::setField(const std::string &name, GraceObjectPtr value) {
+    _fields[name] = value;
 }
 
 bool GraceDoneDef::isDone() const {
