@@ -2,6 +2,7 @@
 // Copyright (c) 2017 by Borja Lorente.
 // Distributed under the GPLv3 license.
 //
+#include <model/execution/objects/GraceDoneDef.h>
 #include "Method.h"
 
 namespace naylang {
@@ -31,10 +32,6 @@ GraceObjectPtr Method::respond(ExecutionEvaluator &context, GraceObject &self, M
     }
     context.setScope(oldScope);
     return ret;
-}
-
-int Method::numParams() {
-    throw "Default params num not implemented";
 }
 
 const std::vector<DeclarationPtr> &Method::params() const {

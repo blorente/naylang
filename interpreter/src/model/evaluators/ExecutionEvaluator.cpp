@@ -8,8 +8,12 @@
 #include <model/execution/objects/GraceBoolean.h>
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
 #include <model/execution/objects/GraceClosure.h>
+#include <model/execution/objects/GraceScope.h>
+#include <model/execution/objects/GraceDoneDef.h>
 
 namespace naylang {
+
+ExecutionEvaluator::ExecutionEvaluator() : _currentScope{make_obj<GraceScope>()}, _partial{make_obj<GraceDoneDef>()}{}
 
 void ExecutionEvaluator::evaluate(BooleanLiteral &expression) {
     _partial = make_obj<GraceBoolean>(expression.value());
@@ -30,26 +34,6 @@ void ExecutionEvaluator::evaluate(MethodDeclaration &expression) {
     _currentScope->addMethod(expression.name(), method);
 }
 
-ExecutionEvaluator::ExecutionEvaluator() : _currentScope{make_obj<GraceScope>()}, _partial{make_obj<GraceDoneDef>()}{}
-
-const GraceObjectPtr &ExecutionEvaluator::partial() const {
-    return _partial;
-}
-
-GraceObjectPtr ExecutionEvaluator::currentScope() const {
-    return _currentScope;
-}
-
-GraceObjectPtr ExecutionEvaluator::createNewScope() {
-    GraceObjectPtr newScope = make_obj<GraceScope>();
-    newScope->setOuter(_currentScope);
-    _currentScope = newScope;
-    return newScope;
-}
-
-void ExecutionEvaluator::restoreScope() {
-    _currentScope = _currentScope->outer();
-}
 
 void ExecutionEvaluator::evaluate(Return &expression) {
     return;
@@ -67,17 +51,35 @@ void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
     _partial = self->dispatch(expression.identifier(), *this, paramValues);
 }
 
+void ExecutionEvaluator::evaluate(VariableReference &expression) {
+    if (!_currentScope->hasField(expression.identifier()))
+        throw "Variable not found in scope";
+    _partial = _currentScope->getField(expression.identifier());
+}
+
+const GraceObjectPtr &ExecutionEvaluator::partial() const {
+    return _partial;
+}
+GraceObjectPtr ExecutionEvaluator::currentScope() const {
+    return _currentScope;
+}
+
+GraceObjectPtr ExecutionEvaluator::createNewScope() {
+    GraceObjectPtr newScope = make_obj<GraceScope>();
+    newScope->setOuter(_currentScope);
+    _currentScope = newScope;
+    return newScope;
+}
+
+void ExecutionEvaluator::restoreScope() {
+    _currentScope = _currentScope->outer();
+}
+
 void ExecutionEvaluator::evaluate(Block &expression) {
     _partial = make_obj<GraceClosure>();
 }
 
 void ExecutionEvaluator::setScope(GraceObjectPtr scope) {
     _currentScope = scope;
-}
-
-void ExecutionEvaluator::evaluate(VariableReference &expression) {
-    if (!_currentScope->hasField(expression.identifier()))
-        throw "Variable not found in scope";
-    _partial = _currentScope->getField(expression.identifier());
 }
 }

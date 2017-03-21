@@ -51,30 +51,6 @@ public:
     virtual MethodPtr getMethod(const std::string &name);
     virtual GraceObjectPtr getField(const std::string &name);
 };
-
-class GraceDoneDef : public GraceObject {
-public:
-    GraceDoneDef() = default;
-
-    virtual GraceObjectPtr
-    dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
-    virtual void addDefaultMethods();
-
-    bool operator==(const GraceObject& rhs) const;
-    bool operator!=(const GraceObject& rhs) const;
-
-    bool isDone() const;
-};
-
-class GraceScope : public GraceObject {
-public:
-    GraceScope() = default;
-
-    virtual GraceObjectPtr dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
-    virtual void addDefaultMethods();
-
-    virtual bool isScope() const;
-};
 } // end namespace naylang
 
 #endif //NAYLANG_GRACEOBJECT_H

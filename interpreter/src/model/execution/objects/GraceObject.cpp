@@ -89,36 +89,4 @@ GraceObjectPtr GraceObject::getField(const std::string &name) {
     }
     return _fields[name];
 }
-
-bool GraceDoneDef::isDone() const {
-    return true;
-}
-
-void GraceDoneDef::addDefaultMethods() {
-    // Some methods
-}
-
-GraceObjectPtr GraceDoneDef::dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) {
-    return GraceObject::dispatch(methodName, eval, paramValues);
-}
-
-bool GraceDoneDef::operator==(const GraceObject &rhs) const {
-    return rhs.isDone();
-}
-
-bool GraceDoneDef::operator!=(const GraceObject &rhs) const {
-    return !(*this == rhs);
-}
-
-void GraceScope::addDefaultMethods() {
-    // Do nothing
-}
-
-GraceObjectPtr GraceScope::dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) {
-    return GraceObject::dispatch(methodName, eval, paramValues);
-}
-
-bool GraceScope::isScope() const {
-    return true;
-}
 }

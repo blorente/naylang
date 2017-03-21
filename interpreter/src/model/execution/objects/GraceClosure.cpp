@@ -7,6 +7,7 @@
 
 
 #include "GraceClosure.h"
+#include "GraceDoneDef.h"
 
 namespace naylang {
 

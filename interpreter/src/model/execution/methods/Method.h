@@ -10,6 +10,7 @@
 #include <model/ast/expressions/Block.h>
 #include <model/execution/objects/GraceObject.h>
 #include <model/execution/objects/GraceObjectFactory.h>
+#include <model/execution/methods/MethodFactory.h>
 #include "MethodRequest.h"
 
 namespace naylang {
@@ -22,8 +23,6 @@ public:
     Method(BlockPtr code);
 
     virtual GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request);
-
-    virtual int numParams();
 
     const BlockPtr &code() const;
     const std::vector<DeclarationPtr> &params() const;

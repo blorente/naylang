@@ -6,13 +6,10 @@
 #include "catch.h"
 #include <model/evaluators/ExecutionEvaluator.h>
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
-#include <model/ast/expressions/requests/ImplicitRequestNode.h>
-#include <model/ast/expressions/requests/ExplicitRequestNode.h>
-#include <model/ast/expressions/VariableReference.h>
 #include <model/ast/declarations/VariableDeclaration.h>
-#include <model/ast/declarations/Declaration.h>
 #include <model/execution/objects/GraceBoolean.h>
-#include <model/ast/control/Return.h>
+#include <model/execution/objects/GraceScope.h>
+#include <model/execution/objects/GraceDoneDef.h>
 
 using namespace naylang;
 
