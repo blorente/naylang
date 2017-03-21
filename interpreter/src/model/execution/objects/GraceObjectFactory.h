@@ -14,8 +14,8 @@ static std::shared_ptr<T> make_obj(Args&&...args) {
 };
 
 class Method;
-static std::unique_ptr<Method> make_meth(std::shared_ptr<Block> &&block) {
-    return std::make_unique<Method>(block);
+static std::shared_ptr<Method> make_meth(std::shared_ptr<Block> &&block) {
+    return std::make_shared<Method>(block);
 }
 
 template <typename T, typename... Args>

@@ -7,6 +7,7 @@
 
 #include <model/execution/objects/GraceBoolean.h>
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
+#include <model/execution/objects/GraceClosure.h>
 
 namespace naylang {
 
@@ -15,9 +16,6 @@ void ExecutionEvaluator::evaluate(BooleanLiteral &expression) {
 }
 
 void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
-//    expression.params()[0]->accept(*this);
-//    GraceObjectPtr self = _partial;
-
     std::vector<GraceObjectPtr> paramValues;
     for (auto param : expression.params()) {
         param->accept(*this);
@@ -33,7 +31,7 @@ void ExecutionEvaluator::evaluate(MethodDeclaration &expression) {
     _currentScope->addMethod(expression.name(), method);
 }
 
-ExecutionEvaluator::ExecutionEvaluator() : _currentScope{make_obj<GraceScope>()}, _partial{GraceDone}{}
+ExecutionEvaluator::ExecutionEvaluator() : _currentScope{make_obj<GraceScope>()}, _partial{make_obj<GraceDoneDef>()}{}
 
 const GraceObjectPtr &ExecutionEvaluator::partial() const {
     return _partial;
@@ -70,5 +68,10 @@ void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
     GraceObjectPtr ret = self->dispatch(expression.identifier(), *this, paramValues);
     // ret might be GraceDone
     _partial = ret;
+}
+
+void ExecutionEvaluator::evaluate(Block &expression) {
+    auto apply = make_meth(expression.get_shared());
+    _partial = make_obj<GraceClosure>(apply);
 }
 }

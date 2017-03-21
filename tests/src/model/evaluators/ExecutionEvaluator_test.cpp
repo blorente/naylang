@@ -19,7 +19,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
 
     SECTION("An execution evaluator has a partial GraceObject") {
         ExecutionEvaluator eval;
-        REQUIRE(*GraceDone == *eval.partial());
+        REQUIRE(*make_obj<GraceDoneDef>() == *eval.partial());
     }
 
     SECTION("Particular nodes") {
@@ -35,6 +35,13 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             ExecutionEvaluator eval;
             Return ret;
             REQUIRE_NOTHROW(eval.evaluate(ret));
+        }
+
+        SECTION("Evaluating a Block places a Closure on the partial, with an 'apply' method") {
+            ExecutionEvaluator eval;
+            auto blankBlock = make_node<Block>();
+            blankBlock->accept(eval);
+            REQUIRE(eval.partial()->isClosure());
         }
     }
 
@@ -81,28 +88,28 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
         }
     }
 
-    SECTION("Non-native methods") {
-        SECTION("Evaluating the user defined my&&(true, false) (logic AND) places GraceFalse on top of the stack") {
-            ExecutionEvaluator eval;
-            auto tru = make_node<VariableReference>("tru");
-            auto fal = make_node<VariableReference>("fal");
-            std::vector<ExpressionPtr> andParams{tru, fal};
-            auto andReq = make_node<ImplicitRequestNode>("&&(_)", andParams);
-            auto ret = make_node<Return>();
-            // self.my&&(other) == (self && other)
-            auto myAndBlock = make_node<Block>();
-            myAndBlock->addStatement(andReq);
-            myAndBlock->addStatement(ret);
-            auto myAndMeth = make_node<MethodDeclaration>("my&&(_)", myAndBlock);
-
-            auto trueLiteral = make_node<BooleanLiteral>(true);
-            auto falseLiteral = make_node<BooleanLiteral>(false);
-            std::vector<ExpressionPtr> requestParams{trueLiteral, falseLiteral};
-            auto myAndReq = make_node<ImplicitRequestNode>("my&&(_)", requestParams);
-
-            eval.evaluate(*myAndMeth);
-            eval.evaluate(*myAndReq);
-            REQUIRE(*GraceFalse == *eval.partial());
-        }
-    }
+//    SECTION("Non-native methods") {
+//        SECTION("Evaluating the user defined my&&(true, false) (logic AND) places GraceFalse on top of the stack") {
+//            ExecutionEvaluator eval;
+//            auto tru = make_node<VariableReference>("tru");
+//            auto fal = make_node<VariableReference>("fal");
+//            std::vector<ExpressionPtr> andParams{tru, fal};
+//            auto andReq = make_node<ImplicitRequestNode>("&&(_)", andParams);
+//            auto ret = make_node<Return>();
+//            // self.my&&(other) == (self && other)
+//            auto myAndBlock = make_node<Block>();
+//            myAndBlock->addStatement(andReq);
+//            myAndBlock->addStatement(ret);
+//            auto myAndMeth = make_node<MethodDeclaration>("my&&(_)", myAndBlock);
+//
+//            auto trueLiteral = make_node<BooleanLiteral>(true);
+//            auto falseLiteral = make_node<BooleanLiteral>(false);
+//            std::vector<ExpressionPtr> requestParams{trueLiteral, falseLiteral};
+//            auto myAndReq = make_node<ImplicitRequestNode>("my&&(_)", requestParams);
+//
+//            eval.evaluate(*myAndMeth);
+//            eval.evaluate(*myAndReq);
+//            REQUIRE(*GraceFalse == *eval.partial());
+//        }
+//    }
 }

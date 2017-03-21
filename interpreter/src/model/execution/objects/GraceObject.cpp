@@ -54,6 +54,10 @@ void GraceObject::setOuter(GraceObjectPtr outer) {
     _outer = outer;
 }
 
+bool GraceObject::isClosure() const {
+    return false;
+}
+
 bool GraceDoneDef::isDone() const {
     return true;
 }

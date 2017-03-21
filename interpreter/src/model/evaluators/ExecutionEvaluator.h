@@ -10,6 +10,7 @@
 #include <model/ast/expressions/requests/ImplicitRequestNode.h>
 #include <model/ast/expressions/requests/ExplicitRequestNode.h>
 #include <model/ast/control/Return.h>
+#include <model/ast/expressions/Block.h>
 #include <stack>
 #include <model/execution/Definitions.h>
 
@@ -33,6 +34,7 @@ public:
     virtual void evaluate(ExplicitRequestNode &expression);
     virtual void evaluate(MethodDeclaration &expression);
     virtual void evaluate(Return &expression);
+    virtual void evaluate(Block &expression);
 };
 } // end namespace naylang
 

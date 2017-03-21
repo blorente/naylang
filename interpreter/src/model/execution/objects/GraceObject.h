@@ -38,6 +38,7 @@ public:
     virtual bool isUndefined() const;
     virtual bool isDone() const;
     virtual bool isScope() const;
+    virtual bool isClosure() const;
 
     virtual GraceObjectPtr outer();
     virtual void setOuter(GraceObjectPtr outer);
@@ -56,8 +57,6 @@ public:
 
     bool isDone() const;
 };
-
-static const auto GraceDone = make_obj<GraceDoneDef>();
 
 class GraceScope : public GraceObject {
 public:

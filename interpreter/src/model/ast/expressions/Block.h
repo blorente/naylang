@@ -17,7 +17,7 @@ class Block;
 
 typedef std::shared_ptr<Block> BlockPtr;
 
-class Block : public Expression {
+class Block : public Expression, public std::enable_shared_from_this<Block> {
 
     std::vector<StatementPtr> _body;
     std::vector<DeclarationPtr> _params;
@@ -33,6 +33,7 @@ public:
 
     void addStatement(StatementPtr statement);
     void addParameter(DeclarationPtr param);
+    BlockPtr get_shared();
 };
 
 } // end namespace naylang
