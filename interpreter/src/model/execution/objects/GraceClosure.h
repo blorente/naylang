@@ -13,10 +13,8 @@ namespace naylang {
 class GraceClosure : public GraceObject {
 public:
 
-    GraceClosure(MethodPtr method);
-
-    virtual GraceObjectPtr
-    dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
+    GraceClosure() = default;
+    GraceClosure(const std::string &name, MethodPtr method);
 
     virtual void addDefaultMethods();
     virtual bool isClosure() const;

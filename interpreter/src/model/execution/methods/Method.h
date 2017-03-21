@@ -21,11 +21,12 @@ public:
     Method() = default;
     Method(BlockPtr code);
 
-    virtual GraceObjectPtr respond(Evaluator &context, GraceObject &self, MethodRequest &request);
+    virtual GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request);
 
     virtual int numParams();
 
     const BlockPtr &code() const;
+    const std::vector<DeclarationPtr> &params() const;
 
 };
 } // end namespace naylang

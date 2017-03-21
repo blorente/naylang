@@ -31,4 +31,9 @@ TEST_CASE("Method", "[Methods]") {
         auto ret = meth.respond(eval, tru, req);
         REQUIRE(ret->isDone());
     }
+
+    SECTION("A method can return it's parameter definitions") {
+        Method meth(fiveBlock);
+        REQUIRE_NOTHROW(std::equal(meth.params().begin(), meth.params().end(), fiveBlock->params().begin()));
+    }
 }

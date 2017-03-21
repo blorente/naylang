@@ -45,9 +45,11 @@ public:
     virtual void setOuter(GraceObjectPtr outer);
 
     virtual bool hasField(const std::string &name) const;
-    virtual bool hasMethod(const std::string &name) const;
-
     virtual void setField(const std::string &name, GraceObjectPtr value);
+
+    virtual bool hasMethod(const std::string &name) const;
+    virtual MethodPtr getMethod(const std::string &name);
+    virtual GraceObjectPtr getField(const std::string &name);
 };
 
 class GraceDoneDef : public GraceObject {

@@ -15,7 +15,12 @@ TEST_CASE("Grace Closure", "[GraceObjects]") {
 
     SECTION("A Closure accepts a method to enclose as parameter") {
         MethodPtr meth = make_meth(make_node<Block>());
-        GraceClosure closure(meth);
+        GraceClosure closure("blankMethod", meth);
+    }
+
+    SECTION("If the empty constructor is used, fields have to be defined elsewhere") {
+        GraceClosure closure;
+        REQUIRE(!closure.hasField("x"));
     }
 
     SECTION("A Closure has all the parameters defined in the block as fields by default") {
@@ -23,23 +28,32 @@ TEST_CASE("Grace Closure", "[GraceObjects]") {
         auto x = make_node<VariableDeclaration>("x");
         block->addParameter(x);
         MethodPtr meth = make_meth(block);
-        GraceClosure closure(meth);
+        GraceClosure closure("methodWithParam", meth);
         REQUIRE(closure.hasField("x"));
     }
 
-    SECTION("A Closure has a predefined 'apply' method") {
+    SECTION("A Closure defines the passed (enclosed) method") {
         auto block = make_node<Block>();
         MethodPtr meth = make_meth(block);
-        GraceClosure closure(meth);
-        REQUIRE(closure.hasMethod("apply"));
+        GraceClosure closure("enclosed", meth);
+        REQUIRE(closure.hasMethod("enclosed"));
     }
 
-    SECTION("A Values can be assigned to the predefined fields with setField()") {
+    SECTION("A Value can be assigned to the predefined fields with setField()") {
         auto block = make_node<Block>();
         auto x = make_node<VariableDeclaration>("x");
         block->addParameter(x);
         MethodPtr meth = make_meth(block);
-        GraceClosure closure(meth);
+        GraceClosure closure("predefined", meth);
         REQUIRE_NOTHROW(closure.setField("x", GraceTrue));
+    }
+
+    SECTION("Field values can be retrieved") {
+        auto block = make_node<Block>();
+        auto x = make_node<VariableDeclaration>("x");
+        block->addParameter(x);
+        MethodPtr meth = make_meth(block);
+        GraceClosure closure("retrieveMe", meth);
+        REQUIRE_NOTHROW(closure.getField("x"));
     }
 }

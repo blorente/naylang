@@ -26,18 +26,10 @@ bool GraceObject::isDone() const {
 }
 
 GraceObjectPtr GraceObject::dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) {
-    MethodPtr meth = nullptr;
-    if (_userMethods.find(methodName) != _userMethods.end()) {
-        meth = _userMethods[methodName];
-    } else {
-        if (_nativeMethods.find(methodName) != _nativeMethods.end()) {
-            meth = _nativeMethods[methodName];
-        } else {
-            throw "Method not found in native methods";
-        }
-    }
+    MethodPtr meth = getMethod(methodName);
     MethodRequest req(methodName, paramValues);
-    return meth->respond(eval, *this, req);
+    GraceObjectPtr ret = meth->respond(eval, *this, req);
+    return ret;
 }
 
 void GraceObject::addMethod(const std::string &name, MethodPtr method) {
@@ -74,6 +66,28 @@ bool GraceObject::hasMethod(const std::string &name) const {
 
 void GraceObject::setField(const std::string &name, GraceObjectPtr value) {
     _fields[name] = value;
+}
+
+MethodPtr GraceObject::getMethod(const std::string &name) {
+    if (_userMethods.find(name) != _userMethods.end()) {
+        return _userMethods[name];
+    }
+
+    if (_nativeMethods.find(name) != _nativeMethods.end()) {
+        return _nativeMethods[name];
+    }
+
+    if (_outer == nullptr)
+        throw "Method not found";
+
+    return _outer->getMethod(name);
+}
+
+GraceObjectPtr GraceObject::getField(const std::string &name) {
+    if (_fields.find(name) == _fields.end()) {
+        throw "Field not found in object";
+    }
+    return _fields[name];
 }
 
 bool GraceDoneDef::isDone() const {

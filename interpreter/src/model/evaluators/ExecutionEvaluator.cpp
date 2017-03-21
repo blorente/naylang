@@ -17,13 +17,12 @@ void ExecutionEvaluator::evaluate(BooleanLiteral &expression) {
 
 void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
     std::vector<GraceObjectPtr> paramValues;
-    for (auto param : expression.params()) {
-        param->accept(*this);
+    for (int i = 0; i < expression.params().size(); i++) {
+        expression.params()[i]->accept(*this);
         paramValues.push_back(_partial);
     }
-    GraceObjectPtr ret = _currentScope->dispatch(expression.identifier(), *this, paramValues);
-    // ret might be GraceDone
-    _partial = ret;
+
+    _partial = _currentScope->dispatch(expression.identifier(), *this, paramValues);
 }
 
 void ExecutionEvaluator::evaluate(MethodDeclaration &expression) {
@@ -58,20 +57,27 @@ void ExecutionEvaluator::evaluate(Return &expression) {
 
 void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
     expression.receiver()->accept(*this);
-    GraceObjectPtr self = _partial;
+    auto self = _partial;
 
     std::vector<GraceObjectPtr> paramValues;
     for (auto param : expression.params()) {
         param->accept(*this);
         paramValues.push_back(_partial);
     }
-    GraceObjectPtr ret = self->dispatch(expression.identifier(), *this, paramValues);
-    // ret might be GraceDone
-    _partial = ret;
+    _partial = self->dispatch(expression.identifier(), *this, paramValues);
 }
 
 void ExecutionEvaluator::evaluate(Block &expression) {
-    auto apply = make_meth(expression.get_shared());
-    _partial = make_obj<GraceClosure>(apply);
+    _partial = make_obj<GraceClosure>();
+}
+
+void ExecutionEvaluator::setScope(GraceObjectPtr scope) {
+    _currentScope = scope;
+}
+
+void ExecutionEvaluator::evaluate(VariableReference &expression) {
+    if (!_currentScope->hasField(expression.identifier()))
+        throw "Variable not found in scope";
+    _partial = _currentScope->getField(expression.identifier());
 }
 }
