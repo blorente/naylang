@@ -57,4 +57,32 @@ TEST_CASE("Predefined methods in GraceBoolean", "[GraceBoolean]") {
             REQUIRE(*GraceFalse == *method.respond(*GraceFalse, andFalse));
         }
     }
+
+    SECTION("OrOr") {
+        MethodRequest orTrue("||(_)", {GraceTrue});
+        MethodRequest orFalse("||(_)", {GraceFalse});
+        GraceBoolean::OrOr method;
+
+        SECTION("AndAnd returns true iff self || req.params()[0]") {
+            REQUIRE(*GraceTrue == *method.respond(*GraceTrue, orTrue));
+            REQUIRE(*GraceTrue == *method.respond(*GraceTrue, orFalse));
+            REQUIRE(*GraceTrue == *method.respond(*GraceFalse, orTrue));
+            REQUIRE(*GraceFalse == *method.respond(*GraceFalse, orFalse));
+        }
+    }
+
+    SECTION("Not") {
+        MethodRequest req("not");
+        GraceBoolean::Not method;
+
+        SECTION("Calling Not with self == GraceTrue returns GraceFalse") {
+            GraceObjectPtr val = method.respond(*GraceTrue, req);
+            REQUIRE(*GraceFalse == *val);
+        }
+
+        SECTION("Calling Not with self == GraceFalse returns GraceTrue") {
+            GraceObjectPtr val = method.respond(*GraceFalse, req);
+            REQUIRE(*GraceTrue == *val);
+        }
+    }
 }

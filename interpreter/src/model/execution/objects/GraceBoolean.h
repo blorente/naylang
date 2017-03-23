@@ -35,13 +35,21 @@ public:
     class PrefixNot : public NativeMethod {
     public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
-        virtual int numParams();
     };
 
     class AndAnd : public NativeMethod {
     public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
-        virtual int numParams();
+    };
+
+    class OrOr : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
+
+    class Not : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
     };
 
 };

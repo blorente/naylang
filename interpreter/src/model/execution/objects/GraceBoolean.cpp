@@ -26,6 +26,8 @@ GraceObjectPtr GraceBoolean::dispatch(const std::string &methodName, ExecutionEv
 void GraceBoolean::addDefaultMethods() {
     _nativeMethods["prefix!"] = make_native<PrefixNot>();
     _nativeMethods["&&(_)"] = make_native<AndAnd>();
+    _nativeMethods["||(_)"] = make_native<OrOr>();
+    _nativeMethods["not"] = make_native<Not>();
 }
 
 bool GraceBoolean::operator==(const GraceObject &rhs) const {
@@ -43,10 +45,6 @@ GraceObjectPtr GraceBoolean::PrefixNot::respond(GraceObject &self, MethodRequest
     return GraceTrue;
 }
 
-int GraceBoolean::PrefixNot::numParams() {
-    return 0;
-}
-
 GraceObjectPtr GraceBoolean::AndAnd::respond(GraceObject &self, MethodRequest &request) {
     if (self.asBoolean().value() && request.params()[0]->asBoolean().value()) {
         return GraceTrue;
@@ -54,7 +52,17 @@ GraceObjectPtr GraceBoolean::AndAnd::respond(GraceObject &self, MethodRequest &r
     return GraceFalse;
 }
 
-int GraceBoolean::AndAnd::numParams() {
-    return 1;
+GraceObjectPtr GraceBoolean::OrOr::respond(GraceObject &self, MethodRequest &request) {
+    if (self.asBoolean()._value || request.params()[0]->asBoolean().value()) {
+        return GraceTrue;
+    }
+    return GraceFalse;
+}
+
+GraceObjectPtr GraceBoolean::Not::respond(GraceObject &self, MethodRequest &request) {
+    if (self.asBoolean().value()) {
+        return GraceFalse;
+    }
+    return GraceTrue;
 }
 }
