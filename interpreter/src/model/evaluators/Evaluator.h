@@ -32,6 +32,7 @@ class ImplicitRequestNode;
 class ExplicitRequestNode;
 class Block;
 class Lineup;
+class ObjectConstructor;
 
 class Evaluator {
 
@@ -55,6 +56,7 @@ public:
     virtual void evaluate(ExplicitRequestNode &expression) {}
     virtual void evaluate(Block &expression) {}
     virtual void evaluate(Lineup &expression) {}
+    virtual void evaluate(ObjectConstructor &expression) {}
 
     //Declarations
     virtual void evaluate(ConstantDeclaration &expression) {}

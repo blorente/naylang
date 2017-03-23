@@ -111,23 +111,26 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
     }
 
     SECTION("Non-native methods") {
+        auto truRef = make_node<VariableReference>("tru");
+        auto falRef = make_node<VariableReference>("fal");
+        auto truDec = make_node<VariableDeclaration>("tru");
+        auto falDec = make_node<VariableDeclaration>("fal");
+        auto trueLiteral = make_node<BooleanLiteral>(true);
+        auto falseLiteral = make_node<BooleanLiteral>(false);
+
         SECTION("Evaluating the user defined my&&(true, false) (logic AND) places GraceFalse on top of the stack") {
             ExecutionEvaluator eval;
-            auto tru = make_node<VariableReference>("tru");
-            auto fal = make_node<VariableReference>("fal");
-            std::vector<ExpressionPtr> andParams{fal};
-            auto andReq = make_node<ExplicitRequestNode>("&&(_)", tru, andParams);
+            std::vector<ExpressionPtr> andParams{falRef};
+            auto andReq = make_node<ExplicitRequestNode>("&&(_)", truRef, andParams);
             auto ret = make_node<Return>();
             // self.my&&(other) == (self && other)
             auto myAndBlock = make_node<Block>();
             myAndBlock->addStatement(andReq);
             myAndBlock->addStatement(ret);
-            myAndBlock->addParameter(make_node<VariableDeclaration>("tru"));
-            myAndBlock->addParameter(make_node<VariableDeclaration>("fal"));
+            myAndBlock->addParameter(truDec);
+            myAndBlock->addParameter(falDec);
             auto myAndMeth = make_node<MethodDeclaration>("my&&(_,_)", myAndBlock);
 
-            auto trueLiteral = make_node<BooleanLiteral>(true);
-            auto falseLiteral = make_node<BooleanLiteral>(false);
             std::vector<ExpressionPtr> requestParams{trueLiteral, falseLiteral};
             auto myAndReq = make_node<ImplicitRequestNode>("my&&(_,_)", requestParams);
             myAndReq->bindTo(*myAndMeth);
