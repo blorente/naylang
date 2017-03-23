@@ -17,6 +17,10 @@ const GraceBoolean & GraceObject::asBoolean() const {
     throw "Trying to cast a generic GraceObject as GraceBoolean";
 }
 
+const GraceNumber &GraceObject::asNumber() const {
+    throw "Trying to cast a generic GraceObject as GraceNumber";
+}
+
 bool GraceObject::isUndefined() const {
     return true;
 }

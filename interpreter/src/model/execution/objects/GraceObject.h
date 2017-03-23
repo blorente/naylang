@@ -17,6 +17,7 @@
 namespace naylang {
 
 class GraceBoolean;
+class GraceNumber;
 class ExecutionEvaluator;
 
 class GraceObject {
@@ -36,6 +37,7 @@ public:
     virtual void addMethod(const std::string &name, MethodPtr method);
 
     virtual const GraceBoolean &asBoolean() const;
+    virtual const GraceNumber &asNumber() const;
     virtual bool isUndefined() const;
     virtual bool isDone() const;
     virtual bool isScope() const;

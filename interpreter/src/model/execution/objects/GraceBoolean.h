@@ -9,7 +9,7 @@
 #include <model/execution/objects/GraceObject.h>
 #include <model/ast/NodeFactory.h>
 #include <model/evaluators/ExecutionEvaluator.h>
-#include "model/execution/methods/NativeMethod.h"
+#include <model/execution/methods/NativeMethod.h>
 
 namespace naylang {
 
