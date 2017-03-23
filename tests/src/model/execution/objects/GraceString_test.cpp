@@ -5,6 +5,7 @@
 
 #include <model/execution/objects/GraceString.h>
 #include <model/execution/objects/GraceBoolean.h>
+#include <model/execution/objects/GraceNumber.h>
 #include "catch.h"
 
 using namespace naylang;
@@ -66,6 +67,31 @@ TEST_CASE("Grace String Native Methods", "[GraceString]") {
             MethodRequest lseqWorld("<=(_)", {worldStr});
             REQUIRE(*GraceTrue == *lessEq.respond(*helloStr, lseqHello));
             REQUIRE(*GraceTrue == *lessEq.respond(*helloStr, lseqWorld));
+        }
+    }
+
+    SECTION("Accesors") {
+        GraceString::Concat conc;
+        GraceString::At at;
+        GraceString::Substring subs;
+
+        auto two = make_obj<GraceNumber>(2.0);
+        auto four = make_obj<GraceNumber>(4.0);
+
+        SECTION("++(_) returns a GraceString whose value is self + first param") {
+            MethodRequest req("++(_)", {worldStr});
+            REQUIRE(conc.respond(*helloStr, req)->asString().value() == "helloworld");
+        }
+
+        SECTION("at(_) returns a GraceString whose value is the char at the firs parameter's position") {
+            MethodRequest req("at(_)", {two});
+            REQUIRE(at.respond(*helloStr, req)->asString().value() == "l");
+        }
+
+        SECTION("substringFrom(_)to(_) returns a GraceString with the given substring") {
+            MethodRequest req("substringFrom(_)to(_)", {two, four});
+            GraceObjectPtr ret = subs.respond(*helloStr, req);
+            REQUIRE(ret->asString().value() == "llo");
         }
     }
 }

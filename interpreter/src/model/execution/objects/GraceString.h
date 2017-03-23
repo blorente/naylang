@@ -54,6 +54,21 @@ public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
     };
 
+    class Concat : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
+
+    class At : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
+
+    class Substring : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
+
 };
 } // end namespace naylang
 
