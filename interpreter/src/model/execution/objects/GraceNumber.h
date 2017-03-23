@@ -63,6 +63,26 @@ public:
     public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
     };
+
+    class Greater : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
+
+    class GreaterEq : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
+
+    class Less : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
+
+    class LessEq : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
 };
 } // end namespace naylang
 

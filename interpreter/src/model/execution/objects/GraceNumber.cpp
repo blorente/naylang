@@ -80,4 +80,32 @@ GraceObjectPtr GraceNumber::Pow::respond(GraceObject &self, MethodRequest &reque
     }
     return make_obj<GraceNumber>(value);
 }
+
+GraceObjectPtr GraceNumber::Greater::respond(GraceObject &self, MethodRequest &request) {
+    if (self.asNumber().value() > request.params()[0]->asNumber().value()) {
+        return GraceTrue;
+    }
+    return GraceFalse;
+}
+
+GraceObjectPtr GraceNumber::GreaterEq::respond(GraceObject &self, MethodRequest &request) {
+    if (self.asNumber().value() >= request.params()[0]->asNumber().value()) {
+        return GraceTrue;
+    }
+    return GraceFalse;
+}
+
+GraceObjectPtr GraceNumber::Less::respond(GraceObject &self, MethodRequest &request) {
+    if (self.asNumber().value() < request.params()[0]->asNumber().value()) {
+        return GraceTrue;
+    }
+    return GraceFalse;
+}
+
+GraceObjectPtr GraceNumber::LessEq::respond(GraceObject &self, MethodRequest &request) {
+    if (self.asNumber().value() <= request.params()[0]->asNumber().value()) {
+        return GraceTrue;
+    }
+    return GraceFalse;
+}
 }
