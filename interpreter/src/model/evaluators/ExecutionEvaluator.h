@@ -6,14 +6,23 @@
 #ifndef NAYLANG_EXECUTIONEVALUATOR_H
 #define NAYLANG_EXECUTIONEVALUATOR_H
 
-#include <model/evaluators/Evaluator.h>
-#include <model/ast/expressions/requests/ImplicitRequestNode.h>
-#include <model/ast/expressions/requests/ExplicitRequestNode.h>
-#include <model/ast/expressions/VariableReference.h>
-#include <model/ast/control/Return.h>
-#include <model/ast/expressions/Block.h>
 #include <stack>
 #include <model/execution/Definitions.h>
+#include <model/evaluators/Evaluator.h>
+
+#include <model/ast/declarations/ConstantDeclaration.h>
+#include <model/ast/declarations/MethodDeclaration.h>
+
+#include <model/ast/expressions/Block.h>
+#include <model/ast/expressions/ObjectConstructor.h>
+#include <model/ast/expressions/VariableReference.h>
+
+#include <model/ast/expressions/requests/ImplicitRequestNode.h>
+#include <model/ast/expressions/requests/ExplicitRequestNode.h>
+
+#include <model/ast/expressions/primitives/BooleanLiteral.h>
+
+#include <model/ast/control/Return.h>
 
 namespace naylang {
 
@@ -35,9 +44,11 @@ public:
     virtual void evaluate(ImplicitRequestNode &expression);
     virtual void evaluate(ExplicitRequestNode &expression);
     virtual void evaluate(MethodDeclaration &expression);
+    virtual void evaluate(ConstantDeclaration &expression);
     virtual void evaluate(Return &expression);
     virtual void evaluate(Block &expression);
     virtual void evaluate(VariableReference &expression);
+    virtual void evaluate(ObjectConstructor &expression);
 };
 } // end namespace naylang
 

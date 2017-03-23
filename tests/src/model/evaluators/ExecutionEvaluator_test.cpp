@@ -7,9 +7,11 @@
 #include <model/evaluators/ExecutionEvaluator.h>
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
 #include <model/ast/declarations/VariableDeclaration.h>
+#include <model/ast/declarations/ConstantDeclaration.h>
 #include <model/execution/objects/GraceBoolean.h>
 #include <model/execution/objects/GraceScope.h>
 #include <model/execution/objects/GraceDoneDef.h>
+#include <model/ast/expressions/ObjectConstructor.h>
 
 using namespace naylang;
 
@@ -51,6 +53,28 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             eval.setScope(myScope);
             REQUIRE_NOTHROW(xRef->accept(eval));
             REQUIRE(*GraceTrue == *eval.partial());
+        }
+
+        SECTION("Evaluating a Constant Declaration places the field in the current scope") {
+            ExecutionEvaluator eval;
+            auto tru = make_node<BooleanLiteral>(true);
+            auto xDecl = make_node<ConstantDeclaration>("x", tru);
+            eval.evaluate(*xDecl);
+            REQUIRE(eval.currentScope()->hasField("x"));
+            REQUIRE(*GraceTrue == *eval.currentScope()->getField("x"));
+        }
+
+        SECTION("Evaluating an ObjectConstructor creates a UserObject with all the nodes evaluated inside it") {
+            ExecutionEvaluator eval;
+            auto tru = make_node<BooleanLiteral>(true);
+            auto xDecl = make_node<ConstantDeclaration>("x", tru);
+            std::vector<StatementPtr> list{xDecl, tru};
+            ObjectConstructor obj(list);
+
+            GraceObjectPtr oldScope = eval.currentScope();
+            eval.evaluate(obj);
+            REQUIRE(eval.currentScope() == oldScope);
+            REQUIRE(eval.partial()->hasField("x"));
         }
     }
 

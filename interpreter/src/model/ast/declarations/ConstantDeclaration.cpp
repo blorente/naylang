@@ -18,7 +18,7 @@ const std::string & ConstantDeclaration::name() const {
     return _name;
 }
 
-const std::shared_ptr<Expression> &ConstantDeclaration::value() const {
+ExpressionPtr ConstantDeclaration::value() const {
     return _value;
 }
 

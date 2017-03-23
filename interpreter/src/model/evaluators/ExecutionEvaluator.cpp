@@ -6,10 +6,10 @@
 #include "ExecutionEvaluator.h"
 
 #include <model/execution/objects/GraceBoolean.h>
-#include <model/ast/expressions/primitives/BooleanLiteral.h>
 #include <model/execution/objects/GraceClosure.h>
 #include <model/execution/objects/GraceScope.h>
 #include <model/execution/objects/GraceDoneDef.h>
+#include <model/execution/objects/UserObject.h>
 
 namespace naylang {
 
@@ -81,5 +81,20 @@ void ExecutionEvaluator::evaluate(Block &expression) {
 
 void ExecutionEvaluator::setScope(GraceObjectPtr scope) {
     _currentScope = scope;
+}
+
+void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {
+    GraceObjectPtr oldScope = _currentScope;
+    _currentScope = make_obj<UserObject>();
+    for (auto node : expression.statements()) {
+        node->accept(*this);
+    }
+    _partial = _currentScope;
+    _currentScope = oldScope;
+}
+
+void ExecutionEvaluator::evaluate(ConstantDeclaration &expression) {
+    expression.value()->accept(*this);
+    _currentScope->setField(expression.name(), _partial);
 }
 }

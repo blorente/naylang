@@ -26,7 +26,7 @@ public:
     virtual void accept(Evaluator &evaluator);
     const std::string &name() const;
 
-    const std::shared_ptr<Expression> &value() const;
+    ExpressionPtr value() const;
 };
 
 } // end namespace naylang
