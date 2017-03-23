@@ -52,6 +52,10 @@ public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
     };
 
+    class AsString : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
 };
 
 static const std::shared_ptr<GraceBoolean> GraceTrue = make_obj<GraceBoolean>(true);

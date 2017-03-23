@@ -8,12 +8,14 @@
 
 #include "GraceNumber.h"
 #include "GraceBoolean.h"
+#include "GraceString.h"
 
 namespace naylang {
 
 GraceNumber::GraceNumber(double value) : _value{value} {}
 
 void GraceNumber::addDefaultMethods() {
+    _nativeMethods["prefix!"] = make_native<Negative>();
     _nativeMethods["==(_)"] = make_native<Equals>();
     _nativeMethods["!=(_)"] = make_native<NotEquals>();
     _nativeMethods["+(_)"] = make_native<Add>();
@@ -22,6 +24,7 @@ void GraceNumber::addDefaultMethods() {
     _nativeMethods["/(_)"] = make_native<Div>();
     _nativeMethods["%(_)"] = make_native<Mod>();
     _nativeMethods["^(_)"] = make_native<Pow>();
+    _nativeMethods["asString(_)"] = make_native<AsString>();
 }
 
 const GraceNumber &GraceNumber::asNumber() const {
@@ -114,4 +117,8 @@ GraceObjectPtr GraceNumber::LessEq::respond(GraceObject &self, MethodRequest &re
     return GraceFalse;
 }
 
+GraceObjectPtr GraceNumber::AsString::respond(GraceObject &self, MethodRequest &request) {
+    std::string value = std::to_string(self.asNumber().value());
+    return make_obj<GraceString>(value);
+}
 }

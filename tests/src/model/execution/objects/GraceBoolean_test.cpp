@@ -4,7 +4,7 @@
 //
 
 #include <model/execution/objects/GraceBoolean.h>
-#include <model/ast/expressions/primitives/BooleanLiteral.h>
+#include <model/execution/objects/GraceString.h>
 #include "catch.h"
 
 using namespace naylang;
@@ -83,6 +83,16 @@ TEST_CASE("Predefined methods in GraceBoolean", "[GraceBoolean]") {
         SECTION("Calling Not with self == GraceFalse returns GraceTrue") {
             GraceObjectPtr val = method.respond(*GraceFalse, req);
             REQUIRE(*GraceTrue == *val);
+        }
+    }
+
+    SECTION("Misc") {
+        GraceBoolean::AsString asStr;
+
+        SECTION("asString returns the string representation of the boolean") {
+            MethodRequest str("asString", {});
+            REQUIRE(asStr.respond(*GraceTrue, str)->asString().value() == "true");
+            REQUIRE(asStr.respond(*GraceFalse, str)->asString().value() == "false");
         }
     }
 }

@@ -94,4 +94,14 @@ TEST_CASE("Grace String Native Methods", "[GraceString]") {
             REQUIRE(ret->asString().value() == "llo");
         }
     }
+
+    SECTION("Misc") {
+        GraceString::AsString asStr;
+
+        SECTION("asString returns ... itself") {
+            MethodRequest str("asString", {});
+            REQUIRE(asStr.respond(*helloStr, str)->asString().value() == "hello");
+            REQUIRE(asStr.respond(*worldStr, str)->asString().value() == "world");
+        }
+    }
 }

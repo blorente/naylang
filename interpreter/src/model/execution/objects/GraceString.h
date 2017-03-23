@@ -69,6 +69,11 @@ public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
     };
 
+    class AsString : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
+
 };
 } // end namespace naylang
 

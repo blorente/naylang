@@ -5,6 +5,7 @@
 
 #include <model/evaluators/ExecutionEvaluator.h>
 #include "GraceBoolean.h"
+#include "GraceString.h"
 
 namespace naylang {
 
@@ -28,6 +29,7 @@ void GraceBoolean::addDefaultMethods() {
     _nativeMethods["&&(_)"] = make_native<AndAnd>();
     _nativeMethods["||(_)"] = make_native<OrOr>();
     _nativeMethods["not"] = make_native<Not>();
+    _nativeMethods["asString"] = make_native<AsString>();
 }
 
 bool GraceBoolean::operator==(const GraceObject &rhs) const {
@@ -64,5 +66,12 @@ GraceObjectPtr GraceBoolean::Not::respond(GraceObject &self, MethodRequest &requ
         return GraceFalse;
     }
     return GraceTrue;
+}
+
+GraceObjectPtr GraceBoolean::AsString::respond(GraceObject &self, MethodRequest &request) {
+    if (self.asBoolean().value()) {
+        return make_obj<GraceString>("true");
+    }
+    return make_obj<GraceString>("false");
 }
 }

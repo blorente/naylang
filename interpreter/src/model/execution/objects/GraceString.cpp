@@ -28,6 +28,7 @@ void GraceString::addDefaultMethods() {
     _nativeMethods["++(_)"] = make_native<Concat>();
     _nativeMethods["at(_)"] = make_native<At>();
     _nativeMethods["substringFrom(_)to(_)"] = make_native<Substring>();
+    _nativeMethods["asString"] = make_native<AsString>();
 }
 
 const GraceString &GraceString::asString() const {
@@ -93,5 +94,9 @@ GraceObjectPtr GraceString::Substring::respond(GraceObject &self, MethodRequest 
     int to = (int) request.params()[1]->asNumber().value();
     std::string val = self.asString().value().substr(from, to);
     return make_obj<GraceString>(val);
+}
+
+GraceObjectPtr GraceString::AsString::respond(GraceObject &self, MethodRequest &request) {
+    return make_obj<GraceString>(self.asString().value());
 }
 }

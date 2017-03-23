@@ -5,6 +5,7 @@
 
 #include <model/execution/objects/GraceNumber.h>
 #include <model/execution/objects/GraceBoolean.h>
+#include <model/execution/objects/GraceString.h>
 #include <model/execution/Definitions.h>
 #include "catch.h"
 
@@ -126,6 +127,15 @@ TEST_CASE("Grace Number Native Methods", "[GraceNumber]") {
             MethodRequest reqTrue("<=(_)", {six});
             REQUIRE(*GraceFalse == *lessEq.respond(*six, reqFalse));
             REQUIRE(*GraceTrue == *lessEq.respond(*six, reqTrue));
+        }
+    }
+
+    SECTION("Misc") {
+        GraceNumber::AsString asStr;
+
+        SECTION("asString returns the string representation of the number") {
+            MethodRequest str("asString", {});
+            REQUIRE(asStr.respond(*five, str)->asString().value() == "5.000000");
         }
     }
 }
