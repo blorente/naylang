@@ -141,6 +141,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
         auto falDec = make_node<VariableDeclaration>("fal");
         auto trueLiteral = make_node<BooleanLiteral>(true);
         auto falseLiteral = make_node<BooleanLiteral>(false);
+        auto ctruConstDecl = make_node<ConstantDeclaration>("ctru", trueLiteral);
 
         SECTION("Evaluating the user defined my&&(true, false) (logic AND) places GraceFalse on top of the stack") {
             ExecutionEvaluator eval;
@@ -161,6 +162,40 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
 
             eval.evaluate(*myAndMeth);
             eval.evaluate(*myAndReq);
+            REQUIRE(*GraceFalse == *eval.partial());
+        }
+
+        SECTION("Methods inside objects can be evaluated with an ImplicitRequest inside the object, or an ExplicitRequest outside") {
+            /*
+            def x = object {
+                    method f(param) {
+                        return param
+                    }
+                    f
+            };
+            x.f
+            */
+            ExecutionEvaluator eval;
+
+            auto paramDecl = make_node<VariableDeclaration>("param");
+            auto paramRef = make_node<VariableReference>("param");
+            auto fBody = make_node<Block>();
+            fBody->addParameter(paramDecl);
+            fBody->addStatement(paramRef);
+            auto fDeclaration = make_node<MethodDeclaration>("f(_)", fBody);
+            std::vector<ExpressionPtr> fImplCallParams{trueLiteral};
+            auto fImplCall = make_node<ImplicitRequestNode>("f(_)", fImplCallParams);
+            std::vector<StatementPtr> xConstructorBody{fDeclaration, fImplCall};
+            auto xObjectConstructor = make_node<ObjectConstructor>(xConstructorBody);
+            auto xConstDecl = make_node<ConstantDeclaration>("x", xObjectConstructor);
+
+            xConstDecl->accept(eval);
+
+            auto xRef = make_node<VariableReference>("x");
+            std::vector<ExpressionPtr> fExplCallParams{falseLiteral};
+            auto fExplicitCall = make_node<ExplicitRequestNode>("f(_)", xRef, fExplCallParams);
+
+            fExplicitCall->accept(eval);
             REQUIRE(*GraceFalse == *eval.partial());
         }
     }
