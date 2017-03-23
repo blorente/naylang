@@ -30,7 +30,7 @@ void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
 }
 
 void ExecutionEvaluator::evaluate(MethodDeclaration &expression) {
-    MethodPtr method = make_meth(expression.body());
+    MethodPtr method = make_meth(expression.params(), expression.body());
     _currentScope->addMethod(expression.name(), method);
 }
 
@@ -57,9 +57,27 @@ void ExecutionEvaluator::evaluate(VariableReference &expression) {
     _partial = _currentScope->getField(expression.identifier());
 }
 
+void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {
+    GraceObjectPtr oldScope = _currentScope;
+    _currentScope = make_obj<UserObject>();
+    for (auto node : expression.statements()) {
+        node->accept(*this);
+    }
+    _partial = _currentScope;
+    _currentScope = oldScope;
+}
+
+void ExecutionEvaluator::evaluate(ConstantDeclaration &expression) {
+    expression.value()->accept(*this);
+    _currentScope->setField(expression.name(), _partial);
+}
+
+void ExecutionEvaluator::evaluate(Block &expression) {
+}
 const GraceObjectPtr &ExecutionEvaluator::partial() const {
     return _partial;
 }
+
 GraceObjectPtr ExecutionEvaluator::currentScope() const {
     return _currentScope;
 }
@@ -75,26 +93,7 @@ void ExecutionEvaluator::restoreScope() {
     _currentScope = _currentScope->outer();
 }
 
-void ExecutionEvaluator::evaluate(Block &expression) {
-    _partial = make_obj<GraceClosure>();
-}
-
 void ExecutionEvaluator::setScope(GraceObjectPtr scope) {
     _currentScope = scope;
-}
-
-void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {
-    GraceObjectPtr oldScope = _currentScope;
-    _currentScope = make_obj<UserObject>();
-    for (auto node : expression.statements()) {
-        node->accept(*this);
-    }
-    _partial = _currentScope;
-    _currentScope = oldScope;
-}
-
-void ExecutionEvaluator::evaluate(ConstantDeclaration &expression) {
-    expression.value()->accept(*this);
-    _currentScope->setField(expression.name(), _partial);
 }
 }

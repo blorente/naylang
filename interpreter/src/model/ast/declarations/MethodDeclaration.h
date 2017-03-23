@@ -14,18 +14,21 @@ namespace naylang {
 
 class MethodDeclaration : public Declaration {
 
-    BlockPtr _body;
     std::string _name;
+    std::vector<DeclarationPtr> _params;
+    std::vector<StatementPtr> _body;
 
 public:
-
-    MethodDeclaration() = default;
-    MethodDeclaration(const std::string &_name, const std::shared_ptr<Block> &_body);
+    MethodDeclaration(
+            const std::string &name,
+            const std::vector<DeclarationPtr> &params,
+            const std::vector<StatementPtr> &body);
 
     void accept(Evaluator &evaluator) override;
-    const std::string &name() const override;
 
-    BlockPtr body() const;
+    const std::string &name() const override;
+    const std::vector<DeclarationPtr> &params() const;
+    const std::vector<StatementPtr> &body() const;
 
 };
 

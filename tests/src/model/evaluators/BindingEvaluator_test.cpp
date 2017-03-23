@@ -5,7 +5,7 @@
 
 #include <model/evaluators/BindingEvaluator.h>
 #include "catch.h"
-#include <model/ast/expressions/requests/ImplicitRequestNode.h>
+
 #include <model/ast/expressions/primitives/NumberLiteral.h>
 #include <model/ast/NodeFactory.h>
 
@@ -14,10 +14,11 @@ using namespace naylang;
 TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
 
     auto five = make_node<NumberLiteral>(5.0);
-    auto fiveBlock = make_node<Block>(); fiveBlock->addStatement(five);
+    std::vector<DeclarationPtr> identifierParams{};
+    std::vector<StatementPtr> identifierBody{};
 
     auto xDecl = make_node<VariableDeclaration>("x");
-    auto methodDecl = make_node<MethodDeclaration>("identifier", fiveBlock);
+    auto methodDecl = make_node<MethodDeclaration>("identifier", identifierParams, identifierBody);
     auto constDecl = make_node<ConstantDeclaration>("const", five);
 
     SECTION("A BindingEvaluator can return a symbol table with all declarations") {

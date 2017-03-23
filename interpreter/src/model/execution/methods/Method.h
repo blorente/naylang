@@ -16,17 +16,18 @@
 namespace naylang {
 
 class Method {
-    BlockPtr _code;
+    std::vector<DeclarationPtr> _params;
+    std::vector<StatementPtr> _code;
 
 public:
     Method() = default;
     Method(BlockPtr code);
+    Method(const std::vector<DeclarationPtr> &params, const std::vector<StatementPtr> &body);
 
     virtual GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request);
 
-    const BlockPtr &code() const;
+    const std::vector<StatementPtr> &code() const;
     const std::vector<DeclarationPtr> &params() const;
-
 };
 } // end namespace naylang
 

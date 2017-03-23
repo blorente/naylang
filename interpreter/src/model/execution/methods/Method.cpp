@@ -3,26 +3,25 @@
 // Distributed under the GPLv3 license.
 //
 #include <model/execution/objects/GraceDoneDef.h>
+#include <model/execution/objects/GraceClosure.h>
 #include "Method.h"
 
 namespace naylang {
 
-Method::Method(BlockPtr code) : _code{code} {}
+Method::Method(BlockPtr code) : _params{code->params()}, _code{code->body()} {}
 
-const BlockPtr &Method::code() const {
-    return _code;
-}
+Method::Method(const std::vector<DeclarationPtr> &params, const std::vector<StatementPtr> &body) :
+    _params{params}, _code{body} {}
 
 GraceObjectPtr Method::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
-    _code->accept(context);
-    GraceObjectPtr closure = context.partial();
+    GraceObjectPtr closure = make_obj<GraceClosure>();
 
     for (int i = 0; i < request.params().size(); i++) {
         closure->setField(params()[i]->name(), request.params()[i]);
     }
     GraceObjectPtr oldScope = context.currentScope();
     context.setScope(closure);
-    for (auto node : _code->body()) {
+    for (auto node : _code) {
         node->accept(context);
     }
     GraceObjectPtr ret = context.partial();
@@ -34,8 +33,12 @@ GraceObjectPtr Method::respond(ExecutionEvaluator &context, GraceObject &self, M
     return ret;
 }
 
+const std::vector<StatementPtr> &Method::code() const {
+    return _code;
+}
+
 const std::vector<DeclarationPtr> &Method::params() const {
-    return _code->params();
+    return _params;
 }
 
 }

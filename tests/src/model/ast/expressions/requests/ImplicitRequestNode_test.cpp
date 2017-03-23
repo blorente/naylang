@@ -6,7 +6,9 @@
 #include "catch.h"
 
 #include <model/ast/expressions/requests/ImplicitRequestNode.h>
+#include <model/ast/declarations/VariableDeclaration.h>
 #include <model/ast/expressions/primitives/NumberLiteral.h>
+#include <model/ast/expressions/VariableReference.h>
 #include <model/ast/NodeFactory.h>
 
 using namespace naylang;
@@ -14,9 +16,11 @@ using namespace naylang;
 TEST_CASE("ImplicitRequestNode Expressions", "[Requests]") {
 
     auto five = make_node<NumberLiteral>(5.0);
-    auto fiveBlock = make_node<Block>();
-    fiveBlock->addStatement(five);
-    auto fiveMethod = make_node<MethodDeclaration>("myMethod", fiveBlock);
+    auto xDecl = make_node<VariableDeclaration>("x");
+    auto recieverRef = make_node<VariableReference>("reciever");
+    std::vector<DeclarationPtr> params{xDecl};
+    std::vector<StatementPtr> lines{};
+    auto emptyOneParamMethod = make_node<MethodDeclaration>("myMethod", params, lines);
 
     SECTION("A ImplicitRequestNode has a target identifier name, parameter expressions and no reciever") {
         REQUIRE_NOTHROW(ImplicitRequestNode req("myMethod", {five}););
@@ -34,9 +38,9 @@ TEST_CASE("ImplicitRequestNode Expressions", "[Requests]") {
 
     SECTION("A ImplicitRequestNode can be bound to a identifier declaration") {
         ImplicitRequestNode req("myMethod", {five});
-        req.bindTo(*fiveMethod);
+        req.bindTo(*emptyOneParamMethod);
 
-        REQUIRE(&req.declaration() == fiveMethod.get());
+        REQUIRE(&req.declaration() == emptyOneParamMethod.get());
     }
 }
 

@@ -14,13 +14,17 @@ using namespace naylang;
 TEST_CASE("Method", "[Methods]") {
 
     auto fiveBlock = make_node<Block>();
-    SECTION("A method takes a Block") {
+    SECTION("A method can take a Block") {
         REQUIRE_NOTHROW(Method meth(fiveBlock););
+    }
+
+    SECTION("A method can take a list of parameters and a body") {
+        REQUIRE_NOTHROW(Method meth({}, {}));
     }
 
     SECTION("A method can return it's code") {
         Method meth(fiveBlock);
-        REQUIRE(meth.code() == fiveBlock);
+        REQUIRE(std::equal(meth.code().begin(), meth.code().end(), fiveBlock->body().begin()));
     }
 
     SECTION("A method has a respond function, that returns Done by default") {

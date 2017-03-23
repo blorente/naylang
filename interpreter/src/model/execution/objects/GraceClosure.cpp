@@ -13,7 +13,7 @@ namespace naylang {
 
 GraceClosure::GraceClosure(const std::string &name, MethodPtr method) : GraceObject::GraceObject() {
     addMethod(name, method);
-    for (auto param : method->code()->params()) {
+    for (auto param : method->params()) {
         _fields[param->name()] = make_obj<GraceDoneDef>();
     }
 }

@@ -7,7 +7,6 @@
 #include <model/evaluators/ExecutionEvaluator.h>
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
 #include <model/ast/declarations/VariableDeclaration.h>
-#include <model/ast/declarations/ConstantDeclaration.h>
 #include <model/execution/objects/GraceBoolean.h>
 #include <model/execution/objects/GraceScope.h>
 #include <model/execution/objects/GraceDoneDef.h>
@@ -37,11 +36,8 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             REQUIRE_NOTHROW(eval.evaluate(ret));
         }
 
-        SECTION("Evaluating a Block places a Closure on the partial") {
-            ExecutionEvaluator eval;
-            auto blankBlock = make_node<Block>();
-            blankBlock->accept(eval);
-            REQUIRE(eval.partial()->isClosure());
+        SECTION("Evaluating a Block ") {
+
         }
 
         SECTION("Evaluating a variable reference throws if it's not there, and places it in the partial if it's there") {
@@ -149,12 +145,9 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             auto andReq = make_node<ExplicitRequestNode>("&&(_)", truRef, andParams);
             auto ret = make_node<Return>();
             // self.my&&(other) == (self && other)
-            auto myAndBlock = make_node<Block>();
-            myAndBlock->addStatement(andReq);
-            myAndBlock->addStatement(ret);
-            myAndBlock->addParameter(truDec);
-            myAndBlock->addParameter(falDec);
-            auto myAndMeth = make_node<MethodDeclaration>("my&&(_,_)", myAndBlock);
+            std::vector<DeclarationPtr> myAndParams{truDec, falDec};
+            std::vector<StatementPtr> myAndBody{andReq, ret};
+            auto myAndMeth = make_node<MethodDeclaration>("my&&(_,_)", myAndParams, myAndBody);
 
             std::vector<ExpressionPtr> requestParams{trueLiteral, falseLiteral};
             auto myAndReq = make_node<ImplicitRequestNode>("my&&(_,_)", requestParams);
@@ -179,10 +172,9 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
 
             auto paramDecl = make_node<VariableDeclaration>("param");
             auto paramRef = make_node<VariableReference>("param");
-            auto fBody = make_node<Block>();
-            fBody->addParameter(paramDecl);
-            fBody->addStatement(paramRef);
-            auto fDeclaration = make_node<MethodDeclaration>("f(_)", fBody);
+            std::vector<DeclarationPtr> paramDeclarations{paramDecl};
+            std::vector<StatementPtr> body{paramRef};
+            auto fDeclaration = make_node<MethodDeclaration>("f(_)", paramDeclarations, body);
             std::vector<ExpressionPtr> fImplCallParams{trueLiteral};
             auto fImplCall = make_node<ImplicitRequestNode>("f(_)", fImplCallParams);
             std::vector<StatementPtr> xConstructorBody{fDeclaration, fImplCall};
