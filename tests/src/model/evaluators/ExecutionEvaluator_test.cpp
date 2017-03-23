@@ -15,10 +15,13 @@
 using namespace naylang;
 
 TEST_CASE("Execution Evaluator", "[Evaluators]") {
+    auto ret = make_node<Return>();
     auto truRef = make_node<VariableReference>("tru");
     auto falRef = make_node<VariableReference>("fal");
+    auto xRef = make_node<VariableReference>("x");
     auto truDec = make_node<VariableDeclaration>("tru");
     auto falDec = make_node<VariableDeclaration>("fal");
+    auto xDec = make_node<VariableDeclaration>("x");
     auto trueLiteral = make_node<BooleanLiteral>(true);
     auto falseLiteral = make_node<BooleanLiteral>(false);
     auto ctruConstDecl = make_node<ConstantDeclaration>("ctru", trueLiteral);
@@ -124,8 +127,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
     SECTION("Native methods") {
         SECTION("Evaluating {!true} places GraceFalse on the partial") {
             ExecutionEvaluator eval;
-            auto tru = make_node<BooleanLiteral>(true);
-            auto prefNot = make_node<ExplicitRequestNode>("prefix!", tru);
+            auto prefNot = make_node<ExplicitRequestNode>("prefix!", trueLiteral);
             eval.evaluate(*prefNot);
 
             REQUIRE(*GraceFalse == *eval.partial());
@@ -133,12 +135,27 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
 
         SECTION("Evaluating {true && false} places GraceFalse on the partial") {
             ExecutionEvaluator eval;
-            auto tru = make_node<BooleanLiteral>(true);
-            auto fal = make_node<BooleanLiteral>(false);
-            std::vector<ExpressionPtr> prefParams{fal};
-            auto prefNot = make_node<ExplicitRequestNode>("&&(_)", tru, prefParams);
+            std::vector<ExpressionPtr> prefParams{falseLiteral};
+            auto prefNot = make_node<ExplicitRequestNode>("&&(_)", trueLiteral, prefParams);
             eval.evaluate(*prefNot);
 
+            REQUIRE(*GraceFalse == *eval.partial());
+        }
+
+        SECTION("Evaluating {x -> !x}.apply(true) places GraceFalse on the partial") {
+            ExecutionEvaluator eval;
+
+            auto notX = make_node<ExplicitRequestNode>("prefix!", xRef);
+
+            auto notBlock = make_node<Block>();
+            notBlock->addParameter(xDec);
+            notBlock->addStatement(notX);
+            notBlock->addStatement(ret);
+
+            std::vector<ExpressionPtr> applyReqParams{trueLiteral};
+            auto applyReq = make_node<ExplicitRequestNode>("apply", notBlock, applyReqParams);
+
+            applyReq->accept(eval);
             REQUIRE(*GraceFalse == *eval.partial());
         }
     }
@@ -148,7 +165,6 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             ExecutionEvaluator eval;
             std::vector<ExpressionPtr> andParams{falRef};
             auto andReq = make_node<ExplicitRequestNode>("&&(_)", truRef, andParams);
-            auto ret = make_node<Return>();
             // self.my&&(other) == (self && other)
             std::vector<DeclarationPtr> myAndParams{truDec, falDec};
             std::vector<StatementPtr> myAndBody{andReq, ret};
