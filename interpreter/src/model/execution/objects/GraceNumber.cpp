@@ -46,6 +46,11 @@ GraceObjectPtr GraceNumber::NotEquals::respond(GraceObject &self, MethodRequest 
     return GraceFalse;
 }
 
+GraceObjectPtr GraceNumber::Negative::respond(GraceObject &self, MethodRequest &request) {
+    double value = -self.asNumber().value();
+    return make_obj<GraceNumber>(value);
+}
+
 GraceObjectPtr GraceNumber::Add::respond(GraceObject &self, MethodRequest &request) {
     double value = self.asNumber().value() + request.params()[0]->asNumber().value();
     return make_obj<GraceNumber>(value);
@@ -108,4 +113,5 @@ GraceObjectPtr GraceNumber::LessEq::respond(GraceObject &self, MethodRequest &re
     }
     return GraceFalse;
 }
+
 }

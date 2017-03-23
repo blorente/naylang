@@ -50,12 +50,18 @@ TEST_CASE("Grace Number Native Methods", "[GraceNumber]") {
     }
 
     SECTION("Arithmetic") {
+        GraceNumber::Negative neg;
         GraceNumber::Add add;
         GraceNumber::Sub sub;
         GraceNumber::Mul mul;
         GraceNumber::Div div;
         GraceNumber::Mod mod;
         GraceNumber::Pow pow;
+
+        SECTION("prefix- returns the negative version of self") {
+            MethodRequest req("prefix-", {});
+            REQUIRE(neg.respond(*six, req)->asNumber().value() == -6.0);
+        }
 
         SECTION("+(_) returns the sum of self and the first parameter") {
             MethodRequest req("+(_)", {five});

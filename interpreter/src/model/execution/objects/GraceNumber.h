@@ -34,6 +34,11 @@ public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
     };
 
+    class Negative : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
+
     class Add : public NativeMethod {
     public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
