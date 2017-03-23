@@ -89,4 +89,8 @@ GraceObjectPtr GraceObject::getField(const std::string &name) {
     }
     return _fields[name];
 }
+
+bool GraceObject::isBlock() const {
+    return false;
+}
 }

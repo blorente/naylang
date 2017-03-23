@@ -15,6 +15,13 @@
 using namespace naylang;
 
 TEST_CASE("Execution Evaluator", "[Evaluators]") {
+    auto truRef = make_node<VariableReference>("tru");
+    auto falRef = make_node<VariableReference>("fal");
+    auto truDec = make_node<VariableDeclaration>("tru");
+    auto falDec = make_node<VariableDeclaration>("fal");
+    auto trueLiteral = make_node<BooleanLiteral>(true);
+    auto falseLiteral = make_node<BooleanLiteral>(false);
+    auto ctruConstDecl = make_node<ConstantDeclaration>("ctru", trueLiteral);
 
     SECTION("An execution evaluator has a partial GraceObject") {
         ExecutionEvaluator eval;
@@ -36,8 +43,14 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             REQUIRE_NOTHROW(eval.evaluate(ret));
         }
 
-        SECTION("Evaluating a Block ") {
-
+        SECTION("Evaluating a Block places a GraceBlock on the partial") {
+            ExecutionEvaluator eval;
+            auto block = make_node<Block>();
+            block->addParameter(truDec);
+            block->addParameter(falDec);
+            block->accept(eval);
+            REQUIRE(eval.partial()->isBlock());
+            REQUIRE(eval.partial()->hasMethod("apply"));
         }
 
         SECTION("Evaluating a variable reference throws if it's not there, and places it in the partial if it's there") {
@@ -131,14 +144,6 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
     }
 
     SECTION("Non-native methods") {
-        auto truRef = make_node<VariableReference>("tru");
-        auto falRef = make_node<VariableReference>("fal");
-        auto truDec = make_node<VariableDeclaration>("tru");
-        auto falDec = make_node<VariableDeclaration>("fal");
-        auto trueLiteral = make_node<BooleanLiteral>(true);
-        auto falseLiteral = make_node<BooleanLiteral>(false);
-        auto ctruConstDecl = make_node<ConstantDeclaration>("ctru", trueLiteral);
-
         SECTION("Evaluating the user defined my&&(true, false) (logic AND) places GraceFalse on top of the stack") {
             ExecutionEvaluator eval;
             std::vector<ExpressionPtr> andParams{falRef};

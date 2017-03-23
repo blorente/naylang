@@ -10,6 +10,7 @@
 #include <model/execution/objects/GraceScope.h>
 #include <model/execution/objects/GraceDoneDef.h>
 #include <model/execution/objects/UserObject.h>
+#include <model/execution/objects/GraceBlock.h>
 
 namespace naylang {
 
@@ -73,7 +74,10 @@ void ExecutionEvaluator::evaluate(ConstantDeclaration &expression) {
 }
 
 void ExecutionEvaluator::evaluate(Block &expression) {
+    auto meth = make_meth(expression.params(), expression.body());
+    _partial = make_obj<GraceBlock>(meth);
 }
+
 const GraceObjectPtr &ExecutionEvaluator::partial() const {
     return _partial;
 }

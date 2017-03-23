@@ -40,6 +40,7 @@ public:
     virtual bool isDone() const;
     virtual bool isScope() const;
     virtual bool isClosure() const;
+    virtual bool isBlock() const;
 
     virtual GraceObjectPtr outer();
     virtual void setOuter(GraceObjectPtr outer);
