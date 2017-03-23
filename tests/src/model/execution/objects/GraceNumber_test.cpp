@@ -40,7 +40,6 @@ TEST_CASE("Grace Number Native Methods", "[GraceNumber]") {
         SECTION("!=(_) returns GraceTrue iff they both represent different numbers") {
             GraceNumber five(5.0);
             auto otherFive = make_obj<GraceNumber>(5.0);
-            auto six = make_obj<GraceNumber>(6.0);
 
             MethodRequest equalsSix("!=(_)", {six});
             MethodRequest equalsFive("!=(_)", {otherFive});
