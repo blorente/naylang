@@ -6,7 +6,8 @@
 #include "ExecutionEvaluator.h"
 
 #include <model/execution/objects/GraceBoolean.h>
-#include <model/execution/objects/GraceClosure.h>
+#include <model/execution/objects/GraceNumber.h>
+#include <model/execution/objects/GraceString.h>
 #include <model/execution/objects/GraceScope.h>
 #include <model/execution/objects/GraceDoneDef.h>
 #include <model/execution/objects/UserObject.h>
@@ -20,6 +21,14 @@ void ExecutionEvaluator::evaluate(BooleanLiteral &expression) {
     _partial = make_obj<GraceBoolean>(expression.value());
 }
 
+void ExecutionEvaluator::evaluate(NumberLiteral &expression) {
+    _partial = make_obj<GraceNumber>(expression.value());
+}
+
+void ExecutionEvaluator::evaluate(StringLiteral &expression) {
+    _partial = make_obj<GraceString>(expression.value());
+}
+
 void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
     std::vector<GraceObjectPtr> paramValues;
     for (int i = 0; i < expression.params().size(); i++) {
@@ -30,11 +39,11 @@ void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
     _partial = _currentScope->dispatch(expression.identifier(), *this, paramValues);
 }
 
+
 void ExecutionEvaluator::evaluate(MethodDeclaration &expression) {
     MethodPtr method = make_meth(expression.params(), expression.body());
     _currentScope->addMethod(expression.name(), method);
 }
-
 
 void ExecutionEvaluator::evaluate(Return &expression) {
     return;

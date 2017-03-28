@@ -21,6 +21,8 @@
 #include <model/ast/expressions/requests/ExplicitRequestNode.h>
 
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
+#include <model/ast/expressions/primitives/NumberLiteral.h>
+#include <model/ast/expressions/primitives/StringLiteral.h>
 
 #include <model/ast/control/Return.h>
 
@@ -41,6 +43,8 @@ public:
     void setScope(GraceObjectPtr scope);
 
     virtual void evaluate(BooleanLiteral &expression);
+    virtual void evaluate(NumberLiteral &expression);
+    virtual void evaluate(StringLiteral &expression);
     virtual void evaluate(ImplicitRequestNode &expression);
     virtual void evaluate(ExplicitRequestNode &expression);
     virtual void evaluate(MethodDeclaration &expression);

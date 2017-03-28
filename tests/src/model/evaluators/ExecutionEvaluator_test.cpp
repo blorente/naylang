@@ -8,9 +8,13 @@
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
 #include <model/ast/declarations/VariableDeclaration.h>
 #include <model/execution/objects/GraceBoolean.h>
+#include <model/execution/objects/GraceNumber.h>
+#include <model/execution/objects/GraceString.h>
 #include <model/execution/objects/GraceScope.h>
 #include <model/execution/objects/GraceDoneDef.h>
 #include <model/ast/expressions/ObjectConstructor.h>
+#include <model/ast/expressions/primitives/NumberLiteral.h>
+#include <model/ast/expressions/primitives/StringLiteral.h>
 
 using namespace naylang;
 
@@ -37,6 +41,20 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             BooleanLiteral tru(true);
             REQUIRE_NOTHROW(eval.evaluate(tru));
             REQUIRE(eval.partial()->asBoolean().value());
+        }
+
+        SECTION("Evaluating a NumberLiteral expression places a GraceNumber on the partial") {
+            ExecutionEvaluator eval;
+            NumberLiteral num(5.0);
+            REQUIRE_NOTHROW(num.accept(eval));
+            REQUIRE(eval.partial()->asNumber().value() == 5.0);
+        }
+
+        SECTION("Evaluating a StringLiteral expression places a GraceString on the partial") {
+            ExecutionEvaluator eval;
+            StringLiteral str("hello");
+            REQUIRE_NOTHROW(str.accept(eval));
+            REQUIRE(eval.partial()->asString().value() == "hello");
         }
 
         SECTION("Evaluating a Return node terminates the execution") {
