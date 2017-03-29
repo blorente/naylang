@@ -11,4 +11,6 @@ set(SOURCE_FILES
 
 include_directories(include)
 
+execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/generate.sh)
+
 add_executable(interpreter ${SOURCE_FILES})

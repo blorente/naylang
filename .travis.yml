@@ -18,6 +18,7 @@ install:
 - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-6; fi
 - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
 script:
+- ./create_parsers.sh
 - mkdir bin
 - cd bin
 - cmake -G "Unix Makefiles" ..

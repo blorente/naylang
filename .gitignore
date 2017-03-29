@@ -34,4 +34,9 @@ cmake-build-debug/
 /cmake-build-debug/
 *.make
 cmake-build-debug/CMakeFiles/Makefile2
-.idea/
+
+/interpreter/src/parser/generated/
+/deps/antlr/build/
+/build/
+/deps/antlr/run/
+/deps/antlr/cmake/

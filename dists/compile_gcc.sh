@@ -14,6 +14,11 @@ fi
 mkdir bin
 COMPILEDIR="$ROOTDIR/bin"
 
+# Compile antlr antlr
+cd "$ROOTDIR/deps/antlr/"
+./linux_build.sh
+cd $ROOTDIR
+
 cd $COMPILEDIR
 cmake -G "Unix Makefiles" ..
 cmake --build .

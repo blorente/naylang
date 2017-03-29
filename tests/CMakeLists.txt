@@ -11,6 +11,7 @@ FILE(GLOB_RECURSE TEST_SOURCES *_test.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} ${TEST_SOURCES})
 
 FILE(GLOB_RECURSE MODEL_SOURCES ../interpreter/src/model/*.cpp)
+FILE(GLOB_RECURSE MODEL_SOURCES ../interpreter/src/parser/*.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} ${MODEL_SOURCES})
 
 include_directories(include)
