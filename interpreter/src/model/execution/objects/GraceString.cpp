@@ -12,7 +12,9 @@
 
 namespace naylang {
 
-GraceString::GraceString(const std::string &value) : _value(value) {}
+GraceString::GraceString(const std::string &value) : _value(value) {
+    addDefaultMethods();
+}
 
 const std::string &GraceString::value() const {
     return _value;

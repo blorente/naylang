@@ -19,6 +19,7 @@ namespace naylang {
 class GraceBoolean;
 class GraceNumber;
 class GraceString;
+class GraceIterable;
 class ExecutionEvaluator;
 
 class GraceObject {
@@ -40,6 +41,7 @@ public:
     virtual const GraceBoolean &asBoolean() const;
     virtual const GraceNumber &asNumber() const;
     virtual const GraceString &asString() const;
+    virtual GraceIterable &asIterable() const;
     virtual bool isUndefined() const;
     virtual bool isDone() const;
     virtual bool isScope() const;

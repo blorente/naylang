@@ -9,7 +9,7 @@
 
 namespace naylang {
 
-GraceBoolean::GraceBoolean(bool value) : _value{value} {
+GraceBoolean::GraceBoolean(bool value) : _value{value}{
     addDefaultMethods();
 }
 

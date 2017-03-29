@@ -25,6 +25,10 @@ const GraceString &GraceObject::asString() const {
     throw "Trying to cast a generic GraceObject as GraceString";
 }
 
+GraceIterable &GraceObject::asIterable() const {
+    throw "Trying to cast a generic GraceObject as GraceIterable";
+}
+
 bool GraceObject::isUndefined() const {
     return true;
 }

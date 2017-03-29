@@ -12,7 +12,9 @@
 
 namespace naylang {
 
-GraceNumber::GraceNumber(double value) : _value{value} {}
+GraceNumber::GraceNumber(double value) : _value{value} {
+    addDefaultMethods();
+}
 
 void GraceNumber::addDefaultMethods() {
     _nativeMethods["prefix!"] = make_native<Negative>();

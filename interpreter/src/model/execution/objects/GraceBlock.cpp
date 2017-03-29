@@ -12,6 +12,7 @@ namespace naylang {
 
 GraceBlock::GraceBlock(MethodPtr apply) {
     addMethod("apply", apply);
+    addDefaultMethods();
 }
 
 void GraceBlock::addDefaultMethods() {
