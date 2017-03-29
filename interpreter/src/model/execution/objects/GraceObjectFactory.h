@@ -3,16 +3,14 @@
 // Distributed under the GPLv3 license.
 //
 
-#ifndef NAYLANG_NODEFACTORY_H
-#define NAYLANG_NODEFACTORY_H
+#ifndef NAYLANG_GRACEOBJECTFACTORY_H
+#define NAYLANG_GRACEOBJECTFACTORY_H
 
 namespace naylang {
 
 template <typename T, typename... Args>
-static std::shared_ptr<T> make_node(Args&&...args) {
+static std::shared_ptr<T> make_obj(Args&&...args) {
     return std::shared_ptr<T>{new T{std::forward<Args>(args)...}};
 };
-
 }
-
-#endif //NAYLANG_NODEFACTORY_H
+#endif //NAYLANG_GRACEOBJECTFACTORY_H

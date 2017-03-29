@@ -6,7 +6,6 @@
 #include "catch.h"
 
 #include <model/ast/control/While.h>
-#include <model/ast/expressions/Block.h>
 #include <model/ast/expressions/primitives/NumberLiteral.h>
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
 #include <model/ast/NodeFactory.h>

@@ -7,8 +7,9 @@
 
 namespace naylang {
 
-MethodDeclaration::MethodDeclaration(const std::string &_name, const std::shared_ptr<Block> &_body) :
-        _body(_body), _name(_name) {}
+MethodDeclaration::MethodDeclaration(const std::string &name, const std::vector<DeclarationPtr> &params,
+                                     const std::vector<StatementPtr> &body) :
+        _name{name}, _params{params}, _body{body}{}
 
 void MethodDeclaration::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
@@ -18,7 +19,11 @@ const std::string &MethodDeclaration::name() const {
     return _name;
 }
 
-const std::shared_ptr<Block> &MethodDeclaration::body() const {
+const std::vector<StatementPtr> & MethodDeclaration::body() const {
     return _body;
+}
+
+const std::vector<DeclarationPtr> &MethodDeclaration::params() const {
+    return _params;
 }
 }

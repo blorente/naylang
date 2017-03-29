@@ -26,10 +26,13 @@ class MethodDeclaration;
 class IfThen;
 class IfThenElse;
 class While;
+class Return;
 
-class Request;
+class ImplicitRequestNode;
+class ExplicitRequestNode;
 class Block;
 class Lineup;
+class ObjectConstructor;
 
 class Evaluator {
 
@@ -49,9 +52,11 @@ public:
     virtual void evaluate(StringLiteral &expression) {}
 
     virtual void evaluate(VariableReference &expression) {}
-    virtual void evaluate(Request &expression) {}
+    virtual void evaluate(ImplicitRequestNode &expression) {}
+    virtual void evaluate(ExplicitRequestNode &expression) {}
     virtual void evaluate(Block &expression) {}
     virtual void evaluate(Lineup &expression) {}
+    virtual void evaluate(ObjectConstructor &expression) {}
 
     //Declarations
     virtual void evaluate(ConstantDeclaration &expression) {}
@@ -62,6 +67,7 @@ public:
     virtual void evaluate(IfThen &expression) {}
     virtual void evaluate(IfThenElse &expression) {}
     virtual void evaluate(While &expression) {}
+    virtual void evaluate(Return &expression) {}
 };
 
 }

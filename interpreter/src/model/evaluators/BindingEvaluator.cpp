@@ -18,7 +18,7 @@ void BindingEvaluator::evaluate(VariableReference &expression) {
     expression.bindTo(*_symbolTable[expression.identifier()]);
 }
 
-void BindingEvaluator::evaluate(Request &expression) {
+void BindingEvaluator::evaluate(ImplicitRequestNode &expression) {
     if (_symbolTable.find(expression.identifier()) == _symbolTable.end()) {
         throw "Binding not found in symbol table";
     }
@@ -44,6 +44,13 @@ void BindingEvaluator::evaluate(MethodDeclaration &expression) {
         throw "Binding exists in symbol table";
     }
     _symbolTable[expression.name()] = &expression;
+}
+
+void BindingEvaluator::evaluate(ExplicitRequestNode &expression) {
+    if (_symbolTable.find(expression.identifier()) == _symbolTable.end()) {
+        throw "Binding not found in symbol table";
+    }
+    expression.bindTo(static_cast<MethodDeclaration &>(*_symbolTable[expression.identifier()]));
 }
 
 }

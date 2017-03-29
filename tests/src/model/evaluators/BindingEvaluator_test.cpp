@@ -5,6 +5,7 @@
 
 #include <model/evaluators/BindingEvaluator.h>
 #include "catch.h"
+
 #include <model/ast/expressions/primitives/NumberLiteral.h>
 #include <model/ast/NodeFactory.h>
 
@@ -13,10 +14,11 @@ using namespace naylang;
 TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
 
     auto five = make_node<NumberLiteral>(5.0);
-    auto fiveBlock = make_node<Block>(); fiveBlock->addStatement(five);
+    std::vector<DeclarationPtr> identifierParams{};
+    std::vector<StatementPtr> identifierBody{};
 
     auto xDecl = make_node<VariableDeclaration>("x");
-    auto methodDecl = make_node<MethodDeclaration>("identifier", fiveBlock);
+    auto methodDecl = make_node<MethodDeclaration>("identifier", identifierParams, identifierBody);
     auto constDecl = make_node<ConstantDeclaration>("const", five);
 
     SECTION("A BindingEvaluator can return a symbol table with all declarations") {
@@ -35,17 +37,17 @@ TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
         REQUIRE(eval.symbolTable().at("const")->name() == constDecl->name());
     }
 
-    SECTION("Evaluating a VariableReference or Request throws if the symbol is not in the table") {
+    SECTION("Evaluating a VariableReference or RequestNode throws if the symbol is not in the table") {
         BindingEvaluator eval;
         auto wrongVar = make_node<VariableReference>("wrongVar");
-        auto wrongMethod = make_node<Request>("wrongMethod");
+        auto wrongMethod = make_node<ImplicitRequestNode>("wrongMethod");
         REQUIRE_THROWS(eval.evaluate(*wrongVar));
         REQUIRE_THROWS(eval.evaluate(*wrongMethod));
     }
 
-    SECTION("If a Request is evaluated after a MethodDeclaration with the same name, it binds to it") {
+    SECTION("If a RequestNode is evaluated after a MethodDeclaration with the same name, it binds to it") {
         BindingEvaluator eval;
-        auto rightMethod = make_node<Request>("identifier");
+        auto rightMethod = make_node<ExplicitRequestNode>("identifier", five);
 
         eval.evaluate(*methodDecl);
         REQUIRE_NOTHROW(eval.evaluate(*rightMethod));
@@ -53,7 +55,7 @@ TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
         REQUIRE(&rightMethod->declaration() == methodDecl.get());
     }
 
-    SECTION("If a Request is evaluated after a MethodDeclaration with the same name, it binds to it") {
+    SECTION("If a RequestNode is evaluated after a MethodDeclaration with the same name, it binds to it") {
         BindingEvaluator eval;
         auto xVar = make_node<VariableReference>("x");
 

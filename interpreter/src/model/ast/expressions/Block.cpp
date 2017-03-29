@@ -30,4 +30,8 @@ void Block::addParameter(DeclarationPtr param) {
     _params.push_back(param);
 }
 
+BlockPtr Block::get_shared() {
+    return shared_from_this();
+}
+
 }
