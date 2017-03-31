@@ -6,7 +6,7 @@
 #include "catch.h"
 
 #include <iostream>
-#include <antlr4-runtime/antlr4-runtime.h>
+#include <antlr4-runtime.h>
 
 TEST_CASE("Parser", "[Parser]") {
     /*ANTLRInputStream input(u8"🍴 = 🍐 + \"😎\";(((x * π))) * µ + ∰; a + (x * (y ? 0 : 1) + z);");
