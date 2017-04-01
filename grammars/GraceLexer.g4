@@ -1,4 +1,4 @@
-lexer grammar TLexer;
+lexer grammar GraceLexer;
 
 // These are all supported lexer sections:
 
@@ -41,46 +41,18 @@ tokens {
 	DUMMY	
 }
 
-Return: 'return';
-Continue: 'continue';
-
 INT: Digit+;
 Digit: [0-9];
 
 ID: LETTER (LETTER | '0'..'9')*;
 fragment LETTER : [a-zA-Z\u0080-\uFFFF];
 
-LessThan: '<';
-GreaterThan:  '>';
-Equal: '=';
-And: 'and';
-
-Colon: ':';
-Semicolon: ';';
-Plus: '+';
-Minus: '-';
-Star: '*';
-OpenPar: '(';
-ClosePar: ')';
-OpenCurly: '{' -> pushMode(Mode1);
-CloseCurly: '}' -> popMode;
-QuestionMark: '?';
-Comma: ',' -> skip;
-Dollar: '$' -> more, mode(Mode1);
-Ampersand: '&' -> type(DUMMY);
- 
-String: '"' .*? '"';
-Foo: {canTestFoo()}? 'foo' {isItFoo()}? { myFooLexerAction(); };
-Bar: 'bar' {isItBar()}? { myBarLexerAction(); };
-Any: Foo Dot Bar? DotDot Baz;
-
-Comment : '#' ~[\r\n]* '\r'? '\n' -> channel(CommentsChannel);
-WS: [ \t\r\n]+ -> channel(99);
-
-fragment Baz: 'Baz';
-
-mode Mode1;
-Dot: '.';
-
-mode Mode2;
-DotDot: '..';
+OPEN_PAREN : '(';
+CLOSE_PAREN : ')';
+OP_ADD : '+';
+OP_SUB : '-';
+OP_MUL : '*';
+OP_DIV : '/';
+OP_NEG : '-';
+OP_MOD : '%';
+OP_POW : '^';

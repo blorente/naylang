@@ -15,7 +15,7 @@
 # + make a subfolder cmake
 # + Copy this file to srcfolder/cmake
 # + cut below and use it to create srcfolder/CMakeLists.txt,
-# + from https://github.com/DanMcLaughlin/antlr4/tree/master/runtime/Cpp/demo Copy main.cpp, TLexer.g4 and TParser.g4 to ./srcfolder/
+# + from https://github.com/DanMcLaughlin/antlr4/tree/master/runtime/Cpp/demo Copy main.cpp, GraceLexer.g4 and GraceParser.g4 to ./srcfolder/
 #
 # next make a build folder e.g. ~/buildfolder/
 # from the buildfolder, run cmake ~/srcfolder; make
@@ -40,8 +40,8 @@
 #
 # # Call macro to add lexer and grammar to your build dependencies.
 # antlr4cpp_process_grammar(demo antlrcpptest
-#   ${CMAKE_CURRENT_SOURCE_DIR}/TLexer.g4
-#   ${CMAKE_CURRENT_SOURCE_DIR}/TParser.g4)
+#   ${CMAKE_CURRENT_SOURCE_DIR}/GraceLexer.g4
+#   ${CMAKE_CURRENT_SOURCE_DIR}/GraceParser.g4)
 # # include generated files in project environment
 # include_directories(${antlr4cpp_include_dirs_antlrcpptest})
 #
