@@ -26,6 +26,8 @@ script:
 - mkdir bin
 - cd bin
 - cmake -G "Unix Makefiles" ..
+- make -j2 antlr4cpp antlr4cpp_generation_naylang
+- cmake -G "Unix Makefiles" ..
 - make -j2 VERBOSE=1
 - cd tests
 - "./tests -r console -s"
