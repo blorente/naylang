@@ -29,6 +29,9 @@ public:
     antlrcpp::Any visitNumber(GraceParser::NumberContext *ctx) override;
     antlrcpp::Any visitPrefix_op(GraceParser::Prefix_opContext *ctx) override;
 
+protected:
+    virtual antlrcpp::Any defaultResult();
+
 private:
 
     void assignPartialStr(std::string partial);

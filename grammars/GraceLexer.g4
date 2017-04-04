@@ -38,21 +38,21 @@ void myBarLexerAction() { /* do something*/ };
 channels { CommentsChannel, DirectiveChannel }
 
 tokens {
-	DUMMY	
+	DUMMY
 }
 
 INT: Digit+;
 Digit: [0-9];
 
+WS : [ \r\t\n]+ -> skip ;
 ID: LETTER (LETTER | '0'..'9')*;
 fragment LETTER : [a-zA-Z\u0080-\uFFFF];
 
 OPEN_PAREN : '(';
 CLOSE_PAREN : ')';
-OP_ADD : '+';
-OP_SUB : '-';
-OP_MUL : '*';
-OP_DIV : '/';
-OP_NEG : '-';
-OP_MOD : '%';
-OP_POW : '^';
+PLUS : '+';
+MINUS : '-';
+MUL : '*';
+DIV : '/';
+MOD : '%';
+POW : '^';

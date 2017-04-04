@@ -19,7 +19,7 @@ antlrcpp::Any NaylangParserVisitor::visitPrefix_op(GraceParser::Prefix_opContext
 }
 
 antlrcpp::Any NaylangParserVisitor::visitFact(GraceParser::FactContext *ctx) {
-    ctx->atom()->accept(this);
+    ctx->expressionBase()->accept(this);
     auto reciever = _partialExp;
     if (ctx->prefix_op()) {
         ctx->prefix_op()->accept(this);
@@ -29,7 +29,7 @@ antlrcpp::Any NaylangParserVisitor::visitFact(GraceParser::FactContext *ctx) {
 }
 
 antlrcpp::Any NaylangParserVisitor::visitAtom(GraceParser::AtomContext *ctx) {
-    ctx->expressionBase(0)->accept(this);
+    ctx->expressionBase()->accept(this);
     return 0;
 }
 
@@ -54,5 +54,9 @@ void NaylangParserVisitor::assignPartialExp(ExpressionPtr partial) {
 void NaylangParserVisitor::assignPartialStat(StatementPtr partial) {
     _partialStat = partial;
     _tree = _partialStat;
+}
+
+antlrcpp::Any NaylangParserVisitor::defaultResult() {
+    return 0;
 }
 }

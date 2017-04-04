@@ -66,14 +66,16 @@ void doAfter() {}
 @parser::basevisitordeclarations {/* base visitor public declarations/members section */}
 @parser::basevisitormembers {/* base visitor private declarations/members section */}
 @parser::basevisitordefinitions {/* base visitor definitions section */}
-
+/*
+ * Parser Rules
+ */
 // Actual grammar start.
-expression : term ((OP_ADD | OP_SUB) term)*;
-term : fact ((OP_MUL | OP_DIV) fact)*;
-fact : prefix_op atom | atom;
-atom : expressionBase (infix_binary_op expressionBase)*;
-expressionBase : number | OPEN_PAREN expression CLOSE_PAREN;
+//expression : term ((OP_ADD | OP_SUB) term)*;
+//term : fact ((OP_MUL | OP_DIV) fact)*;
+fact : prefix_op? expressionBase;
+atom : expressionBase ;//(infix_binary_op expressionBase)*;
+expressionBase : number;// | OPEN_PAREN fact CLOSE_PAREN;
 number : INT;
-prefix_op : OP_NEG;
-infix_binary_op: OP_MOD | OP_POW;
+prefix_op : MINUS;
+infix_binary_op: MOD | POW;
 
