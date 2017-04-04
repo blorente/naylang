@@ -8,13 +8,7 @@
 #include "GraceParserBaseVisitor.h"
 #include <memory>
 
-#include <model/ast/Statement.h>
-#include <model/ast/expressions/Expression.h>
-
-#include <model/ast/expressions/primitives/BooleanLiteral.h>
-#include <model/ast/expressions/primitives/NumberLiteral.h>
-#include <model/ast/expressions/primitives/StringLiteral.h>
-#include <model/ast/expressions/requests/ExplicitRequestNode.h>
+#include <model/ast/ASTNodeDefinitions.h>
 
 namespace naylang {
 class NaylangParserVisitor : public GraceParserBaseVisitor {
