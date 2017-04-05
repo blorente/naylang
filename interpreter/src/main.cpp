@@ -33,7 +33,7 @@ int main() {
         CommonTokenStream tokens(&lexer);
         GraceParser parser(&tokens);
 
-        parserListener.visit(parser.fact());
+        parserListener.visit(parser.program());
         printAST(parserListener.AST());
     }
     return 0;

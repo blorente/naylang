@@ -4,6 +4,7 @@
 //
 
 #include <model/ast/declarations/VariableDeclaration.h>
+#include <model/ast/NodeFactory.h>
 #include "catch.h"
 
 
@@ -15,5 +16,14 @@ TEST_CASE("VariableDeclaration Statements", "[Declarations]") {
         VariableDeclaration declareY(name);
 
         REQUIRE(declareY.name() == "y");
+    }
+
+    SECTION("A variable declaration can also contain an initial value") {
+        auto name = "y";
+        auto five = make_node<NumberLiteral>(5);
+        VariableDeclaration declareY(name, five);
+
+        REQUIRE(declareY.name() == "y");
+        REQUIRE(declareY.value() == five);
     }
 }

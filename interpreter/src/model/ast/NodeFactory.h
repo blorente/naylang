@@ -6,6 +6,8 @@
 #ifndef NAYLANG_NODEFACTORY_H
 #define NAYLANG_NODEFACTORY_H
 
+#include <model/ast/ASTNodeDefinitions.h>
+
 namespace naylang {
 
 template <typename T, typename... Args>

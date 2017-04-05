@@ -69,13 +69,74 @@ void doAfter() {}
 /*
  * Parser Rules
  */
-// Actual grammar start.
-//expression : term ((OP_ADD | OP_SUB) term)*;
-//term : fact ((OP_MUL | OP_DIV) fact)*;
-fact : prefix_op? expressionBase;
-atom : expressionBase ;//(infix_binary_op expressionBase)*;
-expressionBase : number;// | OPEN_PAREN fact CLOSE_PAREN;
-number : INT;
-prefix_op : MINUS;
-infix_binary_op: MOD | POW;
+program: (statement)*;
+statement: expression | declaration; //| control;
+
+declaration : variableDeclaration
+            | constantDeclaration
+            | methodDeclaration
+            ;
+
+variableDeclaration: VAR identifier (VAR_ASSIGN value)?;
+constantDeclaration: DEF identifier EQUAL value;
+methodDeclaration: prefixMethod
+                 | userMethod
+                 ;
+
+prefixMethod: METHOD PREFIX methodSignature methodBody;
+userMethod: METHOD methodSignature methodBody;
+
+methodSignature: methodSignaturePart+;
+methodSignaturePart: identifier (OPEN_PAREN formalParameterList CLOSE_PAREN)?;
+formalParameterList: formalParameter (COMMA formalParameter)*;
+formalParameter: identifier;
+
+methodBody: OPEN_BRACE methodBodyLine* CLOSE_BRACE;
+methodBodyLine: variableDeclaration | constantDeclaration | expression; //| control;
+
+// Using left-recursion and implicit operator precendence. ANTLR 4 Reference, page 70
+expression  : rec=expression op=(MUL | DIV) param=expression        #MulDivExp
+            | rec=expression op=(PLUS | MINUS) param=expression     #AddSubExp
+            | prefix_op rec=expression                              #PrefixExp
+            | rec=expression infix_op param=expression              #InficExp
+            | implicitRequest                                       #ImplicitReqExp
+            | explicitRequest                                       #ExplicitReqExp
+            | value                                                 #ValueExp
+            ;
+
+implicitRequest : variableReference             #VarRefImplReq
+                | identifier effectiveParameter #OneParamImplReq // e.g. `print "Hello"`
+                | multipartRequest              #MethImplReq
+                ;
+multipartRequest: methodRequestPart+;
+methodRequestPart: identifier (OPEN_PAREN effectiveParameterList CLOSE_PAREN)?;
+effectiveParameterList: effectiveParameter (COMMA effectiveParameter)*;
+effectiveParameter: expression;
+
+explicitRequest: (implicitRequest | value) DOT implicitRequest;
+
+variableReference: identifier;
+
+value   : objectConstructor #ObjConstructorVal
+        | block             #BlockVal
+        | lineup            #LineupVal
+        | primitive         #PrimitiveValue
+        ;
+
+objectConstructor: OBJECT OPEN_BRACE (statement)* CLOSE_BRACE;
+block: OPEN_BRACE (params=formalParameterList RIGHT_ARROW)? body=methodBodyLine* CLOSE_BRACE;
+lineup: OPEN_BRACKET lineupContents? CLOSE_BRACKET;
+lineupContents: expression (COMMA expression)*;
+
+primitive   : number
+            | boolean
+            | string
+            ;
+
+identifier: ID;
+number: INT;
+boolean: TRUE | FALSE;
+string: QUOTE content=.*? QUOTE;
+prefix_op: MINUS | EXCLAMATION;
+infix_op: MOD | POW;
 

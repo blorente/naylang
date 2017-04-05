@@ -14,29 +14,60 @@ namespace naylang {
 class NaylangParserVisitor : public GraceParserBaseVisitor {
 
     StatementPtr _tree;
-    StatementPtr _partialStat;
-    ExpressionPtr _partialExp;
-    std::string _partialStr;
+    std::vector<StatementPtr> _partialStats;
+    std::vector<ExpressionPtr> _partialExps;
+    std::vector<std::string> _partialStrs;
+    std::vector<DeclarationPtr> _partialDecls;
 
 public:
     typedef GraceParserBaseVisitor super;
 
     const StatementPtr AST() const;
 
-    antlrcpp::Any visitFact(GraceParser::FactContext *ctx) override;
-    antlrcpp::Any visitAtom(GraceParser::AtomContext *ctx) override;
-    antlrcpp::Any visitExpressionBase(GraceParser::ExpressionBaseContext *ctx) override;
-    antlrcpp::Any visitNumber(GraceParser::NumberContext *ctx) override;
+    antlrcpp::Any visitPrefixExp(GraceParser::PrefixExpContext *ctx) override;
     antlrcpp::Any visitPrefix_op(GraceParser::Prefix_opContext *ctx) override;
+
+    antlrcpp::Any visitNumber(GraceParser::NumberContext *ctx) override;
+    antlrcpp::Any visitString(GraceParser::StringContext *ctx) override;
+    antlrcpp::Any visitBoolean(GraceParser::BooleanContext *ctx) override;
+
+    antlrcpp::Any visitIdentifier(GraceParser::IdentifierContext *ctx) override;
+
+    antlrcpp::Any visitMulDivExp(GraceParser::MulDivExpContext *ctx) override;
+    antlrcpp::Any visitAddSubExp(GraceParser::AddSubExpContext *ctx) override;
+
+    antlrcpp::Any visitConstantDeclaration(GraceParser::ConstantDeclarationContext *ctx) override;
+    antlrcpp::Any visitVariableDeclaration(GraceParser::VariableDeclarationContext *ctx) override;
+
+    antlrcpp::Any visitUserMethod(GraceParser::UserMethodContext *ctx) override;
+    antlrcpp::Any visitMethodSignature(GraceParser::MethodSignatureContext *ctx) override;
+    antlrcpp::Any visitMethodSignaturePart(GraceParser::MethodSignaturePartContext *ctx) override;
+    antlrcpp::Any visitFormalParameterList(GraceParser::FormalParameterListContext *ctx) override;
+    antlrcpp::Any visitFormalParameter(GraceParser::FormalParameterContext *ctx) override;
+
+    antlrcpp::Any visitMethodBody(GraceParser::MethodBodyContext *ctx) override;
+
+    antlrcpp::Any visitVarRefImplReq(GraceParser::VarRefImplReqContext *ctx) override;
 
 protected:
     virtual antlrcpp::Any defaultResult();
 
 private:
 
-    void assignPartialStr(std::string partial);
-    void assignPartialExp(ExpressionPtr partial);
-    void assignPartialStat(StatementPtr partial);
+    void pushPartialStr(const std::string &partial);
+    void pushPartialExp(ExpressionPtr partial);
+    void pushPartialStat(StatementPtr partial);
+    void pushPartialDecl(DeclarationPtr partial);
+
+    std::vector<std::string> popPartialStrs(int length) const;
+    std::vector<ExpressionPtr> popPartialExps(int length) const;
+    std::vector<StatementPtr> popPartialStats(int length) const;
+    std::vector<DeclarationPtr> popPartialDecls(int length) const;
+
+    std::string popPartialStr();
+    ExpressionPtr popPartialExp();
+
+    void clearPartials();
 };
 }
 

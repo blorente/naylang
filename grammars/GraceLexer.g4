@@ -35,24 +35,48 @@ void myBarLexerAction() { /* do something*/ };
 // Appears in line with the other class member definitions in the cpp file.
 @lexer::definitions {/* lexer definitions section */}
 
-channels { CommentsChannel, DirectiveChannel }
+//channels { CommentsChannel, DirectiveChannel }
 
 tokens {
 	DUMMY
 }
 
+WS : [ \r\t\n]+ -> skip ;
 INT: Digit+;
 Digit: [0-9];
 
-WS : [ \r\t\n]+ -> skip ;
+METHOD: 'method ';
+VAR_ASSIGN: ':=';
+VAR: 'var ';
+DEF: 'def ';
+PREFIX: 'prefix';
+OBJECT: 'object';
+
+COMMA: ',';
+DOT: '.';
+DELIMITER: ';';
+QUOTE: '"';
+EXCLAMATION: '!';
+RIGHT_ARROW: '->';
+OPEN_PAREN: '(';
+CLOSE_PAREN: ')';
+OPEN_BRACE: '{';
+CLOSE_BRACE: '}';
+OPEN_BRACKET: '[';
+CLOSE_BRACKET: ']';
+
+PLUS: '+';
+MINUS: '-';
+MUL: '*';
+DIV: '/';
+MOD: '%';
+POW: '^';
+EQUAL: '=';
+
+TRUE: 'true';
+FALSE: 'false';
+
+// SHould be defined last, so that reserved words stay reserved
 ID: LETTER (LETTER | '0'..'9')*;
 fragment LETTER : [a-zA-Z\u0080-\uFFFF];
 
-OPEN_PAREN : '(';
-CLOSE_PAREN : ')';
-PLUS : '+';
-MINUS : '-';
-MUL : '*';
-DIV : '/';
-MOD : '%';
-POW : '^';

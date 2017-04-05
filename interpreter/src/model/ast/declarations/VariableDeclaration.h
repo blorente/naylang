@@ -8,19 +8,23 @@
 
 #include <string>
 #include <model/ast/declarations/Declaration.h>
+#include <model/ast/expressions/Expression.h>
 
 namespace naylang {
 
 class VariableDeclaration : public Declaration {
 
     std::string _identifier;
+    ExpressionPtr _initialValue;
 
 public:
 
     VariableDeclaration(const std::string &identifier);
+    VariableDeclaration(const std::string &identifier, ExpressionPtr intialValue);
 
     virtual void accept(Evaluator &evaluator);
     const std::string &name() const;
+    const ExpressionPtr &value() const;
 };
 
 }

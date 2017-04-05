@@ -10,12 +10,19 @@ namespace naylang {
 VariableDeclaration::VariableDeclaration(const std::string &identifier)
         : _identifier(identifier) {}
 
+VariableDeclaration::VariableDeclaration(const std::string &identifier, ExpressionPtr intialValue) :
+        _identifier{identifier}, _initialValue{intialValue} {}
+
 void VariableDeclaration::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
 const std::string & VariableDeclaration::name() const {
     return _identifier;
+}
+
+const ExpressionPtr &VariableDeclaration::value() const {
+    return _initialValue;
 }
 
 }
