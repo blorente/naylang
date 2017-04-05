@@ -40,13 +40,15 @@ public:
     antlrcpp::Any visitVariableDeclaration(GraceParser::VariableDeclarationContext *ctx) override;
 
     antlrcpp::Any visitUserMethod(GraceParser::UserMethodContext *ctx) override;
+
+    antlrcpp::Any visitPrefixMethod(GraceParser::PrefixMethodContext *ctx) override;
+
     antlrcpp::Any visitMethodSignature(GraceParser::MethodSignatureContext *ctx) override;
     antlrcpp::Any visitMethodSignaturePart(GraceParser::MethodSignaturePartContext *ctx) override;
     antlrcpp::Any visitFormalParameterList(GraceParser::FormalParameterListContext *ctx) override;
     antlrcpp::Any visitFormalParameter(GraceParser::FormalParameterContext *ctx) override;
 
     antlrcpp::Any visitMethodBody(GraceParser::MethodBodyContext *ctx) override;
-
     antlrcpp::Any visitVarRefImplReq(GraceParser::VarRefImplReqContext *ctx) override;
 
 protected:

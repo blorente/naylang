@@ -83,7 +83,7 @@ methodDeclaration: prefixMethod
                  | userMethod
                  ;
 
-prefixMethod: METHOD PREFIX methodSignature methodBody;
+prefixMethod: METHOD PREFIX (EXCLAMATION | MINUS)  methodBody;
 userMethod: METHOD methodSignature methodBody;
 
 methodSignature: methodSignaturePart+;

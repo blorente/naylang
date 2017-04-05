@@ -223,4 +223,21 @@ antlrcpp::Any NaylangParserVisitor::visitVarRefImplReq(GraceParser::VarRefImplRe
     pushPartialExp(make_node<VariableReference>(ctx->getText()));
     return 0;
 }
+
+antlrcpp::Any NaylangParserVisitor::visitPrefixMethod(GraceParser::PrefixMethodContext *ctx) {
+    std::string methodName = "prefix" + ctx->children[2]->getText();
+
+    std::vector<DeclarationPtr> formalParams;
+
+    std::vector<StatementPtr> body;
+    ctx->methodBody()->accept(this);
+    int bodyLength = ctx->methodBody()->methodBodyLine().size();
+    for (auto line : popPartialStats(bodyLength)) {
+        body.push_back(line);
+    }
+
+    auto methodDeclaration = make_node<MethodDeclaration>(methodName, formalParams, body);
+    pushPartialDecl(methodDeclaration);
+    return 0;
+}
 }

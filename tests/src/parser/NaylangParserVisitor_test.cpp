@@ -88,7 +88,7 @@ TEST_CASE("Declarations", "[Naylang Parser Visitor]") {
     }
 
     SECTION("Methods") {
-        SECTION("Parsing 'method twice(n) { n * 2 }' creates a MethodDeclaration") {
+        SECTION("Parsing 'method twice(n,m) { n * m }' creates a MethodDeclaration") {
             auto AST = translate("method twice(n,m) { n * m }");
             auto decl = static_cast<MethodDeclaration &>(*AST);
             auto inst = static_cast<ExplicitRequestNode &>(*decl.body()[0]);
@@ -99,6 +99,18 @@ TEST_CASE("Declarations", "[Naylang Parser Visitor]") {
             REQUIRE(inst.identifier() == "*(_)");
             REQUIRE(recv.identifier() == "n");
             REQUIRE(param.identifier() == "m");
+        }
+
+        SECTION("Parsing 'method prefix!! { n * 2 }' creates a MethodDeclaration") {
+            auto AST = translate("method prefix! { 2 * 2 }");
+            auto decl = static_cast<MethodDeclaration &>(*AST);
+            auto inst = static_cast<ExplicitRequestNode &>(*decl.body()[0]);
+            auto recv = static_cast<NumberLiteral &>(*inst.receiver());
+            auto param = static_cast<NumberLiteral &>(*inst.params()[0]);
+            REQUIRE(decl.name() == "prefix!");
+            REQUIRE(inst.identifier() == "*(_)");
+            REQUIRE(recv.value() == 2);
+            REQUIRE(param.value() == 2);
         }
     }
 }
