@@ -49,7 +49,15 @@ public:
     antlrcpp::Any visitFormalParameter(GraceParser::FormalParameterContext *ctx) override;
 
     antlrcpp::Any visitMethodBody(GraceParser::MethodBodyContext *ctx) override;
-    antlrcpp::Any visitVarRefImplReq(GraceParser::VarRefImplReqContext *ctx) override;
+
+    antlrcpp::Any visitIdentifierImplReq(GraceParser::IdentifierImplReqContext *ctx) override;
+    antlrcpp::Any visitOneParamImplReq(GraceParser::OneParamImplReqContext *ctx) override;
+    antlrcpp::Any visitMethImplReq(GraceParser::MethImplReqContext *ctx) override;
+    antlrcpp::Any visitMultipartRequest(GraceParser::MultipartRequestContext *ctx) override;
+    antlrcpp::Any visitMethodRequestPart(GraceParser::MethodRequestPartContext *ctx) override;
+    antlrcpp::Any visitEffectiveParameterList(GraceParser::EffectiveParameterListContext *ctx) override;
+
+    antlrcpp::Any visitImplReqExplReq(GraceParser::ImplReqExplReqContext *ctx) override;
 
 protected:
     virtual antlrcpp::Any defaultResult();

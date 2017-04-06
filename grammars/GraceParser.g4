@@ -104,18 +104,18 @@ expression  : rec=expression op=(MUL | DIV) param=expression        #MulDivExp
             | value                                                 #ValueExp
             ;
 
-implicitRequest : variableReference             #VarRefImplReq
+explicitRequest : rec=implicitRequest DOT req=implicitRequest #ImplReqExplReq
+                | rec=value DOT req=implicitRequest           #ValueExplReq
+                ;
+
+implicitRequest : multipartRequest              #MethImplReq
                 | identifier effectiveParameter #OneParamImplReq // e.g. `print "Hello"`
-                | multipartRequest              #MethImplReq
+                | identifier                    #IdentifierImplReq //variables or 0 params methods
                 ;
 multipartRequest: methodRequestPart+;
-methodRequestPart: identifier (OPEN_PAREN effectiveParameterList CLOSE_PAREN)?;
+methodRequestPart: identifier OPEN_PAREN effectiveParameterList? CLOSE_PAREN;
 effectiveParameterList: effectiveParameter (COMMA effectiveParameter)*;
 effectiveParameter: expression;
-
-explicitRequest: (implicitRequest | value) DOT implicitRequest;
-
-variableReference: identifier;
 
 value   : objectConstructor #ObjConstructorVal
         | block             #BlockVal

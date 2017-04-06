@@ -115,6 +115,55 @@ TEST_CASE("Declarations", "[Naylang Parser Visitor]") {
     }
 }
 
+TEST_CASE("Requests", "[Naylang Parser Visitor]") {
+    SECTION("Implicit Requests can be just an identifier") {
+        auto AST = translate("x");
+        auto req = static_cast<ImplicitRequestNode &>(*AST);
+        REQUIRE(req.identifier() == "x");
+        REQUIRE(req.params().size() == 0);
+    }
+
+    SECTION("Implicit Requests with one parameter can omit the parentheses") {
+        auto AST = translate("print \"Hello\"");
+        auto req = static_cast<ImplicitRequestNode &>(*AST);
+        auto param = static_cast<StringLiteral &>(*req.params()[0]);
+        REQUIRE(req.identifier() == "print(_)");
+        REQUIRE(param.value() == "Hello");
+    }
+
+    SECTION("Implicit Requests with more than one parameter have to have them in parentheses") {
+        auto AST = translate("twice(4, 5)");
+        auto req = static_cast<ImplicitRequestNode &>(*AST);
+        auto four = static_cast<NumberLiteral &>(*req.params()[0]);
+        auto five = static_cast<NumberLiteral &>(*req.params()[1]);
+        REQUIRE(req.identifier() == "twice(_,_)");
+        REQUIRE(four.value() == 4);
+        REQUIRE(five.value() == 5);
+    }
+
+    SECTION("Implicit Requests can have more than one part") {
+        auto AST = translate("twice(4) as (5)");
+        auto req = static_cast<ImplicitRequestNode &>(*AST);
+        auto four = static_cast<NumberLiteral &>(*req.params()[0]);
+        auto five = static_cast<NumberLiteral &>(*req.params()[1]);
+        REQUIRE(req.identifier() == "twice(_)as(_)");
+        REQUIRE(four.value() == 4);
+        REQUIRE(five.value() == 5);
+    }
+
+    /*
+    SECTION("Explicit Requests have a reciever") {
+        auto AST = translate("x.say(5)");
+        auto req = static_cast<ExplicitRequestNode &>(*AST);
+        auto rec = static_cast<ImplicitRequestNode &>(*req.receiver());
+        auto five = static_cast<NumberLiteral &>(*req.params()[0]);
+        REQUIRE(req.identifier() == "say(_)");
+        REQUIRE(rec.identifier() == "x");
+        REQUIRE(five.value() == 5);
+    }
+     */
+}
+
 StatementPtr translate(std::string line) {
     ANTLRInputStream stream(line);
     GraceLexer lexer(&stream);

@@ -150,7 +150,7 @@ antlrcpp::Any NaylangParserVisitor::visitUserMethod(GraceParser::UserMethodConte
     ctx->methodSignature()->accept(this);
 
     std::string methodName = "";
-    for (auto identPart : popPartialStr()) {
+    for (auto identPart : popPartialStrs(ctx->methodSignature()->methodSignaturePart().size())) {
         methodName += identPart;
     }
 
@@ -219,11 +219,6 @@ antlrcpp::Any NaylangParserVisitor::visitMethodBody(GraceParser::MethodBodyConte
     return 0;
 }
 
-antlrcpp::Any NaylangParserVisitor::visitVarRefImplReq(GraceParser::VarRefImplReqContext *ctx) {
-    pushPartialExp(make_node<ImplicitRequestNode>(ctx->getText()));
-    return 0;
-}
-
 antlrcpp::Any NaylangParserVisitor::visitPrefixMethod(GraceParser::PrefixMethodContext *ctx) {
     std::string methodName = "prefix" + ctx->children[2]->getText();
 
@@ -238,6 +233,78 @@ antlrcpp::Any NaylangParserVisitor::visitPrefixMethod(GraceParser::PrefixMethodC
 
     auto methodDeclaration = make_node<MethodDeclaration>(methodName, formalParams, body);
     pushPartialDecl(methodDeclaration);
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitIdentifierImplReq(GraceParser::IdentifierImplReqContext *ctx) {
+    pushPartialExp(make_node<ImplicitRequestNode>(ctx->getText()));
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitOneParamImplReq(GraceParser::OneParamImplReqContext *ctx) {
+    auto name = ctx->identifier()->getText() + "(_)";
+    ctx->effectiveParameter()->accept(this);
+    auto effectiveParam = popPartialExp();
+    std::vector<ExpressionPtr> params{effectiveParam};
+    pushPartialExp(make_node<ImplicitRequestNode>(name, params));
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitMethImplReq(GraceParser::MethImplReqContext *ctx) {
+    ctx->multipartRequest()->accept(this);
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitMultipartRequest(GraceParser::MultipartRequestContext *ctx) {
+    std::string methodName;
+    for (auto part : ctx->methodRequestPart()) {
+        part->accept(this);
+        methodName += popPartialStr();
+    }
+    pushPartialStr(methodName);
+
+    int totalParams = 0;
+    for (auto part : ctx->methodRequestPart()) {
+        totalParams += part->effectiveParameterList()->effectiveParameter().size();
+    }
+
+    auto effectiveParams = popPartialExps(totalParams);
+
+    pushPartialExp(make_node<ImplicitRequestNode>(methodName, effectiveParams));
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitMethodRequestPart(GraceParser::MethodRequestPartContext *ctx) {
+    int params = ctx->effectiveParameterList()->effectiveParameter().size();
+    std::string partName = ctx->identifier()->getText();
+    if (params != 0) {
+        partName += "(";
+    }
+    for (int i = 0; i < params; i++) {
+        partName += "_,";
+    }
+    partName.pop_back();
+    if (params != 0) {
+        partName += ")";
+    }
+    pushPartialStr(partName);
+
+    ctx->effectiveParameterList()->accept(this);
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitEffectiveParameterList(GraceParser::EffectiveParameterListContext *ctx) {
+    for (auto param : ctx->effectiveParameter()) {
+        param->accept(this);
+    }
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitImplReqExplReq(GraceParser::ImplReqExplReqContext *ctx) {
+    ctx->rec->accept(this);
+    auto rec = popPartialExp();
+    ctx->req->accept(this);
+
     return 0;
 }
 }
