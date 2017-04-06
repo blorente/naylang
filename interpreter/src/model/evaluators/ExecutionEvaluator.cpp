@@ -83,6 +83,15 @@ void ExecutionEvaluator::evaluate(ConstantDeclaration &expression) {
     _currentScope->setField(expression.name(), _partial);
 }
 
+void ExecutionEvaluator::evaluate(VariableDeclaration &expression) {
+    if (expression.value()) {
+        expression.value()->accept(*this);
+        _currentScope->setField(expression.name(), _partial);
+    } else {
+        _currentScope->setField(expression.name(), make_obj<UserObject>());
+    }
+}
+
 void ExecutionEvaluator::evaluate(Block &expression) {
     auto meth = make_meth(expression.params(), expression.body());
     _partial = make_obj<GraceBlock>(meth);

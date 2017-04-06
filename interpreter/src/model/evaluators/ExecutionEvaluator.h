@@ -51,6 +51,8 @@ public:
     virtual void evaluate(Return &expression);
     virtual void evaluate(Block &expression);
     virtual void evaluate(ObjectConstructor &expression);
+
+    void evaluate(VariableDeclaration &expression) override;
 };
 } // end namespace naylang
 

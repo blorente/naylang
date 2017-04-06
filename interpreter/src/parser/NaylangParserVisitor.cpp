@@ -132,7 +132,7 @@ antlrcpp::Any NaylangParserVisitor::visitBoolean(GraceParser::BooleanContext *ct
 antlrcpp::Any NaylangParserVisitor::visitConstantDeclaration(GraceParser::ConstantDeclarationContext *ctx) {
     ctx->identifier()->accept(this);
     auto name = popPartialStr();
-    ctx->value()->accept(this);
+    ctx->expression()->accept(this);
     auto value = popPartialExp();
     pushPartialDecl(make_node<ConstantDeclaration>(name, value));
     return 0;
@@ -146,7 +146,7 @@ antlrcpp::Any NaylangParserVisitor::visitIdentifier(GraceParser::IdentifierConte
 antlrcpp::Any NaylangParserVisitor::visitVariableDeclaration(GraceParser::VariableDeclarationContext *ctx) {
     ctx->identifier()->accept(this);
     auto name = popPartialStr();
-    ctx->value()->accept(this);
+    ctx->expression()->accept(this);
     auto value = popPartialExp();
     pushPartialDecl(make_node<VariableDeclaration>(name, value));
     return 0;

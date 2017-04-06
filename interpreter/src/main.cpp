@@ -22,16 +22,17 @@ void printAST(StatementPtr ast) {
     ast->accept(eval);
 }
 
-GraceObjectPtr executeAST(const StatementPtr AST) {
-    ExecutionEvaluator eval;
+GraceObjectPtr executeAST(ExecutionEvaluator &eval, const StatementPtr AST) {
     AST->accept(eval);
-    return eval.partial();
+    return eval.currentScope();
 }
 
 int main() {
     NaylangParserVisitor parserListener;
+    ExecutionEvaluator eval;
     std::string command;
     GraceObjectPtr result;
+
     while (command != "quit") {
         std::cout << ">>> ";
         getline(std::cin, command);
@@ -44,7 +45,8 @@ int main() {
         parserListener.visit(parser.program());
         printAST(parserListener.AST());
 
-        result = executeAST(parserListener.AST());
+        result = executeAST(eval, parserListener.AST());
+        std::cout << result->prettyPrint(0) << std::endl;
     }
     return 0;
 }

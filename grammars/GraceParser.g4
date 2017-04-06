@@ -77,8 +77,8 @@ declaration : variableDeclaration
             | methodDeclaration
             ;
 
-variableDeclaration: VAR identifier (VAR_ASSIGN value)?;
-constantDeclaration: DEF identifier EQUAL value;
+variableDeclaration: VAR identifier (VAR_ASSIGN expression)?;
+constantDeclaration: DEF identifier EQUAL expression;
 methodDeclaration: prefixMethod
                  | userMethod
                  ;
