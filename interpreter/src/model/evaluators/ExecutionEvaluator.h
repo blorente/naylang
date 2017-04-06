@@ -15,7 +15,6 @@
 
 #include <model/ast/expressions/Block.h>
 #include <model/ast/expressions/ObjectConstructor.h>
-#include <model/ast/expressions/VariableReference.h>
 
 #include <model/ast/expressions/requests/ImplicitRequestNode.h>
 #include <model/ast/expressions/requests/ExplicitRequestNode.h>
@@ -51,7 +50,6 @@ public:
     virtual void evaluate(ConstantDeclaration &expression);
     virtual void evaluate(Return &expression);
     virtual void evaluate(Block &expression);
-    virtual void evaluate(VariableReference &expression);
     virtual void evaluate(ObjectConstructor &expression);
 };
 } // end namespace naylang

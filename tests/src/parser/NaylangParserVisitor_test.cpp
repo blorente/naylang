@@ -92,8 +92,8 @@ TEST_CASE("Declarations", "[Naylang Parser Visitor]") {
             auto AST = translate("method twice(n,m) { n * m }");
             auto decl = static_cast<MethodDeclaration &>(*AST);
             auto inst = static_cast<ExplicitRequestNode &>(*decl.body()[0]);
-            auto recv = static_cast<VariableReference &>(*inst.receiver());
-            auto param = static_cast<VariableReference &>(*inst.params()[0]);
+            auto recv = static_cast<ImplicitRequestNode &>(*inst.receiver());
+            auto param = static_cast<ImplicitRequestNode &>(*inst.params()[0]);
             REQUIRE(decl.name() == "twice(_,_)");
             REQUIRE(decl.params()[0]->name() == "n");
             REQUIRE(inst.identifier() == "*(_)");

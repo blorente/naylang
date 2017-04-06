@@ -13,7 +13,6 @@
 
 #include <model/ast/expressions/Block.h>
 #include <model/ast/expressions/ObjectConstructor.h>
-#include <model/ast/expressions/VariableReference.h>
 
 #include <model/ast/expressions/requests/ImplicitRequestNode.h>
 #include <model/ast/expressions/requests/ExplicitRequestNode.h>
@@ -37,7 +36,6 @@ public:
     void evaluate(BooleanLiteral &expression) override;
     void evaluate(CharLiteral &expression) override;
     void evaluate(StringLiteral &expression) override;
-    void evaluate(VariableReference &expression) override;
     void evaluate(ImplicitRequestNode &expression) override;
     void evaluate(ExplicitRequestNode &expression) override;
     void evaluate(Block &expression) override;

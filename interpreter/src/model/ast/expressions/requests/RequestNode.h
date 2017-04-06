@@ -12,6 +12,8 @@
 #include <model/ast/expressions/Expression.h>
 #include <vector>
 #include <model/ast/declarations/MethodDeclaration.h>
+#include <model/ast/declarations/VariableDeclaration.h>
+#include <model/ast/declarations/ConstantDeclaration.h>
 
 namespace naylang {
 
@@ -20,7 +22,7 @@ protected:
     // We use naked pointers because we don't want to worry
     // about memory management, and there is no ownership
     // with the declaration.
-    const MethodDeclaration *_declaration;
+    Declaration *_declaration;
     std::string _name;
     std::vector<ExpressionPtr> _params;
 
@@ -31,8 +33,10 @@ public:
 
     const std::string &identifier() const;
     const std::vector<ExpressionPtr> &params() const;
-    const MethodDeclaration &declaration() const;
+    Declaration *declaration() const;
     void bindTo(MethodDeclaration &_binding);
+    void bindTo(VariableDeclaration &_binding);
+    void bindTo(ConstantDeclaration &_binding);
 };
 } // end namespace naylang
 

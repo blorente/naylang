@@ -20,9 +20,9 @@ using namespace naylang;
 
 TEST_CASE("Execution Evaluator", "[Evaluators]") {
     auto ret = make_node<Return>();
-    auto truRef = make_node<VariableReference>("tru");
-    auto falRef = make_node<VariableReference>("fal");
-    auto xRef = make_node<VariableReference>("x");
+    auto truRef = make_node<ImplicitRequestNode>("tru");
+    auto falRef = make_node<ImplicitRequestNode>("fal");
+    auto xRef = make_node<ImplicitRequestNode>("x");
     auto truDec = make_node<VariableDeclaration>("tru");
     auto falDec = make_node<VariableDeclaration>("fal");
     auto xDec = make_node<VariableDeclaration>("x");
@@ -74,9 +74,9 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             REQUIRE(eval.partial()->hasMethod("apply"));
         }
 
-        SECTION("Evaluating a variable reference throws if it's not there, and places it in the partial if it's there") {
+        SECTION("Evaluating a parameterless ImplicitRequest places a variable in the partial if it exists. If no vars exists, it searches for a method") {
             ExecutionEvaluator eval;
-            auto xRef = make_node<VariableReference>("x");
+            auto xRef = make_node<ImplicitRequestNode>("x");
             auto myScope = make_obj<GraceScope>();
             myScope->setField("x", GraceTrue);
             REQUIRE_THROWS(xRef->accept(eval));
@@ -210,7 +210,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             ExecutionEvaluator eval;
 
             auto paramDecl = make_node<VariableDeclaration>("param");
-            auto paramRef = make_node<VariableReference>("param");
+            auto paramRef = make_node<ImplicitRequestNode>("param");
             std::vector<DeclarationPtr> paramDeclarations{paramDecl};
             std::vector<StatementPtr> body{paramRef};
             auto fDeclaration = make_node<MethodDeclaration>("f(_)", paramDeclarations, body);
@@ -222,7 +222,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
 
             xConstDecl->accept(eval);
 
-            auto xRef = make_node<VariableReference>("x");
+            auto xRef = make_node<ImplicitRequestNode>("x");
             std::vector<ExpressionPtr> fExplCallParams{falseLiteral};
             auto fExplicitCall = make_node<ExplicitRequestNode>("f(_)", xRef, fExplCallParams);
 

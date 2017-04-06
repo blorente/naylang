@@ -39,7 +39,7 @@ TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
 
     SECTION("Evaluating a VariableReference or RequestNode throws if the symbol is not in the table") {
         BindingEvaluator eval;
-        auto wrongVar = make_node<VariableReference>("wrongVar");
+        auto wrongVar = make_node<ImplicitRequestNode>("wrongVar");
         auto wrongMethod = make_node<ImplicitRequestNode>("wrongMethod");
         REQUIRE_THROWS(eval.evaluate(*wrongVar));
         REQUIRE_THROWS(eval.evaluate(*wrongMethod));
@@ -52,16 +52,16 @@ TEST_CASE("Binding Evaluator Tests", "[Evaluators]") {
         eval.evaluate(*methodDecl);
         REQUIRE_NOTHROW(eval.evaluate(*rightMethod));
 
-        REQUIRE(&rightMethod->declaration() == methodDecl.get());
+        REQUIRE(rightMethod->declaration() == methodDecl.get());
     }
 
     SECTION("If a RequestNode is evaluated after a MethodDeclaration with the same name, it binds to it") {
         BindingEvaluator eval;
-        auto xVar = make_node<VariableReference>("x");
+        auto xVar = make_node<ImplicitRequestNode>("x");
 
         eval.evaluate(*xDecl);
         REQUIRE_NOTHROW(eval.evaluate(*xVar));
 
-        REQUIRE(&xVar->declaration() == xDecl.get());
+        REQUIRE(xVar->declaration() == xDecl.get());
     }
 }

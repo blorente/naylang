@@ -10,7 +10,6 @@
 #include <model/execution/objects/GraceBoolean.h>
 
 #include <model/ast/declarations/VariableDeclaration.h>
-#include <model/ast/expressions/VariableReference.h>
 #include <model/ast/expressions/primitives/NumberLiteral.h>
 #include <model/ast/expressions/requests/ExplicitRequestNode.h>
 
@@ -60,7 +59,7 @@ TEST_CASE("Grace Iterables Native methods", "[GraceIterable]") {
 
     SECTION("do(_) executes a block on each parameter") {
         auto one = make_node<NumberLiteral>(1.0);
-        auto paramRef = make_node<VariableReference>("x");
+        auto paramRef = make_node<ImplicitRequestNode>("x");
         auto paramDecl = make_node<VariableDeclaration>("x");
         std::vector<ExpressionPtr> oneBlock{one};
         auto add = make_node<ExplicitRequestNode>("+(_)", paramRef, oneBlock);

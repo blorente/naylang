@@ -17,8 +17,6 @@ class BooleanLiteral;
 class CharLiteral;
 class StringLiteral;
 
-class VariableReference;
-
 class ConstantDeclaration;
 class VariableDeclaration;
 class MethodDeclaration;
@@ -51,7 +49,6 @@ public:
     virtual void evaluate(CharLiteral &expression) {}
     virtual void evaluate(StringLiteral &expression) {}
 
-    virtual void evaluate(VariableReference &expression) {}
     virtual void evaluate(ImplicitRequestNode &expression) {}
     virtual void evaluate(ExplicitRequestNode &expression) {}
     virtual void evaluate(Block &expression) {}

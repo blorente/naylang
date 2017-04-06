@@ -12,7 +12,6 @@
 #include <model/ast/declarations/MethodDeclaration.h>
 #include <model/ast/expressions/requests/ImplicitRequestNode.h>
 #include <model/ast/expressions/requests/ExplicitRequestNode.h>
-#include <model/ast/expressions/VariableReference.h>
 #include <map>
 #include <memory>
 
@@ -33,7 +32,6 @@ public:
     void evaluate(ConstantDeclaration &expression) override;
     void evaluate(VariableDeclaration &expression) override;
     void evaluate(MethodDeclaration &expression) override;
-    void evaluate(VariableReference &expression) override;
     void evaluate(ImplicitRequestNode &expression) override;
     void evaluate(ExplicitRequestNode &expression) override;
 

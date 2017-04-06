@@ -8,7 +8,6 @@
 #include <model/ast/expressions/requests/ImplicitRequestNode.h>
 #include <model/ast/declarations/VariableDeclaration.h>
 #include <model/ast/expressions/primitives/NumberLiteral.h>
-#include <model/ast/expressions/VariableReference.h>
 #include <model/ast/NodeFactory.h>
 
 using namespace naylang;
@@ -17,7 +16,6 @@ TEST_CASE("ImplicitRequestNode Expressions", "[Requests]") {
 
     auto five = make_node<NumberLiteral>(5.0);
     auto xDecl = make_node<VariableDeclaration>("x");
-    auto recieverRef = make_node<VariableReference>("reciever");
     std::vector<DeclarationPtr> params{xDecl};
     std::vector<StatementPtr> lines{};
     auto emptyOneParamMethod = make_node<MethodDeclaration>("myMethod", params, lines);
@@ -26,8 +24,9 @@ TEST_CASE("ImplicitRequestNode Expressions", "[Requests]") {
         REQUIRE_NOTHROW(ImplicitRequestNode req("myMethod", {five}););
     }
 
-    SECTION("A ImplicitRequestNode can have an empty parameter list") {
-        REQUIRE_NOTHROW(ImplicitRequestNode req("myMethod"););
+    SECTION("An ImplicitRequestNode with an empty parameter list can request variable values or parametereless methods") {
+        REQUIRE_NOTHROW(ImplicitRequestNode variableReq("x"););
+        REQUIRE_NOTHROW(ImplicitRequestNode methodReq("myMethod"););
     }
 
     SECTION("A ImplicitRequestNode can return the identifier name and parameter expressions") {
@@ -40,7 +39,7 @@ TEST_CASE("ImplicitRequestNode Expressions", "[Requests]") {
         ImplicitRequestNode req("myMethod", {five});
         req.bindTo(*emptyOneParamMethod);
 
-        REQUIRE(&req.declaration() == emptyOneParamMethod.get());
+        REQUIRE(req.declaration() == emptyOneParamMethod.get());
     }
 }
 

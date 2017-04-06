@@ -20,7 +20,6 @@
 #include <model/ast/expressions/Block.h>
 #include <model/ast/expressions/Lineup.h>
 #include <model/ast/expressions/ObjectConstructor.h>
-#include <model/ast/expressions/VariableReference.h>
 #include <model/ast/expressions/primitives/BooleanLiteral.h>
 #include <model/ast/expressions/primitives/NumberLiteral.h>
 #include <model/ast/expressions/primitives/StringLiteral.h>

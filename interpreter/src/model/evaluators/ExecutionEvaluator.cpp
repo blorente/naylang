@@ -30,6 +30,13 @@ void ExecutionEvaluator::evaluate(StringLiteral &expression) {
 }
 
 void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
+    if (expression.params().size() == 0) {
+        if (_currentScope->hasField(expression.identifier())) {
+            _partial = _currentScope->getField(expression.identifier());
+            return;
+        }
+    }
+
     std::vector<GraceObjectPtr> paramValues;
     for (int i = 0; i < expression.params().size(); i++) {
         expression.params()[i]->accept(*this);
@@ -59,12 +66,6 @@ void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
         paramValues.push_back(_partial);
     }
     _partial = self->dispatch(expression.identifier(), *this, paramValues);
-}
-
-void ExecutionEvaluator::evaluate(VariableReference &expression) {
-    if (!_currentScope->hasField(expression.identifier()))
-        throw "Variable not found in scope";
-    _partial = _currentScope->getField(expression.identifier());
 }
 
 void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {

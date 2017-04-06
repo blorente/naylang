@@ -3,9 +3,6 @@
 // Distributed under the GPLv3 license.
 //
 
-
-
-
 #include "RequestNode.h"
 
 namespace naylang {
@@ -24,11 +21,19 @@ const std::vector<ExpressionPtr> &RequestNode::params() const {
     return _params;
 }
 
-const MethodDeclaration &RequestNode::declaration() const {
-    return *_declaration;
+Declaration *RequestNode::declaration() const {
+    return _declaration;
 }
 
 void RequestNode::bindTo(MethodDeclaration &binding) {
+    _declaration = &binding;
+}
+
+void RequestNode::bindTo(VariableDeclaration &binding) {
+    _declaration = &binding;
+}
+
+void RequestNode::bindTo(ConstantDeclaration &binding) {
     _declaration = &binding;
 }
 }

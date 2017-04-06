@@ -220,7 +220,7 @@ antlrcpp::Any NaylangParserVisitor::visitMethodBody(GraceParser::MethodBodyConte
 }
 
 antlrcpp::Any NaylangParserVisitor::visitVarRefImplReq(GraceParser::VarRefImplReqContext *ctx) {
-    pushPartialExp(make_node<VariableReference>(ctx->getText()));
+    pushPartialExp(make_node<ImplicitRequestNode>(ctx->getText()));
     return 0;
 }
 

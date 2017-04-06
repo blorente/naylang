@@ -6,7 +6,6 @@
 #include <model/ast/expressions/requests/ExplicitRequestNode.h>
 #include <model/ast/NodeFactory.h>
 #include <model/ast/expressions/primitives/NumberLiteral.h>
-#include <model/ast/expressions/VariableReference.h>
 #include <model/ast/declarations/VariableDeclaration.h>
 #include "catch.h"
 
@@ -16,7 +15,7 @@ TEST_CASE("Explicit Request Node expressions", "[Requests]") {
 
     auto five = make_node<NumberLiteral>(5.0);
     auto xDecl = make_node<VariableDeclaration>("x");
-    auto recieverRef = make_node<VariableReference>("reciever");
+    auto recieverRef = make_node<ImplicitRequestNode>("reciever");
     std::vector<DeclarationPtr> params{xDecl};
     std::vector<StatementPtr> lines;
     auto emptyOneParamMethod = make_node<MethodDeclaration>("myMethod", params, lines);
@@ -36,6 +35,6 @@ TEST_CASE("Explicit Request Node expressions", "[Requests]") {
     SECTION("A ExplicitRequestNode can be bound to a identifier declaration") {
         ExplicitRequestNode req("myMethod", five, {five});
         req.bindTo(*emptyOneParamMethod);
-        REQUIRE(&req.declaration() == emptyOneParamMethod.get());
+        REQUIRE(req.declaration() == emptyOneParamMethod.get());
     }
 }

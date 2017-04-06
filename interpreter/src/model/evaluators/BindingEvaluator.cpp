@@ -11,13 +11,6 @@ const std::map<std::string, Declaration *> &BindingEvaluator::symbolTable() cons
     return _symbolTable;
 }
 
-void BindingEvaluator::evaluate(VariableReference &expression) {
-    if(_symbolTable.find(expression.identifier()) == _symbolTable.end()) {
-        throw "Binding not found in symbol table";
-    }
-    expression.bindTo(*_symbolTable[expression.identifier()]);
-}
-
 void BindingEvaluator::evaluate(ImplicitRequestNode &expression) {
     if (_symbolTable.find(expression.identifier()) == _symbolTable.end()) {
         throw "Binding not found in symbol table";

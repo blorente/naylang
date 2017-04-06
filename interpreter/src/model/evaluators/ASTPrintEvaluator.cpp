@@ -27,11 +27,6 @@ void naylang::ASTPrintEvaluator::evaluate(naylang::StringLiteral &expression) {
     std::cout << "String: " << '\"' << expression.value() << '\"' << std::endl;
 }
 
-void naylang::ASTPrintEvaluator::evaluate(naylang::VariableReference &expression) {
-    indent();
-    std::cout << "VariableReference: " << expression.identifier() << std::endl;
-}
-
 void naylang::ASTPrintEvaluator::evaluate(naylang::ImplicitRequestNode &expression) {
     indent();
     std::cout << "ImplicitRequest: <<" << expression.identifier()  << '(' << std::endl;
