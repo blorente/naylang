@@ -63,7 +63,7 @@ TEST_CASE("Primitives", "[Naylang Parser Visitor]") {
 }
 
 TEST_CASE("Values", "[Naylang Parser Visitor]") {
-    SECTION("parsing \"object\" { /*some lines*/ } generates an ObjectConstructor node") {
+    SECTION("Parsing \"object\" { /*some lines*/ } generates an ObjectConstructor node") {
         auto AST = translate("object {def x = 5}");
         auto obj = static_cast<ObjectConstructor &>(*AST);
         auto decl = static_cast<ConstantDeclaration &>(*obj.statements()[0]);
@@ -73,7 +73,7 @@ TEST_CASE("Values", "[Naylang Parser Visitor]") {
         REQUIRE(value.value() == 5);
     }
 
-    SECTION("parsing a parameterless block creates a Block") {
+    SECTION("Parsing a parameterless block creates a Block") {
         auto AST = translate("{def x = 5}");
         auto obj = static_cast<Block &>(*AST);
         auto decl = static_cast<ConstantDeclaration &>(*obj.body()[0]);
@@ -83,7 +83,7 @@ TEST_CASE("Values", "[Naylang Parser Visitor]") {
         REQUIRE(value.value() == 5);
     }
 
-    SECTION("parsing a block with parameter also creates a Block") {
+    SECTION("Parsing a block with parameter also creates a Block") {
         auto AST = translate("{x -> x * 5}");
         auto obj = static_cast<Block &>(*AST);
         auto decl = static_cast<ExplicitRequestNode &>(*obj.body()[0]);
@@ -94,6 +94,28 @@ TEST_CASE("Values", "[Naylang Parser Visitor]") {
         REQUIRE(obj.body().size() == 1);
         REQUIRE(x.identifier() == "x");
         REQUIRE(value.value() == 5);
+    }
+
+    SECTION("Parsing [expr, expr, expr] creates a Lineup") {
+        auto AST = translate("[{x -> x * 5}, \"Hello\", 6]");
+
+        auto lineup = static_cast<Lineup &>(*AST);
+
+        auto block = static_cast<Block &>(*lineup.contents()[0]);
+        auto decl = static_cast<ExplicitRequestNode &>(*block.body()[0]);
+        auto param = static_cast<VariableDeclaration &>(*block.params()[0]);
+        auto x = static_cast<ImplicitRequestNode &>(*decl.receiver());
+        auto five = static_cast<NumberLiteral &>(*decl.params()[0]);
+        REQUIRE(block.body().size() == 1);
+        REQUIRE(param.name() == "x");
+        REQUIRE(x.identifier() == "x");
+        REQUIRE(five.value() == 5);
+
+        auto hello = static_cast<StringLiteral &>(*lineup.contents()[1]);
+        REQUIRE(hello.value() == "Hello");
+
+        auto six = static_cast<NumberLiteral &>(*lineup.contents()[2]);
+        REQUIRE(six.value() == 6);
     }
 }
 

@@ -59,8 +59,8 @@ public:
     antlrcpp::Any visitImplReqExplReq(GraceParser::ImplReqExplReqContext *ctx) override;
 
     antlrcpp::Any visitObjectConstructor(GraceParser::ObjectConstructorContext *ctx) override;
-
     antlrcpp::Any visitBlock(GraceParser::BlockContext *ctx) override;
+    antlrcpp::Any visitLineup(GraceParser::LineupContext *ctx) override;
 
 protected:
     virtual antlrcpp::Any defaultResult();

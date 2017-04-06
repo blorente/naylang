@@ -339,4 +339,12 @@ antlrcpp::Any NaylangParserVisitor::visitBlock(GraceParser::BlockContext *ctx) {
     pushPartialExp(block);
     return 0;
 }
+
+antlrcpp::Any NaylangParserVisitor::visitLineup(GraceParser::LineupContext *ctx) {
+    int elems = ctx->lineupContents()->expression().size();
+    ctx->lineupContents()->accept(this);
+    auto content = popPartialExps(elems);
+    pushPartialExp(make_node<Lineup>(content));
+    return 0;
+}
 }
