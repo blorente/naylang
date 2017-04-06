@@ -304,7 +304,18 @@ antlrcpp::Any NaylangParserVisitor::visitImplReqExplReq(GraceParser::ImplReqExpl
     ctx->rec->accept(this);
     auto rec = popPartialExp();
     ctx->req->accept(this);
+    auto req = static_cast<ImplicitRequestNode &>(*popPartialExp());
+    pushPartialExp(make_node<ExplicitRequestNode>(req.identifier(), rec, req.params()));
+    return 0;
+}
 
+antlrcpp::Any NaylangParserVisitor::visitObjectConstructor(GraceParser::ObjectConstructorContext *ctx) {
+    int statements = ctx->statement().size();
+    for (auto stat : ctx->statement()) {
+        stat->accept(this);
+    }
+    auto lines = popPartialStats(statements);
+    pushPartialExp(make_node<ObjectConstructor>(lines));
     return 0;
 }
 }

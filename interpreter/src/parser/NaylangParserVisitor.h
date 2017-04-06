@@ -56,8 +56,9 @@ public:
     antlrcpp::Any visitMultipartRequest(GraceParser::MultipartRequestContext *ctx) override;
     antlrcpp::Any visitMethodRequestPart(GraceParser::MethodRequestPartContext *ctx) override;
     antlrcpp::Any visitEffectiveParameterList(GraceParser::EffectiveParameterListContext *ctx) override;
-
     antlrcpp::Any visitImplReqExplReq(GraceParser::ImplReqExplReqContext *ctx) override;
+
+    antlrcpp::Any visitObjectConstructor(GraceParser::ObjectConstructorContext *ctx) override;
 
 protected:
     virtual antlrcpp::Any defaultResult();

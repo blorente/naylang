@@ -64,7 +64,13 @@ TEST_CASE("Primitives", "[Naylang Parser Visitor]") {
 
 TEST_CASE("Values", "[Naylang Parser Visitor]") {
     SECTION("parsing \"object\" { /*some lines*/ } generates an ObjectConstructor node") {
-
+        auto AST = translate("object {def x = 5}");
+        auto obj = static_cast<ObjectConstructor &>(*AST);
+        auto decl = static_cast<ConstantDeclaration &>(*obj.statements()[0]);
+        auto value = static_cast<NumberLiteral &>(*decl.value());
+        REQUIRE(obj.statements().size() == 1);
+        REQUIRE(decl.name() == "x");
+        REQUIRE(value.value() == 5);
     }
 }
 
@@ -151,8 +157,7 @@ TEST_CASE("Requests", "[Naylang Parser Visitor]") {
         REQUIRE(five.value() == 5);
     }
 
-    /*
-    SECTION("Explicit Requests have a reciever") {
+    SECTION("Explicit Requests have a receiver") {
         auto AST = translate("x.say(5)");
         auto req = static_cast<ExplicitRequestNode &>(*AST);
         auto rec = static_cast<ImplicitRequestNode &>(*req.receiver());
@@ -161,7 +166,6 @@ TEST_CASE("Requests", "[Naylang Parser Visitor]") {
         REQUIRE(rec.identifier() == "x");
         REQUIRE(five.value() == 5);
     }
-     */
 }
 
 StatementPtr translate(std::string line) {
