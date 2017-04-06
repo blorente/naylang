@@ -24,36 +24,41 @@ void naylang::ASTPrintEvaluator::evaluate(naylang::CharLiteral &expression) {
 
 void naylang::ASTPrintEvaluator::evaluate(naylang::StringLiteral &expression) {
     indent();
-    std::cout << '\"' << expression.value() << '\"';
+    std::cout << "String: " << '\"' << expression.value() << '\"' << std::endl;
 }
 
 void naylang::ASTPrintEvaluator::evaluate(naylang::VariableReference &expression) {
     indent();
-    std::cout << expression.identifier();
+    std::cout << "VariableReference: " << expression.identifier() << std::endl;
 }
 
 void naylang::ASTPrintEvaluator::evaluate(naylang::ImplicitRequestNode &expression) {
     indent();
-    std::cout << expression.identifier()  << '(' << std::endl;
+    std::cout << "ImplicitRequest: <<" << expression.identifier()  << '(' << std::endl;
     increaseIndent();
     for (auto param : expression.params()) {
+        indent();
         param->accept(*this);
         std::cout << ',' << std::endl;
     }
     decreaseIndent();
+    indent();
     std::cout << ')' << std::endl;
 }
 
 void naylang::ASTPrintEvaluator::evaluate(naylang::ExplicitRequestNode &expression) {
     indent();
+    std::cout << "ExplicitRequest: ";
     expression.receiver()->accept(*this);
     std::cout << '.' << expression.identifier()  << '(' << std::endl;
     increaseIndent();
     for (auto param : expression.params()) {
+        indent();
         param->accept(*this);
         std::cout << ',' << std::endl;
     }
     decreaseIndent();
+    indent();
     std::cout << ')' << std::endl;
 }
 
@@ -70,15 +75,41 @@ void naylang::ASTPrintEvaluator::evaluate(naylang::ObjectConstructor &expression
 }
 
 void naylang::ASTPrintEvaluator::evaluate(naylang::ConstantDeclaration &expression) {
-    Evaluator::evaluate(expression);
+    indent();
+    std::cout << "def " << expression.name() << " = ";
+    expression.value()->accept(*this);
+    std::cout << std::endl;
 }
 
 void naylang::ASTPrintEvaluator::evaluate(naylang::VariableDeclaration &expression) {
-    Evaluator::evaluate(expression);
+    indent();
+    std::cout << "var " << expression.name();
+    if (expression.value()) {
+        std::cout << " := ";
+        expression.value()->accept(*this);
+    }
+    std::cout << std::endl;
 }
 
 void naylang::ASTPrintEvaluator::evaluate(naylang::MethodDeclaration &expression) {
-    Evaluator::evaluate(expression);
+    indent();
+    std::cout << "method " << expression.name() << " (";
+    for (auto formal : expression.params()) {
+        formal->accept(*this);
+        std::cout << ", ";
+    }
+    std::cout << ") ";
+    std::cout << "{" << std::endl;
+
+    increaseIndent();
+    for (auto line : expression.body()) {
+        indent();
+        line->accept(*this);
+    }
+    decreaseIndent();
+
+    indent();
+    std::cout << "}" << std::endl;
 }
 
 void naylang::ASTPrintEvaluator::evaluate(naylang::IfThen &expression) {
@@ -95,7 +126,7 @@ void naylang::ASTPrintEvaluator::evaluate(naylang::While &expression) {
 
 void naylang::ASTPrintEvaluator::evaluate(naylang::Return &expression) {
     indent();
-    std::cout << "return";
+    std::cout << "return" << std::endl;
 }
 
 void naylang::ASTPrintEvaluator::indent() const {
