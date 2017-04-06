@@ -37,6 +37,10 @@ double GraceNumber::value() const {
     return _value;
 }
 
+std::string GraceNumber::prettyPrint(int indentLevel) {
+    return std::to_string(_value);
+}
+
 GraceObjectPtr GraceNumber::Equals::respond(GraceObject &self, MethodRequest &request) {
     if (self.asNumber().value() == request.params()[0]->asNumber().value()) {
         return GraceTrue;

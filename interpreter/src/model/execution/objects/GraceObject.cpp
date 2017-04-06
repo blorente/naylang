@@ -105,4 +105,27 @@ GraceObjectPtr GraceObject::getField(const std::string &name) {
 bool GraceObject::isBlock() const {
     return false;
 }
+
+std::string GraceObject::prettyPrint(int indentLevel) {
+    std::string res;
+    res += "object {\n";
+    indentLevel += 2;
+    for (auto field : _fields) {
+        indent(indentLevel, res);
+        res += field.first + " = " + field.second->prettyPrint(indentLevel + 2) + "\n";
+    }
+    for (auto method : _userMethods) {
+        indent(indentLevel, res);
+        res += method.second->prettyPrint(method.first, indentLevel) + "\n";
+    }
+    indentLevel -= 2;
+    res += "}";
+    return res;
+}
+
+void GraceObject::indent(int indentLevel, std::string &res) const {
+    for (int i = 0; i < indentLevel; i++) {
+        res += " ";
+    }
+}
 }

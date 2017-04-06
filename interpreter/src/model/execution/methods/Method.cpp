@@ -8,7 +8,15 @@
 
 namespace naylang {
 
-Method::Method(BlockPtr code) : _params{code->params()}, _code{code->body()} {}
+Method::Method(BlockPtr code) :
+        _params{code->params()}, _code{code->body()} {}
+
+/*{
+    _params.reserve(code->params().size());
+    std::copy(code->params().begin(), code->params().end(), std::back_inserter(_params));
+    _code.reserve(code->body().size());
+    std::copy(code->body().begin(), code->body().end(), std::back_inserter(_code));
+}*/
 
 Method::Method(const std::vector<DeclarationPtr> &params, const std::vector<StatementPtr> &body) :
     _params{params}, _code{body} {}
@@ -41,4 +49,16 @@ const std::vector<DeclarationPtr> &Method::params() const {
     return _params;
 }
 
+std::string Method::prettyPrint(std::string name, int indentLevel) const {
+    std::string ret;
+    ret += "method ";
+
+    for (auto param : _params) {
+        int ndx = name.find("_");
+        name.replace(ndx, 1, param->name());
+    }
+    ret += name;
+    ret += " { }";
+    return ret;
+}
 }

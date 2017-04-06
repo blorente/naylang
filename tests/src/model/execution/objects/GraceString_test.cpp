@@ -105,3 +105,10 @@ TEST_CASE("Grace String Native Methods", "[GraceString]") {
         }
     }
 }
+
+TEST_CASE("Grace String common utils", "[GraceString]") {
+    SECTION("Calling prettyPrint on a GraceString returns the value in quotes") {
+        GraceString str("Hello");
+        REQUIRE(str.prettyPrint(0) == "\"Hello\"");
+    }
+}

@@ -7,6 +7,7 @@
 #include <model/ast/NodeFactory.h>
 #include <model/evaluators/ExecutionEvaluator.h>
 #include <model/execution/objects/GraceBoolean.h>
+#include <zlib.h>
 #include "catch.h"
 
 using namespace naylang;
@@ -39,5 +40,17 @@ TEST_CASE("Method", "[Methods]") {
     SECTION("A method can return it's parameter definitions") {
         Method meth(fiveBlock);
         REQUIRE_NOTHROW(std::equal(meth.params().begin(), meth.params().end(), fiveBlock->params().begin()));
+    }
+
+    SECTION("A method can prettyPrint itself, by recieving it's name") {
+        auto block = make_node<Block>();
+        block->addParameter(make_node<VariableDeclaration>("x"));
+        block->addParameter(make_node<VariableDeclaration>("y"));
+        block->addParameter(make_node<VariableDeclaration>("zzz"));
+
+        // Body ignored for prettyPrint
+        block->addStatement(make_node<NumberLiteral>(5));
+        Method meth(block);
+        REQUIRE(meth.prettyPrint("two(_,_)things(_)", 0) == "method two(x,y)things(zzz) { }");
     }
 }

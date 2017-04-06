@@ -40,6 +40,10 @@ bool GraceBoolean::operator!=(const GraceObject &rhs) const {
     return !(*this == rhs);
 }
 
+std::string GraceBoolean::prettyPrint(int indentLevel) {
+    return _value ? "true" : "false";
+}
+
 GraceObjectPtr GraceBoolean::PrefixNot::respond(GraceObject &self, MethodRequest &request) {
     if (self.asBoolean().value()) {
         return GraceFalse;

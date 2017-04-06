@@ -96,3 +96,10 @@ TEST_CASE("Predefined methods in GraceBoolean", "[GraceBoolean]") {
         }
     }
 }
+
+TEST_CASE("Grace Boolean common utils", "[GraceBoolean]") {
+    SECTION("Calling prettyPrint on a GraceBoolean returns the value") {
+        REQUIRE(GraceTrue->prettyPrint(0) == "true");
+        REQUIRE(GraceFalse->prettyPrint(0) == "false");
+    }
+}

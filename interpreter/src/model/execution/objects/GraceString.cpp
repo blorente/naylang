@@ -37,6 +37,10 @@ const GraceString &GraceString::asString() const {
     return *this;
 }
 
+std::string GraceString::prettyPrint(int indentLevel) {
+    return std::string{"\"" + _value + "\""};
+}
+
 GraceObjectPtr GraceString::Equals::respond(GraceObject &self, MethodRequest &request) {
     if (self.asString().value() == request.params()[0]->asString().value()) {
         return GraceTrue;

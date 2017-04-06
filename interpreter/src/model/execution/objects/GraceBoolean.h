@@ -29,6 +29,8 @@ public:
 
     bool value() const;
 
+    std::string prettyPrint(int indentLevel) override;
+
     bool operator==(const GraceObject &rhs) const;
     bool operator!=(const GraceObject &rhs) const;
 

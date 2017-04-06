@@ -24,6 +24,8 @@ public:
 
     double value() const;
 
+    std::string prettyPrint(int indentLevel) override;
+
     class Equals : public NativeMethod {
     public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);

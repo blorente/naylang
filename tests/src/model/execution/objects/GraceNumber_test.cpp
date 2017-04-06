@@ -139,3 +139,10 @@ TEST_CASE("Grace Number Native Methods", "[GraceNumber]") {
         }
     }
 }
+
+TEST_CASE("Grace Number common utils", "[GraceNumber]") {
+    SECTION("Calling prettyPrint on a GraceNumber returns the value") {
+        GraceNumber num(5);
+        REQUIRE(num.prettyPrint(0) == "5.000000");
+    }
+}

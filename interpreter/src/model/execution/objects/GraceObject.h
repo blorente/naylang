@@ -57,6 +57,10 @@ public:
     virtual bool hasMethod(const std::string &name) const;
     virtual MethodPtr getMethod(const std::string &name);
     virtual GraceObjectPtr getField(const std::string &name);
+
+    virtual std::string prettyPrint(int indentLevel);
+
+    void indent(int indentLevel, std::string &res) const;
 };
 } // end namespace naylang
 

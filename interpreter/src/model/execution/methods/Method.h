@@ -11,6 +11,8 @@
 #include <model/execution/objects/GraceObject.h>
 #include <model/execution/objects/GraceObjectFactory.h>
 #include <model/execution/methods/MethodFactory.h>
+#include <sstream>
+#include <zlib.h>
 #include "MethodRequest.h"
 
 namespace naylang {
@@ -28,6 +30,8 @@ public:
 
     const std::vector<StatementPtr> &code() const;
     const std::vector<DeclarationPtr> &params() const;
+
+    std::string prettyPrint(std::string name, int indentLevel) const;
 };
 } // end namespace naylang
 
