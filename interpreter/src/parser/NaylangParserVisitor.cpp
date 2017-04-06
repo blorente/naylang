@@ -59,6 +59,12 @@ std::string NaylangParserVisitor::popPartialStr() {
     return ret;
 }
 
+StatementPtr NaylangParserVisitor::popPartialStat() {
+    auto ret = (std::shared_ptr<Statement> &&) _partialStats.back();
+    _partialStats.pop_back();
+    return ret;
+}
+
 void NaylangParserVisitor::clearPartials() {
     _partialDecls.clear();
     _partialStats.clear();
@@ -154,27 +160,20 @@ antlrcpp::Any NaylangParserVisitor::visitUserMethod(GraceParser::UserMethodConte
         methodName += identPart;
     }
 
-    std::vector<DeclarationPtr> formalParams;
     int numParams = 0;
     for (auto part : ctx->methodSignature()->methodSignaturePart()) {
         numParams += part->formalParameterList()->formalParameter().size();
     }
-    for (auto param : popPartialDecls(numParams)) {
-        formalParams.push_back(param);
-    }
+    auto formalParams = popPartialDecls(numParams);
 
-    std::vector<StatementPtr> body;
     ctx->methodBody()->accept(this);
     int bodyLength = ctx->methodBody()->methodBodyLine().size();
-    for (auto line : popPartialStats(bodyLength)) {
-        body.push_back(line);
-    }
+    auto body = popPartialStats(bodyLength);
 
     auto methodDeclaration = make_node<MethodDeclaration>(methodName, formalParams, body);
     pushPartialDecl(methodDeclaration);
     return 0;
 }
-
 antlrcpp::Any NaylangParserVisitor::visitMethodSignature(GraceParser::MethodSignatureContext *ctx) {
     clearPartials();
     for (auto i : ctx->methodSignaturePart()) {
@@ -182,6 +181,7 @@ antlrcpp::Any NaylangParserVisitor::visitMethodSignature(GraceParser::MethodSign
     }
     return 0;
 }
+
 antlrcpp::Any NaylangParserVisitor::visitMethodSignaturePart(GraceParser::MethodSignaturePartContext *ctx) {
     auto partName = ctx->identifier()->getText();
     if (ctx->formalParameterList()->formalParameter().size() != 0) {
@@ -316,6 +316,27 @@ antlrcpp::Any NaylangParserVisitor::visitObjectConstructor(GraceParser::ObjectCo
     }
     auto lines = popPartialStats(statements);
     pushPartialExp(make_node<ObjectConstructor>(lines));
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitBlock(GraceParser::BlockContext *ctx) {
+    auto block = make_node<Block>();
+
+    for (auto line : ctx->methodBodyLine()) {
+        line->accept(this);
+        block->addStatement(popPartialStat());
+    }
+
+    std::vector<DeclarationPtr> params;
+    if (ctx->params) {
+        ctx->params->accept(this);
+        params = popPartialDecls(ctx->params->formalParameter().size());
+    }
+    for (auto param : params) {
+        block->addParameter(param);
+    }
+
+    pushPartialExp(block);
     return 0;
 }
 }

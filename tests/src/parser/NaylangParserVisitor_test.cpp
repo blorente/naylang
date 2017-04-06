@@ -72,6 +72,29 @@ TEST_CASE("Values", "[Naylang Parser Visitor]") {
         REQUIRE(decl.name() == "x");
         REQUIRE(value.value() == 5);
     }
+
+    SECTION("parsing a parameterless block creates a Block") {
+        auto AST = translate("{def x = 5}");
+        auto obj = static_cast<Block &>(*AST);
+        auto decl = static_cast<ConstantDeclaration &>(*obj.body()[0]);
+        auto value = static_cast<NumberLiteral &>(*decl.value());
+        REQUIRE(obj.body().size() == 1);
+        REQUIRE(decl.name() == "x");
+        REQUIRE(value.value() == 5);
+    }
+
+    SECTION("parsing a block with parameter also creates a Block") {
+        auto AST = translate("{x -> x * 5}");
+        auto obj = static_cast<Block &>(*AST);
+        auto decl = static_cast<ExplicitRequestNode &>(*obj.body()[0]);
+        auto param = static_cast<VariableDeclaration &>(*obj.params()[0]);
+        auto x = static_cast<ImplicitRequestNode &>(*decl.receiver());
+        auto value = static_cast<NumberLiteral &>(*decl.params()[0]);
+        REQUIRE(param.name() == "x");
+        REQUIRE(obj.body().size() == 1);
+        REQUIRE(x.identifier() == "x");
+        REQUIRE(value.value() == 5);
+    }
 }
 
 TEST_CASE("Declarations", "[Naylang Parser Visitor]") {

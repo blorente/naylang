@@ -60,6 +60,8 @@ public:
 
     antlrcpp::Any visitObjectConstructor(GraceParser::ObjectConstructorContext *ctx) override;
 
+    antlrcpp::Any visitBlock(GraceParser::BlockContext *ctx) override;
+
 protected:
     virtual antlrcpp::Any defaultResult();
 
@@ -77,6 +79,7 @@ private:
 
     std::string popPartialStr();
     ExpressionPtr popPartialExp();
+    StatementPtr popPartialStat();
 
     void clearPartials();
 };
