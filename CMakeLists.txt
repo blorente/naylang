@@ -19,7 +19,7 @@ include_directories( ${ANTLR4CPP_INCLUDE_DIRS} )
 link_directories( ${ANTLR4CPP_LIBS} )
 message(STATUS "Found antlr4cpp libs: ${ANTLR4CPP_LIBS} and includes: ${ANTLR4CPP_INCLUDE_DIRS} ")
 
-# Call macro to add lexer and grammar to your build dependencies.
+# Build Grace grammar lexer and parsers
 antlr4cpp_process_grammar(naylang naylang
         ${PROJECT_SOURCE_DIR}/grammars/GraceLexer.g4
         ${PROJECT_SOURCE_DIR}/grammars/GraceParser.g4)

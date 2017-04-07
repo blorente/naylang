@@ -16,9 +16,9 @@ include_directories(${antlr4cpp_include_dirs_naylang})
 include_directories(include)
 include_directories(../interpreter/src)
 
-FILE(GLOB_RECURSE MODEL_SOURCES ../interpreter/src/model/*.cpp)
+FILE(GLOB_RECURSE MODEL_SOURCES ../interpreter/src/core/model/*.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} ${MODEL_SOURCES})
-FILE(GLOB_RECURSE PARSER_SOURCES ../interpreter/src/parser/*.cpp)
+FILE(GLOB_RECURSE PARSER_SOURCES ../interpreter/src/core/parser/*.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} ${PARSER_SOURCES})
 
 add_executable(tests ${SOURCE_FILES} ${antlr4cpp_src_files_naylang})
