@@ -7,15 +7,20 @@
 #define NAYLANG_CONSOLEFRONTENDLISTENER_H
 
 #include <core/control/Interpreter.h>
+#include <frontends/FrontendCommand.h>
 
 namespace naylang {
+
 class ConsoleFrontend {
 
-    Interpreter interpreter;
+    Interpreter _interpreter;
+    std::unique_ptr<FrontendCommand> _command;
 
 public:
-    void runCommand(std::string command);
+    void runCommand(std::string line);
 
+private:
+    void setCommand(std::string basic_string);
 };
 }
 #endif //NAYLANG_CONSOLEFRONTENDLISTENER_H
