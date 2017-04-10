@@ -27,9 +27,7 @@ include_directories(src)
 
 # include generated files in project environment
 include_directories(${antlr4cpp_include_dirs_naylang})
-include_directories(${antlr4cpp_include_dirs_console_frontend})
 
-add_executable(interpreter ${SOURCE_FILES} ${antlr4cpp_src_files_naylang} ${antlr4cpp_src_files_console_frontend})
+add_executable(interpreter ${SOURCE_FILES} ${antlr4cpp_src_files_naylang})
 add_dependencies(interpreter antlr4cpp antlr4cpp_generation_naylang)
-add_dependencies(interpreter antlr4cpp antlr4cpp_generation_console_frontend)
 target_link_libraries(interpreter antlr4-runtime)
