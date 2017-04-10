@@ -3,8 +3,8 @@
 // Distributed under the GPLv3 license.
 //
 
-#ifndef ANTLR4CPP_FETCHER_ASTNODEDEFINITIONS_H
-#define ANTLR4CPP_FETCHER_ASTNODEDEFINITIONS_H
+#ifndef NAYLANG_ASTNODEDEFINITIONS_H
+#define NAYLANG_ASTNODEDEFINITIONS_H
 
 #include <core/model/ast/Statement.h>
 

@@ -11,11 +11,12 @@
 #include <memory>
 
 #include <core/model/ast/ASTNodeDefinitions.h>
+#include <core/model/ast/ASTTreeDefinition.h>
 
 namespace naylang {
 class NaylangParserVisitor : public GraceParserBaseVisitor {
 
-    StatementPtr _tree;
+    GraceAST _tree;
     std::vector<StatementPtr> _partialStats;
     std::vector<ExpressionPtr> _partialExps;
     std::vector<std::string> _partialStrs;
@@ -24,7 +25,9 @@ class NaylangParserVisitor : public GraceParserBaseVisitor {
 public:
     typedef GraceParserBaseVisitor super;
 
-    const StatementPtr AST() const;
+    GraceAST AST() const;
+
+    antlrcpp::Any visitProgram(GraceParser::ProgramContext *ctx) override;
 
     antlrcpp::Any visitPrefixExp(GraceParser::PrefixExpContext *ctx) override;
     antlrcpp::Any visitPrefix_op(GraceParser::Prefix_opContext *ctx) override;
@@ -64,8 +67,6 @@ public:
     antlrcpp::Any visitBlock(GraceParser::BlockContext *ctx) override;
     antlrcpp::Any visitLineup(GraceParser::LineupContext *ctx) override;
 
-protected:
-    virtual antlrcpp::Any defaultResult();
 
 private:
 
@@ -84,6 +85,8 @@ private:
     StatementPtr popPartialStat();
 
     void clearPartials();
+
+    antlrcpp::Any defaultResult();
 };
 }
 

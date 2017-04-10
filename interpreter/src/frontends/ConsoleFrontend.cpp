@@ -12,9 +12,11 @@ void ConsoleFrontend::runCommand(std::string line) {
 
 void ConsoleFrontend::setCommand(std::string line) {
     auto commandName = line.substr(0, line.find(" "));
-    auto code = line.substr(line.find(" "));
+    auto code = line.substr(line.find(" ") + 1);
     if (commandName == "exec" || commandName == "e") {
         _command = std::make_unique<ExecCommand>(code);
+    } else if (commandName == "load" || commandName == "l") {
+        _command = std::make_unique<LoadCommand>(code);
     } else {
         throw "Command not found";
     }

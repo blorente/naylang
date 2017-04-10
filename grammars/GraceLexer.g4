@@ -65,6 +65,7 @@ CLOSE_BRACE: '}';
 OPEN_BRACKET: '[';
 CLOSE_BRACKET: ']';
 
+CONCAT: '++';
 PLUS: '+';
 MINUS: '-';
 MUL: '*';

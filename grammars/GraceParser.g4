@@ -77,8 +77,8 @@ declaration : variableDeclaration
             | methodDeclaration
             ;
 
-variableDeclaration: VAR identifier (VAR_ASSIGN expression)?;
-constantDeclaration: DEF identifier EQUAL expression;
+variableDeclaration: VAR identifier (VAR_ASSIGN expression)? DELIMITER;
+constantDeclaration: DEF identifier EQUAL expression DELIMITER;
 methodDeclaration: prefixMethod
                  | userMethod
                  ;
@@ -97,10 +97,10 @@ methodBodyLine: variableDeclaration | constantDeclaration | expression; //| cont
 // Using left-recursion and implicit operator precendence. ANTLR 4 Reference, page 70
 expression  : rec=expression op=(MUL | DIV) param=expression        #MulDivExp
             | rec=expression op=(PLUS | MINUS) param=expression     #AddSubExp
+            | explicitRequest                                       #ExplicitReqExp
+            | implicitRequest                                       #ImplicitReqExp
             | prefix_op rec=expression                              #PrefixExp
             | rec=expression infix_op param=expression              #InficExp
-            | implicitRequest                                       #ImplicitReqExp
-            | explicitRequest                                       #ExplicitReqExp
             | value                                                 #ValueExp
             ;
 
@@ -113,9 +113,10 @@ implicitRequest : multipartRequest              #MethImplReq
                 | identifier                    #IdentifierImplReq //variables or 0 params methods
                 ;
 multipartRequest: methodRequestPart+;
-methodRequestPart: identifier OPEN_PAREN effectiveParameterList? CLOSE_PAREN;
+methodRequestPart: methodIdentifier OPEN_PAREN effectiveParameterList? CLOSE_PAREN;
 effectiveParameterList: effectiveParameter (COMMA effectiveParameter)*;
 effectiveParameter: expression;
+methodIdentifier: infix_op | identifier | prefix_op;
 
 value   : objectConstructor #ObjConstructorVal
         | block             #BlockVal
@@ -138,5 +139,5 @@ number: INT;
 boolean: TRUE | FALSE;
 string: QUOTE content=.*? QUOTE;
 prefix_op: MINUS | EXCLAMATION;
-infix_op: MOD | POW;
+infix_op: MOD | POW | CONCAT;
 

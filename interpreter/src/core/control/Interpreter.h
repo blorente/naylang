@@ -22,7 +22,7 @@ class Interpreter {
 public:
 
     void execute(const std::string &line);
-    const StatementPtr parse(const std::string &line) const;
+    GraceAST parse(const std::string &line) const;
 };
 }
 

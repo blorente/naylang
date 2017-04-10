@@ -24,6 +24,13 @@ public:
 
     void execute(Interpreter &interpreter) override;
 };
+
+class LoadCommand : public FrontendCommand {
+public:
+    LoadCommand(const std::string &code);
+
+    void execute(Interpreter &interpreter) override;
+};
 }
 
 #endif //NAYLANG_FRONTENDCOMMAND_H

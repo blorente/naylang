@@ -17,9 +17,11 @@ namespace naylang {
 
 ExecutionEvaluator::ExecutionEvaluator() : _currentScope{make_obj<GraceScope>()}, _partial{make_obj<GraceDoneDef>()}{}
 
-void ExecutionEvaluator::evaluateAST(StatementPtr ast) {
+void ExecutionEvaluator::evaluateAST(const GraceAST &ast) {
     _partial = make_obj<GraceDoneDef>();
-    ast->accept(*this);
+    for (auto inst : ast) {
+        inst->accept(*this);
+    }
 }
 
 void ExecutionEvaluator::evaluate(BooleanLiteral &expression) {

@@ -24,6 +24,7 @@
 #include <core/model/ast/expressions/primitives/StringLiteral.h>
 
 #include <core/model/ast/control/Return.h>
+#include <core/model/ast/ASTTreeDefinition.h>
 
 namespace naylang {
 
@@ -40,7 +41,7 @@ public:
     GraceObjectPtr createNewScope();
     void restoreScope();
     void setScope(GraceObjectPtr scope);
-    void evaluateAST(StatementPtr ast);
+    void evaluateAST(const GraceAST &ast);
 
     virtual void evaluate(BooleanLiteral &expression);
     virtual void evaluate(NumberLiteral &expression);

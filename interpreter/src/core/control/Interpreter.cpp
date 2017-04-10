@@ -11,7 +11,7 @@ void Interpreter::execute(const std::string &line) {
     std::cout << eval.currentScope()->prettyPrint(0) << std::endl;
 }
 
-const StatementPtr Interpreter::parse(const std::string &line) const {
+GraceAST Interpreter::parse(const std::string &line) const {
     ANTLRInputStream stream(line);
     GraceLexer lexer(&stream);
     CommonTokenStream tokens(&lexer);

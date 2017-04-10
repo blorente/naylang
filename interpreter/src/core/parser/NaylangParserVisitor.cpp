@@ -8,7 +8,7 @@
 
 namespace naylang {
 
-const StatementPtr NaylangParserVisitor::AST() const {
+GraceAST NaylangParserVisitor::AST() const {
     return _tree;
 }
 
@@ -23,7 +23,6 @@ void NaylangParserVisitor::pushPartialExp(ExpressionPtr partial) {
 
 void NaylangParserVisitor::pushPartialStat(StatementPtr partial) {
     _partialStats.push_back(partial);
-    _tree = partial;
 }
 
 void NaylangParserVisitor::pushPartialDecl(DeclarationPtr partial) {
@@ -276,7 +275,7 @@ antlrcpp::Any NaylangParserVisitor::visitMultipartRequest(GraceParser::Multipart
 
 antlrcpp::Any NaylangParserVisitor::visitMethodRequestPart(GraceParser::MethodRequestPartContext *ctx) {
     int params = ctx->effectiveParameterList()->effectiveParameter().size();
-    std::string partName = ctx->identifier()->getText();
+    std::string partName = ctx->methodIdentifier()->getText();
     if (params != 0) {
         partName += "(";
     }
@@ -345,6 +344,15 @@ antlrcpp::Any NaylangParserVisitor::visitLineup(GraceParser::LineupContext *ctx)
     ctx->lineupContents()->accept(this);
     auto content = popPartialExps(elems);
     pushPartialExp(make_node<Lineup>(content));
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitProgram(GraceParser::ProgramContext *ctx) {
+    for (auto line : ctx->statement()) {
+        clearPartials();
+        line->accept(this);
+        _tree.push_back(popPartialStat());
+    }
     return 0;
 }
 }

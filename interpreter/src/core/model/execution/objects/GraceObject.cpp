@@ -108,6 +108,7 @@ bool GraceObject::isBlock() const {
 
 std::string GraceObject::prettyPrint(int indentLevel) {
     std::string res;
+    int oldIndent = indentLevel;
     res += "object {\n";
     indentLevel += 2;
     for (auto field : _fields) {
@@ -118,7 +119,8 @@ std::string GraceObject::prettyPrint(int indentLevel) {
         indent(indentLevel, res);
         res += method.second->prettyPrint(method.first, indentLevel) + "\n";
     }
-    indentLevel -= 2;
+    indentLevel = oldIndent - 2;
+    indent(indentLevel, res);
     res += "}";
     return res;
 }
