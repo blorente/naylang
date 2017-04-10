@@ -11,4 +11,4 @@
 namespace naylang {
 typedef std::vector<StatementPtr> GraceAST;
 }
-#endif //ANTLR4CPP_FETCHER_ASTTREEDEFINITION_H
+#endif //NAYLANG_ASTTREEDEFINITION_H

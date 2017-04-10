@@ -27,4 +27,4 @@
 #include <core/model/ast/expressions/requests/ImplicitRequestNode.h>
 #include <core/model/ast/expressions/requests/ExplicitRequestNode.h>
 
-#endif //ANTLR4CPP_FETCHER_ASTNODEDEFINITIONS_H
+#endif //NAYLANG_ASTNODEDEFINITIONS_H

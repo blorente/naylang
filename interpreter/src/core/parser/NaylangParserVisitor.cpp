@@ -17,39 +17,35 @@ void NaylangParserVisitor::pushPartialStr(const std::string &partial) {
 }
 
 void NaylangParserVisitor::pushPartialExp(ExpressionPtr partial) {
-    _partialExps.push_back(partial);
     pushPartialStat(partial);
 }
 
 void NaylangParserVisitor::pushPartialStat(StatementPtr partial) {
-    _partialStats.push_back(partial);
+    _partials.push(partial);
 }
 
 void NaylangParserVisitor::pushPartialDecl(DeclarationPtr partial) {
-    _partialDecls.push_back(partial);
     pushPartialStat(partial);
 }
 
-std::vector<std::string> NaylangParserVisitor::popPartialStrs(int length) const {
+std::vector<std::string> NaylangParserVisitor::popPartialStrs(int length) {
     return std::vector<std::string>(_partialStrs.end() - length, _partialStrs.end());
 }
 
-std::vector<ExpressionPtr> NaylangParserVisitor::popPartialExps(int length) const {
-    return std::vector<ExpressionPtr>(_partialExps.end() - length, _partialExps.end());
+std::vector<ExpressionPtr> NaylangParserVisitor::popPartialExps(int length) {
+    return _partials.pop<Expression>(length);
 }
 
-std::vector<StatementPtr> NaylangParserVisitor::popPartialStats(int length) const {
-    return std::vector<StatementPtr>(_partialStats.end() - length, _partialStats.end());
+std::vector<StatementPtr> NaylangParserVisitor::popPartialStats(int length) {
+    return _partials.pop<Statement>(length);
 }
 
-std::vector<DeclarationPtr> NaylangParserVisitor::popPartialDecls(int length) const {
-    return std::vector<DeclarationPtr>(_partialDecls.end() - length, _partialDecls.end());
+std::vector<DeclarationPtr> NaylangParserVisitor::popPartialDecls(int length) {
+    return _partials.pop<Declaration>(length);
 }
 
 ExpressionPtr NaylangParserVisitor::popPartialExp() {
-    auto ret = (std::shared_ptr<Expression> &&) _partialExps.back();
-    _partialExps.pop_back();
-    return ret;
+    return _partials.pop<Expression>();
 }
 
 std::string NaylangParserVisitor::popPartialStr() {
@@ -59,16 +55,12 @@ std::string NaylangParserVisitor::popPartialStr() {
 }
 
 StatementPtr NaylangParserVisitor::popPartialStat() {
-    auto ret = (std::shared_ptr<Statement> &&) _partialStats.back();
-    _partialStats.pop_back();
-    return ret;
+    return _partials.pop<Statement>();
 }
 
 void NaylangParserVisitor::clearPartials() {
-    _partialDecls.clear();
-    _partialStats.clear();
+    _partials.clear();
     _partialStrs.clear();
-    _partialExps.clear();
 }
 
 antlrcpp::Any NaylangParserVisitor::defaultResult() {

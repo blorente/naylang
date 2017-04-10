@@ -12,15 +12,15 @@
 
 #include <core/model/ast/ASTNodeDefinitions.h>
 #include <core/model/ast/ASTTreeDefinition.h>
+#include <core/parser/NaylangParserStack.h>
 
 namespace naylang {
+
 class NaylangParserVisitor : public GraceParserBaseVisitor {
 
     GraceAST _tree;
-    std::vector<StatementPtr> _partialStats;
-    std::vector<ExpressionPtr> _partialExps;
     std::vector<std::string> _partialStrs;
-    std::vector<DeclarationPtr> _partialDecls;
+    NaylangParserStack _partials;
 
 public:
     typedef GraceParserBaseVisitor super;
@@ -75,10 +75,10 @@ private:
     void pushPartialStat(StatementPtr partial);
     void pushPartialDecl(DeclarationPtr partial);
 
-    std::vector<std::string> popPartialStrs(int length) const;
-    std::vector<ExpressionPtr> popPartialExps(int length) const;
-    std::vector<StatementPtr> popPartialStats(int length) const;
-    std::vector<DeclarationPtr> popPartialDecls(int length) const;
+    std::vector<std::string> popPartialStrs(int length);
+    std::vector<ExpressionPtr> popPartialExps(int length);
+    std::vector<StatementPtr> popPartialStats(int length);
+    std::vector<DeclarationPtr> popPartialDecls(int length);
 
     std::string popPartialStr();
     ExpressionPtr popPartialExp();
