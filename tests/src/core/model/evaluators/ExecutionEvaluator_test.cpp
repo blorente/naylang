@@ -4,17 +4,15 @@
 //
 
 #include "catch.h"
+#include <core/model/ast/ASTNodeDefinitions.h>
+
 #include <core/model/evaluators/ExecutionEvaluator.h>
-#include <core/model/ast/expressions/primitives/BooleanLiteral.h>
-#include <core/model/ast/declarations/VariableDeclaration.h>
 #include <core/model/execution/objects/GraceBoolean.h>
 #include <core/model/execution/objects/GraceNumber.h>
 #include <core/model/execution/objects/GraceString.h>
 #include <core/model/execution/objects/GraceScope.h>
 #include <core/model/execution/objects/GraceDoneDef.h>
-#include <core/model/ast/expressions/ObjectConstructor.h>
-#include <core/model/ast/expressions/primitives/NumberLiteral.h>
-#include <core/model/ast/expressions/primitives/StringLiteral.h>
+
 
 using namespace naylang;
 
@@ -82,6 +80,22 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             REQUIRE_THROWS(xRef->accept(eval));
             eval.setScope(myScope);
             REQUIRE_NOTHROW(xRef->accept(eval));
+            REQUIRE(*GraceTrue == *eval.partial());
+        }
+
+        SECTION("Evaluating an ExplicitRequest evaluates the reciever and the ImplicitRequest within") {
+            ExecutionEvaluator eval;
+            auto tru = make_node<BooleanLiteral>(true);
+            auto xDecl = make_node<ConstantDeclaration>("x", tru);
+            std::vector<StatementPtr> list{xDecl, tru};
+            auto obj = make_node<ObjectConstructor>(list);
+            auto objDecl = make_node<ConstantDeclaration>("obj", obj);
+
+            objDecl->accept(eval);
+
+            auto objRef = make_node<ImplicitRequestNode>("obj");
+            auto xReq = make_node<ExplicitRequestNode>("x", objRef);
+            REQUIRE_NOTHROW(xReq->accept(eval));
             REQUIRE(*GraceTrue == *eval.partial());
         }
 

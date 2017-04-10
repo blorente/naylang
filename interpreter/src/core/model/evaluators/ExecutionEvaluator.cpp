@@ -67,6 +67,13 @@ void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
     expression.receiver()->accept(*this);
     auto self = _partial;
 
+    if (expression.params().size() == 0) {
+        if (self->hasField(expression.identifier())) {
+            _partial = self->getField(expression.identifier());
+            return;
+        }
+    }
+
     std::vector<GraceObjectPtr> paramValues;
     for (auto param : expression.params()) {
         param->accept(*this);

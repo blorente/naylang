@@ -6,3 +6,5 @@ def obj = object {
   }
   var val := add(2)to(3);
 };
+def z = obj.add(3)to(4);
+def r = obj.val;
