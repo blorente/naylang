@@ -31,6 +31,13 @@ public:
 
     void execute(Interpreter &interpreter) override;
 };
+
+class PrintCommand : public FrontendCommand {
+public:
+    PrintCommand(const std::string &code);
+
+    void execute(Interpreter &interpreter) override;
+};
 }
 
 #endif //NAYLANG_FRONTENDCOMMAND_H

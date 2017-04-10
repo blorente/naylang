@@ -28,4 +28,10 @@ void LoadCommand::execute(Interpreter &interpreter) {
         throw "Grace file could not be opened";
     }
 }
+
+PrintCommand::PrintCommand(const std::string &code) : FrontendCommand(code) {}
+
+void PrintCommand::execute(Interpreter &interpreter) {
+    interpreter.printResult(_code);
+}
 }

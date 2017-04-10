@@ -17,6 +17,8 @@ void ConsoleFrontend::setCommand(std::string line) {
         _command = std::make_unique<ExecCommand>(code);
     } else if (commandName == "load" || commandName == "l") {
         _command = std::make_unique<LoadCommand>(code);
+    } else if (commandName == "print" || commandName == "p") {
+        _command = std::make_unique<PrintCommand>(code);
     } else {
         throw "Command not found";
     }

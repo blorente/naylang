@@ -22,6 +22,9 @@ class Interpreter {
 public:
 
     void execute(const std::string &line);
+    void printResult(const std::string &line);
+
+private:
     GraceAST parse(const std::string &line) const;
 };
 }

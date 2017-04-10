@@ -11,6 +11,11 @@ void Interpreter::execute(const std::string &line) {
     std::cout << eval.currentScope()->prettyPrint(0) << std::endl;
 }
 
+void Interpreter::printResult(const std::string &line) {
+    eval.evaluateAST(parse(line));
+    std::cout << eval.partial()->prettyPrint(0) << std::endl;
+}
+
 GraceAST Interpreter::parse(const std::string &line) const {
     ANTLRInputStream stream(line);
     GraceLexer lexer(&stream);
