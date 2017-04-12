@@ -7,11 +7,18 @@
 
 namespace naylang {
 
-RequestNode::RequestNode(const std::string &methodName)  :
-        _name{methodName}, _declaration{nullptr} {}
+RequestNode::RequestNode(const std::string &methodName, const std::vector<ExpressionPtr> &params, int line, int col) :
+        _name{methodName}, _params{params}, _declaration{nullptr},
+        Expression(line, col) {}
 
 RequestNode::RequestNode(const std::string &methodName, const std::vector<ExpressionPtr> &params) :
-        _name{methodName}, _params{params}, _declaration{nullptr} {}
+        RequestNode(methodName, params, -1, -1) {}
+
+RequestNode::RequestNode(const std::string &methodName)  :
+        RequestNode(methodName, {}) {}
+
+RequestNode::RequestNode(const std::string &methodName, int line, int col) :
+        RequestNode::RequestNode(methodName, {}, line, col) {}
 
 const std::string &RequestNode::identifier() const {
     return _name;

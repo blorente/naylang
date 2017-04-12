@@ -24,7 +24,8 @@ class Block : public Expression, public std::enable_shared_from_this<Block> {
 
 public:
 
-    Block() = default;
+    Block(int line, int col);
+    Block();
 
     void accept(Evaluator &evaluator) override;
 
@@ -33,7 +34,6 @@ public:
 
     void addStatement(StatementPtr statement);
     void addParameter(DeclarationPtr param);
-    BlockPtr get_shared();
 };
 
 } // end namespace naylang

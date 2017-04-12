@@ -18,8 +18,10 @@ class Lineup : public Expression {
 
 public:
 
-    Lineup() = default;
+    Lineup(const std::vector<ExpressionPtr> &values, int line, int col);
     Lineup(const std::vector<ExpressionPtr> &values);
+    Lineup(int line, int col);
+    Lineup();
 
     virtual void accept(Evaluator &evaluator);
 

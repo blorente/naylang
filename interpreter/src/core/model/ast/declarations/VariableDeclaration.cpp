@@ -7,11 +7,18 @@
 
 namespace naylang {
 
-VariableDeclaration::VariableDeclaration(const std::string &identifier)
-        : _identifier(identifier) {}
+VariableDeclaration::VariableDeclaration(const std::string &identifier, ExpressionPtr initialValue, int line, int col) :
+        _identifier{identifier}, _initialValue{initialValue},
+        VariableDeclaration::Declaration(line, col) {}
 
-VariableDeclaration::VariableDeclaration(const std::string &identifier, ExpressionPtr intialValue) :
-        _identifier{identifier}, _initialValue{intialValue} {}
+VariableDeclaration::VariableDeclaration(const std::string &identifier, int line, int col) :
+        VariableDeclaration(identifier, nullptr, line, col) {}
+
+VariableDeclaration::VariableDeclaration(const std::string &identifier, ExpressionPtr initialValue) :
+        VariableDeclaration(identifier, initialValue, -1, -1) {}
+
+VariableDeclaration::VariableDeclaration(const std::string &identifier) :
+        VariableDeclaration(identifier, -1, -1) {}
 
 void VariableDeclaration::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);

@@ -6,8 +6,11 @@
 #include "IfThen.h"
 
 namespace naylang {
+IfThen::IfThen(ExpressionPtr condition, BlockPtr thenExp, int line, int col) :
+        _condition{condition}, _then{thenExp}, IfThen::Statement(line, col) {}
+
 IfThen::IfThen(ExpressionPtr condition, BlockPtr thenExp) :
-        _condition{condition}, _then{thenExp} {}
+        IfThen(condition, thenExp, -1, -1) {}
 
 void IfThen::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);

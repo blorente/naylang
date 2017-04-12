@@ -22,6 +22,11 @@ public:
     IfThenElse(
             ExpressionPtr condition,
             BlockPtr thenExp,
+            BlockPtr elseExp,
+            int line, int col);
+    IfThenElse(
+            ExpressionPtr condition,
+            BlockPtr thenExp,
             BlockPtr elseExp);
 
     virtual void accept(Evaluator &evaluator);

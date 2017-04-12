@@ -10,6 +10,6 @@ using namespace naylang;
 
 TEST_CASE("Return statements", "[Control]") {
     SECTION("A return statement takes no parameters") {
-        Return ret;
+        Return ret(0, 0);
     }
 }

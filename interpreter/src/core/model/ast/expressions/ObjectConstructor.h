@@ -15,6 +15,7 @@ class ObjectConstructor : public Expression {
     std::vector<StatementPtr> _statements;
 
 public:
+    ObjectConstructor(const std::vector<StatementPtr> &statements, int line, int col);
     ObjectConstructor(const std::vector<StatementPtr> &statements);
 
     virtual void accept(Evaluator &evaluator);

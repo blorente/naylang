@@ -7,7 +7,10 @@
 
 namespace naylang {
 
-CharLiteral::CharLiteral(char value) : _value(value) {}
+CharLiteral::CharLiteral(char value) : CharLiteral(value, -1, -1) {}
+
+CharLiteral::CharLiteral(char value, int line, int col) :
+        _value(value), Expression(line, col) {}
 
 void CharLiteral::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);

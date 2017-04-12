@@ -17,9 +17,20 @@ class Statement;
 typedef std::shared_ptr<Statement> StatementPtr;
 
 class Statement {
+protected:
+
+    int _line;
+    int _col;
+
 public:
 
+    Statement() : _line{-1}, _col{-1} {}
+    Statement(int line, int col) : _line{line}, _col{col} {}
+
     virtual void accept(Evaluator &evaluator) = 0;
+
+    int line() {return _line;}
+    int col() {return _col;}
 };
 
 }

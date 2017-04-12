@@ -10,6 +10,10 @@
 
 namespace naylang {
 
+Block::Block(int line, int col) : Expression(line, col) {}
+
+Block::Block() : Block(-1, -1) {}
+
 void Block::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
@@ -29,9 +33,4 @@ void Block::addStatement(StatementPtr statement) {
 void Block::addParameter(DeclarationPtr param) {
     _params.push_back(param);
 }
-
-BlockPtr Block::get_shared() {
-    return shared_from_this();
-}
-
 }

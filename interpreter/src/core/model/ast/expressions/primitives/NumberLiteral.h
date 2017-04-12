@@ -16,7 +16,9 @@ class NumberLiteral : public Expression {
 
 public:
 
+    NumberLiteral(double value, int line, int col);
     NumberLiteral(double value);
+
     virtual void accept(Evaluator &evaluator);
 
     virtual bool operator==(const NumberLiteral &other);

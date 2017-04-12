@@ -19,6 +19,7 @@ class While : public Statement {
     BlockPtr _body;
 
 public:
+    While(BlockPtr condition, BlockPtr body, int line, int col);
     While(BlockPtr condition, BlockPtr body);
 
     void accept(Evaluator &evaluator) override;

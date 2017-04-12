@@ -17,7 +17,7 @@
 using namespace naylang;
 
 TEST_CASE("Execution Evaluator", "[Evaluators]") {
-    auto ret = make_node<Return>();
+    auto ret = make_node<Return>(0, 0);
     auto truRef = make_node<ImplicitRequestNode>("tru");
     auto falRef = make_node<ImplicitRequestNode>("fal");
     auto xRef = make_node<ImplicitRequestNode>("x");
@@ -58,7 +58,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
         SECTION("Evaluating a Return node terminates the execution") {
             // It assumes that the last executed expression is in the partial
             ExecutionEvaluator eval;
-            Return ret;
+            Return ret(0, 0);
             REQUIRE_NOTHROW(eval.evaluate(ret));
         }
 

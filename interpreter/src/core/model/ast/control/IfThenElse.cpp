@@ -9,7 +9,11 @@ namespace naylang {
 IfThenElse::IfThenElse(
         ExpressionPtr condition,
         BlockPtr thenExp,
-        BlockPtr elseExp) {
+        BlockPtr elseExp) :
+        IfThenElse(condition, thenExp, elseExp, -1, -1) {}
+
+IfThenElse::IfThenElse(ExpressionPtr condition, BlockPtr thenExp, BlockPtr elseExp, int line, int col) :
+        IfThenElse::Statement(line, col) {
     _condition = std::move(condition);
     _then = std::move(thenExp);
     _else = std::move(elseExp);

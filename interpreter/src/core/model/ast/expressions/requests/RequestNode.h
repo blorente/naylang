@@ -28,8 +28,10 @@ protected:
 
 public:
 
-    RequestNode(const std::string &methodName);
+    RequestNode(const std::string &methodName, const std::vector<ExpressionPtr> &params, int line, int col);
     RequestNode(const std::string &methodName, const std::vector<ExpressionPtr> &params);
+    RequestNode(const std::string &methodName, int line, int col);
+    RequestNode(const std::string &methodName);
 
     const std::string &identifier() const;
     const std::vector<ExpressionPtr> &params() const;

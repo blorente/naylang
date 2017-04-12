@@ -6,7 +6,10 @@
 #include "BooleanLiteral.h"
 
 namespace naylang {
-BooleanLiteral::BooleanLiteral(bool value) : _value(value) {}
+BooleanLiteral::BooleanLiteral(bool value) : BooleanLiteral(value, -1, -1) {}
+
+BooleanLiteral::BooleanLiteral(bool value, int line, int col) :
+        _value(value), Expression(line, col) {}
 
 void BooleanLiteral::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);

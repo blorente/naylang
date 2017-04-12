@@ -16,6 +16,7 @@ class CharLiteral : public Expression {
 
 public:
 
+    CharLiteral(char value, int line, int col);
     CharLiteral(char value);
 
     virtual void accept(Evaluator &evaluator);

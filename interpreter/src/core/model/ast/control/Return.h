@@ -12,6 +12,9 @@ namespace naylang {
 class Return : public Statement {
 public:
 
+    Return(int line, int col);
+    Return();
+
     virtual void accept(Evaluator &evaluator);
 };
 } // end namespace naylang

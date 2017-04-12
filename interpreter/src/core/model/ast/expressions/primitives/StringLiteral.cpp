@@ -7,7 +7,11 @@
 
 namespace naylang {
 
-StringLiteral::StringLiteral(const std::string &_value) : _value(_value) {}
+StringLiteral::StringLiteral(const std::string &value, int line, int col) :
+        _value{value}, Expression(line, col) {}
+
+StringLiteral::StringLiteral(const std::string &value) :
+        StringLiteral(value, -1, -1) {}
 
 void StringLiteral::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);

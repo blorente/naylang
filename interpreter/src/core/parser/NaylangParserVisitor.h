@@ -87,6 +87,9 @@ private:
     void clearPartials();
 
     antlrcpp::Any defaultResult();
+
+    int getLine(const antlr4::ParserRuleContext *ctx) const;
+    int getCol(const antlr4::ParserRuleContext *ctx) const;
 };
 }
 

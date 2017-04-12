@@ -15,6 +15,7 @@ class BooleanLiteral : public Expression {
 
 public:
 
+    BooleanLiteral(bool value, int line, int col);
     BooleanLiteral(bool value);
 
     virtual void accept(Evaluator &evaluator);

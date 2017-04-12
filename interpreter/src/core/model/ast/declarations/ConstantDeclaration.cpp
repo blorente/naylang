@@ -7,8 +7,11 @@
 
 namespace naylang {
 
+ConstantDeclaration::ConstantDeclaration(const std::string &identifier, ExpressionPtr value, int line, int col) :
+        _name{identifier}, _value(value), Declaration::Declaration(line, col) {}
+
 ConstantDeclaration::ConstantDeclaration(const std::string &name, ExpressionPtr value) :
-        _name(name), _value(value) {}
+        ConstantDeclaration(name, value, -1, -1){}
 
 void ConstantDeclaration::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);

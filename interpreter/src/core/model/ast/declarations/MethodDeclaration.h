@@ -22,6 +22,12 @@ public:
     MethodDeclaration(
             const std::string &name,
             const std::vector<DeclarationPtr> &params,
+            const std::vector<StatementPtr> &body,
+            int line, int col);
+
+    MethodDeclaration(
+            const std::string &name,
+            const std::vector<DeclarationPtr> &params,
             const std::vector<StatementPtr> &body);
 
     void accept(Evaluator &evaluator) override;
