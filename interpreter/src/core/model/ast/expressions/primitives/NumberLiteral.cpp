@@ -7,7 +7,11 @@
 
 namespace naylang {
 
-NumberLiteral::NumberLiteral(double value) : _value(value) {}
+NumberLiteral::NumberLiteral(double value, int line, int col) :
+        _value(value), Expression(line, col) {}
+
+NumberLiteral::NumberLiteral(double value) :
+        NumberLiteral(value, -1, -1) {}
 
 void NumberLiteral::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);

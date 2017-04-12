@@ -18,6 +18,8 @@ typedef std::shared_ptr<Declaration> DeclarationPtr;
 class Declaration : public Statement {
 public:
 
+    Declaration(int line, int col) : Statement(line, col) {}
+
     virtual void accept(Evaluator &evaluator) = 0;
     virtual const std::string &name() const = 0;
 };

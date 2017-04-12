@@ -17,6 +17,8 @@ typedef std::shared_ptr<Expression> ExpressionPtr;
 class Expression : public Statement {
 public:
 
+    Expression(int line, int col) : Statement(line, col) {}
+
     virtual void accept(Evaluator &evaluator) = 0;
 };
 }

@@ -16,8 +16,10 @@ class ExplicitRequestNode : public RequestNode {
 
 public:
 
-    ExplicitRequestNode(const std::string &method, ExpressionPtr receiver);
+    ExplicitRequestNode(const std::string &method, ExpressionPtr receiver, const std::vector<ExpressionPtr> &params, int line, int col);
     ExplicitRequestNode(const std::string &method, ExpressionPtr receiver, const std::vector<ExpressionPtr> &params);
+    ExplicitRequestNode(const std::string &method, ExpressionPtr receiver, int line, int col);
+    ExplicitRequestNode(const std::string &method, ExpressionPtr receiver);
 
     virtual void accept(Evaluator &evaluator);
 

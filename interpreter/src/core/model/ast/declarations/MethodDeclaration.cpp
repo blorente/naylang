@@ -9,7 +9,11 @@ namespace naylang {
 
 MethodDeclaration::MethodDeclaration(const std::string &name, const std::vector<DeclarationPtr> &params,
                                      const std::vector<StatementPtr> &body) :
-        _name{name}, _params{params}, _body{body}{}
+        MethodDeclaration(name, params, body, -1, -1) {}
+
+MethodDeclaration::MethodDeclaration(const std::string &name, const std::vector<DeclarationPtr> &params,
+                                     const std::vector<StatementPtr> &body, int line, int col) :
+        _name{name}, _params{params}, _body{body}, MethodDeclaration::Declaration(line, col) {}
 
 void MethodDeclaration::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);

@@ -20,6 +20,11 @@ public:
 
     IfThen(
             ExpressionPtr condition,
+            BlockPtr thenExp,
+            int line, int col);
+
+    IfThen(
+            ExpressionPtr condition,
             BlockPtr thenExp);
 
     virtual void accept(Evaluator &evaluator);

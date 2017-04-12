@@ -19,8 +19,10 @@ class VariableDeclaration : public Declaration {
 
 public:
 
-    VariableDeclaration(const std::string &identifier);
+    VariableDeclaration(const std::string &identifier, ExpressionPtr intialValue, int line, int col);
     VariableDeclaration(const std::string &identifier, ExpressionPtr intialValue);
+    VariableDeclaration(const std::string &identifier, int line, int col);
+    VariableDeclaration(const std::string &identifier);
 
     virtual void accept(Evaluator &evaluator);
     const std::string &name() const;

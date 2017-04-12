@@ -10,7 +10,13 @@
 
 namespace naylang {
 
+Return::Return(int line, int col) :
+    Return::Statement(line, col) {}
+
+Return::Return() : Return::Statement() {}
+
 void Return::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
+
 }

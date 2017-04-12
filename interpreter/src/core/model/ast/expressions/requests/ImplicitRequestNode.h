@@ -18,8 +18,10 @@ class ImplicitRequestNode : public RequestNode {
 
 public:
 
-    ImplicitRequestNode(const std::string &methodName);
+    ImplicitRequestNode(const std::string &methodName, const std::vector<ExpressionPtr> &params, int line, int col);
     ImplicitRequestNode(const std::string &methodName, const std::vector<ExpressionPtr> &params);
+    ImplicitRequestNode(const std::string &methodName, int line, int col);
+    ImplicitRequestNode(const std::string &methodName);
 
     void accept(Evaluator &evaluator) override;
 

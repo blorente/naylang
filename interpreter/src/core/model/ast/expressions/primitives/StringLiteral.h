@@ -19,7 +19,8 @@ class StringLiteral : public Expression {
 
 public:
 
-    StringLiteral(const std::string &_value);
+    StringLiteral(const std::string &value, int line, int col);
+    StringLiteral(const std::string &value);
 
     void accept(Evaluator &evaluator);
 

@@ -21,6 +21,10 @@ class ConstantDeclaration : public Declaration {
 
 public:
 
+    ConstantDeclaration(
+            const std::string &identifier,
+            ExpressionPtr value,
+            int line, int col);
     ConstantDeclaration(const std::string &identifier, ExpressionPtr value);
 
     virtual void accept(Evaluator &evaluator);
