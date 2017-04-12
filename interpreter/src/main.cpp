@@ -4,13 +4,20 @@
 //
 
 #include <iostream>
+#include <frontends/ConsoleFrontend.h>
+
+using namespace naylang;
 
 int main() {
-  std::string command;
-  while (command != "quit") {
-      std::cout << ">>> ";
-      getline(std::cin, command);
-      std::cout << command << std::endl;
-  }
-  return 0;
+    std::string command;
+    ConsoleFrontend frontend;
+
+    while (command != "quit") {
+        std::cout << ">>> ";
+        getline(std::cin, command);
+
+        frontend.runCommand(command);
+    }
+    return 0;
 }
+
