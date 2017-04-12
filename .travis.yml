@@ -32,12 +32,15 @@ script:
 - cd tests
 - "./tests -r console -s"
 before_deploy:
+- cd ${TRAVIS_BUILD_DIR}
+- cp bin/interpreter/interpreter Naylang
 - pwd && ls
+- chmod +x Naylang
 deploy:
   skip_cleanup: true
   provider: releases
   api_key: ${GITHUB_TOKEN}
-  file: "/home/travis/build/blorente/naylang/bin/interpreter/interpreter"
+  file: "/home/travis/build/blorente/naylang/Naylang"
   on:
     repo: blorente/naylang
     branch: master
