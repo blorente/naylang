@@ -3,6 +3,7 @@
 //
 
 #include "ConsoleFrontend.h"
+#include <regex>
 
 namespace naylang {
 void ConsoleFrontend::runCommand(std::string line) {
@@ -12,7 +13,7 @@ void ConsoleFrontend::runCommand(std::string line) {
 
 void ConsoleFrontend::setCommand(std::string line) {
     auto commandName = line.substr(0, line.find(" "));
-    auto code = line.substr(line.find(" ") + 1);
+    auto code = std::regex_replace(line.substr(line.find(" ")), std::regex("^ +"), "");
     if (commandName == "exec" || commandName == "e") {
         _command = std::make_unique<ExecCommand>(code);
     } else if (commandName == "load" || commandName == "l") {
