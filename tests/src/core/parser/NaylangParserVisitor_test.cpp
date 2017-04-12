@@ -256,6 +256,21 @@ TEST_CASE("Requests", "[Naylang Parser Visitor]") {
     }
 }
 
+TEST_CASE("Code Coordinates", "[Naylang Parser Visitor]") {
+    SECTION("The visitor assigns code coordinates to every statement") {
+        auto AST = translate("4;\n5;\nvar x := 4;\n");
+        auto four = static_cast<NumberLiteral &>(*(AST[0]));
+        REQUIRE(four.line() == 1);
+        REQUIRE(four.col() == 0);
+        auto five = static_cast<NumberLiteral &>(*(AST[1]));
+        REQUIRE(five.line() == 2);
+        REQUIRE(five.col() == 0);
+        auto var = static_cast<VariableDeclaration &>(*(AST[2]));
+        REQUIRE(var.line() == 3);
+        REQUIRE(var.col() == 0);
+    }
+}
+
 GraceAST translate(std::string line) {
     ANTLRInputStream stream(line);
     GraceLexer lexer(&stream);

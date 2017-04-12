@@ -77,15 +77,15 @@ antlrcpp::Any NaylangParserVisitor::visitPrefixExp(GraceParser::PrefixExpContext
     auto opname = popPartialStr();
     ctx->rec->accept(this);
     auto rec = popPartialExp();
-    pushPartialExp(make_node<ExplicitRequestNode>(opname, rec));
+    pushPartialExp(make_node<ExplicitRequestNode>(opname, rec, getLine(ctx), getCol(ctx)));
     return 0;
 }
+
 
 antlrcpp::Any NaylangParserVisitor::visitNumber(GraceParser::NumberContext *ctx) {
-    pushPartialExp(make_node<NumberLiteral>(std::stod(ctx->getText())));
+    pushPartialExp(make_node<NumberLiteral>(std::stod(ctx->getText()), getLine(ctx), getCol(ctx)));
     return 0;
 }
-
 antlrcpp::Any NaylangParserVisitor::visitMulDivExp(GraceParser::MulDivExpContext *ctx) {
     ctx->rec->accept(this);
     auto reciever = popPartialExp();
@@ -93,7 +93,7 @@ antlrcpp::Any NaylangParserVisitor::visitMulDivExp(GraceParser::MulDivExpContext
     auto param = popPartialExp();
     auto op = ctx->op->getText() + "(_)";
     std::vector<ExpressionPtr> params{param};
-    pushPartialExp(make_node<ExplicitRequestNode>(op, reciever, params));
+    pushPartialExp(make_node<ExplicitRequestNode>(op, reciever, params, getLine(ctx), getCol(ctx)));
     return 0;
 }
 
@@ -104,19 +104,19 @@ antlrcpp::Any NaylangParserVisitor::visitAddSubExp(GraceParser::AddSubExpContext
     auto param = popPartialExp();
     auto op = ctx->op->getText() + "(_)";
     std::vector<ExpressionPtr> params{param};
-    pushPartialExp(make_node<ExplicitRequestNode>(op, reciever, params));
+    pushPartialExp(make_node<ExplicitRequestNode>(op, reciever, params, getLine(ctx), getCol(ctx)));
     return 0;
 }
 
 antlrcpp::Any NaylangParserVisitor::visitString(GraceParser::StringContext *ctx) {
     auto contents = ctx->content->getText();
-    pushPartialExp(make_node<StringLiteral>(contents));
+    pushPartialExp(make_node<StringLiteral>(contents, getLine(ctx), getCol(ctx)));
     return 0;
 }
 
 antlrcpp::Any NaylangParserVisitor::visitBoolean(GraceParser::BooleanContext *ctx) {
     bool value = ctx->TRUE() != nullptr;
-    pushPartialExp(make_node<BooleanLiteral>(value));
+    pushPartialExp(make_node<BooleanLiteral>(value, getLine(ctx), getCol(ctx)));
     return 0;
 }
 
@@ -125,7 +125,7 @@ antlrcpp::Any NaylangParserVisitor::visitConstantDeclaration(GraceParser::Consta
     auto name = popPartialStr();
     ctx->expression()->accept(this);
     auto value = popPartialExp();
-    pushPartialDecl(make_node<ConstantDeclaration>(name, value));
+    pushPartialDecl(make_node<ConstantDeclaration>(name, value, getLine(ctx), getCol(ctx)));
     return 0;
 }
 
@@ -139,7 +139,7 @@ antlrcpp::Any NaylangParserVisitor::visitVariableDeclaration(GraceParser::Variab
     auto name = popPartialStr();
     ctx->expression()->accept(this);
     auto value = popPartialExp();
-    pushPartialDecl(make_node<VariableDeclaration>(name, value));
+    pushPartialDecl(make_node<VariableDeclaration>(name, value, getLine(ctx), getCol(ctx)));
     return 0;
 }
 
@@ -161,10 +161,11 @@ antlrcpp::Any NaylangParserVisitor::visitUserMethod(GraceParser::UserMethodConte
     int bodyLength = ctx->methodBody()->methodBodyLine().size();
     auto body = popPartialStats(bodyLength);
 
-    auto methodDeclaration = make_node<MethodDeclaration>(methodName, formalParams, body);
+    auto methodDeclaration = make_node<MethodDeclaration>(methodName, formalParams, body, getLine(ctx), getCol(ctx));
     pushPartialDecl(methodDeclaration);
     return 0;
 }
+
 antlrcpp::Any NaylangParserVisitor::visitMethodSignature(GraceParser::MethodSignatureContext *ctx) {
     clearPartials();
     for (auto i : ctx->methodSignaturePart()) {
@@ -172,7 +173,6 @@ antlrcpp::Any NaylangParserVisitor::visitMethodSignature(GraceParser::MethodSign
     }
     return 0;
 }
-
 antlrcpp::Any NaylangParserVisitor::visitMethodSignaturePart(GraceParser::MethodSignaturePartContext *ctx) {
     auto partName = ctx->identifier()->getText();
     if (ctx->formalParameterList()->formalParameter().size() != 0) {
@@ -199,7 +199,7 @@ antlrcpp::Any NaylangParserVisitor::visitFormalParameterList(GraceParser::Formal
 }
 
 antlrcpp::Any NaylangParserVisitor::visitFormalParameter(GraceParser::FormalParameterContext *ctx) {
-    pushPartialDecl(make_node<VariableDeclaration>(ctx->identifier()->getText()));
+    pushPartialDecl(make_node<VariableDeclaration>(ctx->identifier()->getText(), getLine(ctx), getCol(ctx)));
     return 0;
 }
 
@@ -222,13 +222,13 @@ antlrcpp::Any NaylangParserVisitor::visitPrefixMethod(GraceParser::PrefixMethodC
         body.push_back(line);
     }
 
-    auto methodDeclaration = make_node<MethodDeclaration>(methodName, formalParams, body);
+    auto methodDeclaration = make_node<MethodDeclaration>(methodName, formalParams, body, getLine(ctx), getCol(ctx));
     pushPartialDecl(methodDeclaration);
     return 0;
 }
 
 antlrcpp::Any NaylangParserVisitor::visitIdentifierImplReq(GraceParser::IdentifierImplReqContext *ctx) {
-    pushPartialExp(make_node<ImplicitRequestNode>(ctx->getText()));
+    pushPartialExp(make_node<ImplicitRequestNode>(ctx->getText(), getLine(ctx), getCol(ctx)));
     return 0;
 }
 
@@ -237,7 +237,7 @@ antlrcpp::Any NaylangParserVisitor::visitOneParamImplReq(GraceParser::OneParamIm
     ctx->effectiveParameter()->accept(this);
     auto effectiveParam = popPartialExp();
     std::vector<ExpressionPtr> params{effectiveParam};
-    pushPartialExp(make_node<ImplicitRequestNode>(name, params));
+    pushPartialExp(make_node<ImplicitRequestNode>(name, params, getLine(ctx), getCol(ctx)));
     return 0;
 }
 
@@ -261,7 +261,7 @@ antlrcpp::Any NaylangParserVisitor::visitMultipartRequest(GraceParser::Multipart
 
     auto effectiveParams = popPartialExps(totalParams);
 
-    pushPartialExp(make_node<ImplicitRequestNode>(methodName, effectiveParams));
+    pushPartialExp(make_node<ImplicitRequestNode>(methodName, effectiveParams, getLine(ctx), getCol(ctx)));
     return 0;
 }
 
@@ -296,7 +296,7 @@ antlrcpp::Any NaylangParserVisitor::visitImplReqExplReq(GraceParser::ImplReqExpl
     auto rec = popPartialExp();
     ctx->req->accept(this);
     auto req = static_cast<ImplicitRequestNode &>(*popPartialExp());
-    pushPartialExp(make_node<ExplicitRequestNode>(req.identifier(), rec, req.params()));
+    pushPartialExp(make_node<ExplicitRequestNode>(req.identifier(), rec, req.params(), getLine(ctx), getCol(ctx)));
     return 0;
 }
 
@@ -306,12 +306,12 @@ antlrcpp::Any NaylangParserVisitor::visitObjectConstructor(GraceParser::ObjectCo
         stat->accept(this);
     }
     auto lines = popPartialStats(statements);
-    pushPartialExp(make_node<ObjectConstructor>(lines));
+    pushPartialExp(make_node<ObjectConstructor>(lines, getLine(ctx), getCol(ctx)));
     return 0;
 }
 
 antlrcpp::Any NaylangParserVisitor::visitBlock(GraceParser::BlockContext *ctx) {
-    auto block = make_node<Block>();
+    auto block = make_node<Block>(getLine(ctx), getCol(ctx));
 
     for (auto line : ctx->methodBodyLine()) {
         line->accept(this);
@@ -335,7 +335,7 @@ antlrcpp::Any NaylangParserVisitor::visitLineup(GraceParser::LineupContext *ctx)
     int elems = ctx->lineupContents()->expression().size();
     ctx->lineupContents()->accept(this);
     auto content = popPartialExps(elems);
-    pushPartialExp(make_node<Lineup>(content));
+    pushPartialExp(make_node<Lineup>(content, getLine(ctx), getCol(ctx)));
     return 0;
 }
 
@@ -346,5 +346,13 @@ antlrcpp::Any NaylangParserVisitor::visitProgram(GraceParser::ProgramContext *ct
         _tree.push_back(popPartialStat());
     }
     return 0;
+}
+
+int NaylangParserVisitor::getCol(const antlr4::ParserRuleContext *ctx) const {
+    return ctx->start->getCharPositionInLine();
+}
+
+int NaylangParserVisitor::getLine(const antlr4::ParserRuleContext *ctx) const {
+    return ctx->start->getLine();
 }
 }
