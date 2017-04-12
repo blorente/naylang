@@ -70,7 +70,7 @@ void doAfter() {}
  * Parser Rules
  */
 program: (statement)*;
-statement: expression | declaration; //| control;
+statement: expression DELIMITER | declaration; //| control;
 
 declaration : variableDeclaration
             | constantDeclaration
@@ -92,7 +92,7 @@ formalParameterList: formalParameter (COMMA formalParameter)*;
 formalParameter: identifier;
 
 methodBody: OPEN_BRACE methodBodyLine* CLOSE_BRACE;
-methodBodyLine: variableDeclaration | constantDeclaration | expression; //| control;
+methodBodyLine: variableDeclaration | constantDeclaration | expression DELIMITER; //| control;
 
 // Using left-recursion and implicit operator precendence. ANTLR 4 Reference, page 70
 expression  : rec=expression op=(MUL | DIV) param=expression        #MulDivExp
