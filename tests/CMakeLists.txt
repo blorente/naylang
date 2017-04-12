@@ -23,4 +23,4 @@ set(SOURCE_FILES ${SOURCE_FILES} ${PARSER_SOURCES})
 
 add_executable(tests ${SOURCE_FILES} ${antlr4cpp_src_files_naylang})
 add_dependencies(tests antlr4cpp antlr4cpp_generation_naylang)
-target_link_libraries(tests antlr4-runtime)
+target_link_libraries(tests libantlr4-runtime.a)

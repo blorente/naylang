@@ -30,4 +30,4 @@ include_directories(${antlr4cpp_include_dirs_naylang})
 
 add_executable(interpreter ${SOURCE_FILES} ${antlr4cpp_src_files_naylang})
 add_dependencies(interpreter antlr4cpp antlr4cpp_generation_naylang)
-target_link_libraries(interpreter antlr4-runtime)
+target_link_libraries(interpreter libantlr4-runtime.a)
