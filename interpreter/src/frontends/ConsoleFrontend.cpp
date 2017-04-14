@@ -8,7 +8,7 @@
 namespace naylang {
 void ConsoleFrontend::runCommand(std::string line) {
     setCommand(line);
-    _command->execute(_interpreter);
+    _command->execute(_interpreter.get());
 }
 
 void ConsoleFrontend::setCommand(std::string line) {
@@ -24,4 +24,7 @@ void ConsoleFrontend::setCommand(std::string line) {
         throw "Command not found";
     }
 }
+
+ConsoleFrontend::ConsoleFrontend() :
+        _interpreter{std::move(std::make_unique<REPLInterpreter>())} {}
 }

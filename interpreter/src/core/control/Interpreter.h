@@ -16,17 +16,16 @@ using namespace antlr4::tree;
 
 namespace naylang {
 class Interpreter {
-
+protected:
     ExecutionEvaluator eval;
 
 public:
-
-    void execute(const std::string &line);
     void printResult(const std::string &line);
+    void execute(const std::string &line);
 
-private:
+protected:
     GraceAST parse(const std::string &line) const;
 };
-}
 
-#endif //NAYLANG__INTERPRETER_H
+}
+#endif //NAYLANG_INTERPRETER_H
