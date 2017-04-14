@@ -9,4 +9,9 @@ namespace naylang {
 
 Debugger::Debugger(const std::string &code) : _AST{parse(code)} {}
 
+void Debugger::run() {
+    eval.evaluateAST(_AST);
+    std::cout << eval.currentScope()->prettyPrint(0) << std::endl;
+}
+
 }

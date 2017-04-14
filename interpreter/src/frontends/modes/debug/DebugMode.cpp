@@ -17,7 +17,8 @@ void naylang::DebugMode::prompt() {
 }
 
 void naylang::DebugMode::runCommand(const std::string &name, const std::string &body) {
-    std::cout << "Run debug mode " + name + " " + body << std::endl;
+    setCommand(name, body);
+    _command->execute(*_debugger);
 }
 
 void naylang::DebugMode::readCodeFile(const std::string &filename) {
@@ -29,5 +30,13 @@ void naylang::DebugMode::readCodeFile(const std::string &filename) {
         codeFile.close();
     } else {
         throw "Grace file could not be opened";
+    }
+}
+
+void naylang::DebugMode::setCommand(const std::string &name, const std::string &body) {
+    if (name == "run" || name == "r") {
+        _command = std::make_unique<DebugRun>();
+    } else {
+        std::cout << "Command not found, try again" << std::endl;
     }
 }

@@ -17,6 +17,8 @@ public:
 
     Debugger(const std::string &filename);
 
+    void run();
+
 };
 }
 

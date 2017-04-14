@@ -47,6 +47,8 @@ std::string ConsoleFrontend::getCommandName(const std::string &line) const {
 std::string ConsoleFrontend::getCommandBody(const std::string &line) const {
     if (line.find(" ") != -1) {
         return std::regex_replace(line.substr(line.find(" ")), std::regex("^ +"), "");
+    } else {
+        return "";
     }
 }
 }

@@ -7,6 +7,6 @@
 
 namespace naylang {
 void DebugRun::execute(Debugger &debugger) {
-    //debugger.run();
+    debugger.run();
 }
 }
