@@ -23,7 +23,10 @@ public:
 
 private:
 
-    bool handleMetaCommand(const std::string &command);
+    bool handleMetaCommand(const std::string &name, const std::string & body);
+
+    std::string getCommandName(const std::string &line) const;
+    std::string getCommandBody(const std::string &line) const;
 
 };
 }

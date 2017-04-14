@@ -6,12 +6,15 @@
 #ifndef NAYLANG_CONSOLEEXECUTIONMODE_H
 #define NAYLANG_CONSOLEEXECUTIONMODE_H
 
+#include <regex>
+
 namespace naylang {
 class ConsoleExecutionMode {
 public:
 
     virtual void prompt() = 0;
-    virtual void runCommand(const std::string &line) = 0;
+    virtual void runCommand(const std::string &name, const std::string &body) = 0;
+
 };
 }
 

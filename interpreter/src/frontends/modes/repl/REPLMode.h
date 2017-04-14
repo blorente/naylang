@@ -17,12 +17,12 @@ class REPLMode : public ConsoleExecutionMode {
     std::unique_ptr<REPLCommand> _command;
     std::unique_ptr<REPLInterpreter> _interpreter;
 
-    void setCommand(const std::string &command);
+    void setCommand(const std::string &name, const std::string &body);
 
 public:
 
     REPLMode();
-    void runCommand(const std::string &line) override;
+    void runCommand(const std::string &name, const std::string &body) override;
     void prompt() override;
 };
 }
