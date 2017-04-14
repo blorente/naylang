@@ -6,24 +6,25 @@
 #ifndef NAYLANG_CONSOLEFRONTENDLISTENER_H
 #define NAYLANG_CONSOLEFRONTENDLISTENER_H
 
-#include <core/control/REPLInterpreter.h>
-#include <frontends/FrontendCommand.h>
+#include <memory>
+#include <frontends/modes/ConsoleExecutionMode.h>
 
 namespace naylang {
 
 class ConsoleFrontend {
 
-    std::unique_ptr<Interpreter> _interpreter;
-    std::unique_ptr<FrontendCommand> _command;
+    std::unique_ptr<ConsoleExecutionMode> _mode;
+    bool _quit;
 
 public:
 
     ConsoleFrontend();
-
-    void runCommand(std::string line);
+    void run();
 
 private:
-    void setCommand(std::string command);
+
+    bool handleMetaCommand(const std::string &command);
+
 };
 }
 #endif //NAYLANG_CONSOLEFRONTENDLISTENER_H

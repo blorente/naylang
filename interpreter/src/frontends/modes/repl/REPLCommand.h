@@ -9,30 +9,30 @@
 #include <core/control/REPLInterpreter.h>
 
 namespace naylang {
-class FrontendCommand {
+class REPLCommand {
 protected:
     std::string _code;
 
 public:
-    FrontendCommand(const std::string &code);
+    REPLCommand(const std::string &code);
     virtual void execute(Interpreter *interpreter) = 0;
 };
 
-class ExecCommand : public FrontendCommand {
+class ExecCommand : public REPLCommand {
 public:
     ExecCommand(const std::string &code);
 
     void execute(Interpreter *interpreter) override;
 };
 
-class LoadCommand : public FrontendCommand {
+class LoadCommand : public REPLCommand {
 public:
     LoadCommand(const std::string &code);
 
     void execute(Interpreter *interpreter) override;
 };
 
-class PrintCommand : public FrontendCommand {
+class PrintCommand : public REPLCommand {
 public:
     PrintCommand(const std::string &code);
 

@@ -9,15 +9,8 @@
 using namespace naylang;
 
 int main() {
-    std::string command;
     ConsoleFrontend frontend;
-
-    while (command != "quit") {
-        std::cout << ">>> ";
-        getline(std::cin, command);
-
-        frontend.runCommand(command);
-    }
+    frontend.run();
     return 0;
 }
 

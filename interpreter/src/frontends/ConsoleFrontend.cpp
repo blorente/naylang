@@ -4,27 +4,31 @@
 
 #include "ConsoleFrontend.h"
 #include <regex>
+#include <frontends/modes/repl/REPLMode.h>
 
 namespace naylang {
-void ConsoleFrontend::runCommand(std::string line) {
-    setCommand(line);
-    _command->execute(_interpreter.get());
-}
 
-void ConsoleFrontend::setCommand(std::string line) {
-    auto commandName = line.substr(0, line.find(" "));
-    auto code = std::regex_replace(line.substr(line.find(" ")), std::regex("^ +"), "");
-    if (commandName == "exec" || commandName == "e") {
-        _command = std::make_unique<ExecCommand>(code);
-    } else if (commandName == "load" || commandName == "l") {
-        _command = std::make_unique<LoadCommand>(code);
-    } else if (commandName == "print" || commandName == "p") {
-        _command = std::make_unique<PrintCommand>(code);
-    } else {
-        throw "Command not found";
+ConsoleFrontend::ConsoleFrontend() :
+        _mode{std::move(std::make_unique<REPLMode>())},
+        _quit{false} {}
+
+void ConsoleFrontend::run() {
+    std::string command;
+    while (!_quit) {
+        _mode->prompt();
+        getline(std::cin, command);
+        if (!handleMetaCommand(command)) {
+            _mode->runCommand(command);
+        }
     }
 }
 
-ConsoleFrontend::ConsoleFrontend() :
-        _interpreter{std::move(std::make_unique<REPLInterpreter>())} {}
+bool ConsoleFrontend::handleMetaCommand(const std::string &command) {
+    if (command == "quit") {
+        _quit = true;
+        return true;
+    }
+    return false;
+}
+
 }

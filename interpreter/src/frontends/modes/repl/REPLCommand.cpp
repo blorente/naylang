@@ -3,20 +3,20 @@
 // Distributed under the GPLv3 license.
 //
 
-#include "FrontendCommand.h"
+#include "REPLCommand.h"
 
 
 namespace naylang {
 
-FrontendCommand::FrontendCommand(const std::string &code) : _code{code} {}
+REPLCommand::REPLCommand(const std::string &code) : _code{code} {}
 
-ExecCommand::ExecCommand(const std::string &code) : FrontendCommand(code) {}
+ExecCommand::ExecCommand(const std::string &code) : REPLCommand(code) {}
 
 void ExecCommand::execute(Interpreter *interpreter) {
     interpreter->execute(_code);
 }
 
-LoadCommand::LoadCommand(const std::string &code) : FrontendCommand(code) {}
+LoadCommand::LoadCommand(const std::string &code) : REPLCommand(code) {}
 
 void LoadCommand::execute(Interpreter *interpreter) {
     std::ifstream codeFile(_code, std::ifstream::in);
@@ -30,7 +30,7 @@ void LoadCommand::execute(Interpreter *interpreter) {
     }
 }
 
-PrintCommand::PrintCommand(const std::string &code) : FrontendCommand(code) {}
+PrintCommand::PrintCommand(const std::string &code) : REPLCommand(code) {}
 
 void PrintCommand::execute(Interpreter *interpreter) {
     interpreter->printResult(_code);
