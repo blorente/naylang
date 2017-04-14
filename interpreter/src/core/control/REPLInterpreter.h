@@ -6,11 +6,14 @@
 #ifndef NAYLANG_REPLINTERPRETER_H
 #define NAYLANG_REPLINTERPRETER_H
 
+#include <core/parser/NaylangParserVisitor.h>
 #include "Interpreter.h"
 
 namespace naylang {
 class REPLInterpreter : public Interpreter {
 
+public:
+    void execute(const std::string &line);
 };
 }
 

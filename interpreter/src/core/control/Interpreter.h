@@ -6,7 +6,6 @@
 #ifndef NAYLANG_INTERPRETER_H
 #define NAYLANG_INTERPRETER_H
 
-#include <core/parser/NaylangParserVisitor.h>
 #include <core/model/evaluators/ExecutionEvaluator.h>
 #include <core/model/execution/objects/GraceObject.h>
 #include <GraceLexer.h>
@@ -21,7 +20,6 @@ protected:
 
 public:
     void printResult(const std::string &line);
-    void execute(const std::string &line);
 
 protected:
     GraceAST parse(const std::string &line) const;

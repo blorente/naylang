@@ -31,7 +31,7 @@ bool ConsoleFrontend::handleMetaCommand(const std::string &name, const std::stri
         _quit = true;
         handled = true;
     } else if (name == "debug") {
-        _mode = std::make_unique<DebugMode>();
+        _mode = std::make_unique<DebugMode>(body);
         handled = true;
     } else if (name == "interactive" || name == "repl") {
         _mode = std::make_unique<REPLMode>();

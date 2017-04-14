@@ -11,7 +11,7 @@ REPLMode::REPLMode() :
 
 void REPLMode::runCommand(const std::string &name, const std::string &body) {
     setCommand(name, body);
-    _command->execute(_interpreter.get());
+    _command->execute(*_interpreter);
 }
 
 void REPLMode::setCommand(const std::string &name, const std::string &body) {

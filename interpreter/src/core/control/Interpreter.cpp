@@ -6,10 +6,6 @@
 #include "Interpreter.h"
 
 namespace naylang {
-void Interpreter::execute(const std::__cxx11::string &line) {
-    eval.evaluateAST(parse(line));
-    std::cout << eval.currentScope()->prettyPrint(0) << std::endl;
-}
 
 void Interpreter::printResult(const std::__cxx11::string &line) {
     eval.evaluateAST(parse(line));

@@ -8,16 +8,22 @@
 
 #include <frontends/modes/ConsoleExecutionMode.h>
 #include <core/control/Interpreter.h>
+#include <core/control/Debugger.h>
 
 namespace naylang {
 class DebugMode : public ConsoleExecutionMode {
-
-    std::unique_ptr<Interpreter> _interpreter;
+    std::string _code;
+    std::unique_ptr<Debugger> _debugger;
 
 public:
+    DebugMode(const std::string &filename);
+
     void prompt() override;
     void runCommand(const std::string &name, const std::string &body) override;
 
+private:
+
+    void readCodeFile(const std::__cxx11::string &filename);
 };
 }
 

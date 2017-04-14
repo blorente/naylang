@@ -15,28 +15,28 @@ protected:
 
 public:
     REPLCommand(const std::string &code);
-    virtual void execute(Interpreter *interpreter) = 0;
+    virtual void execute(REPLInterpreter &interpreter) = 0;
 };
 
 class ExecCommand : public REPLCommand {
 public:
     ExecCommand(const std::string &code);
 
-    void execute(Interpreter *interpreter) override;
+    void execute(REPLInterpreter &interpreter) override;
 };
 
 class LoadCommand : public REPLCommand {
 public:
     LoadCommand(const std::string &code);
 
-    void execute(Interpreter *interpreter) override;
+    void execute(REPLInterpreter &interpreter) override;
 };
 
 class PrintCommand : public REPLCommand {
 public:
     PrintCommand(const std::string &code);
 
-    void execute(Interpreter *interpreter) override;
+    void execute(REPLInterpreter &interpreter) override;
 };
 }
 
