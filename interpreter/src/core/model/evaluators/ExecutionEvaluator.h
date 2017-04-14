@@ -7,7 +7,6 @@
 #define NAYLANG_EXECUTIONEVALUATOR_H
 
 #include <stack>
-#include <core/model/execution/Definitions.h>
 #include <core/model/evaluators/Evaluator.h>
 
 #include <core/model/ast/declarations/ConstantDeclaration.h>
@@ -25,8 +24,11 @@
 
 #include <core/model/ast/control/Return.h>
 #include <core/model/ast/ASTTreeDefinition.h>
+#include <core/model/execution/objects/GraceObject.h>
 
 namespace naylang {
+
+class GraceObject;
 
 class ExecutionEvaluator : public Evaluator {
 
@@ -43,18 +45,17 @@ public:
     void setScope(GraceObjectPtr scope);
     void evaluateAST(const GraceAST &ast);
 
-    virtual void evaluate(BooleanLiteral &expression);
-    virtual void evaluate(NumberLiteral &expression);
-    virtual void evaluate(StringLiteral &expression);
-    virtual void evaluate(ImplicitRequestNode &expression);
-    virtual void evaluate(ExplicitRequestNode &expression);
-    virtual void evaluate(MethodDeclaration &expression);
-    virtual void evaluate(ConstantDeclaration &expression);
-    virtual void evaluate(Return &expression);
-    virtual void evaluate(Block &expression);
-    virtual void evaluate(ObjectConstructor &expression);
-
-    void evaluate(VariableDeclaration &expression) override;
+    virtual void evaluate(BooleanLiteral &expression) override;
+    virtual void evaluate(NumberLiteral &expression) override;
+    virtual void evaluate(StringLiteral &expression) override;
+    virtual void evaluate(ImplicitRequestNode &expression) override;
+    virtual void evaluate(ExplicitRequestNode &expression) override;
+    virtual void evaluate(MethodDeclaration &expression) override;
+    virtual void evaluate(ConstantDeclaration &expression) override;
+    virtual void evaluate(Return &expression) override;
+    virtual void evaluate(Block &expression) override;
+    virtual void evaluate(ObjectConstructor &expression) override;
+    virtual void evaluate(VariableDeclaration &expression) override;
 };
 } // end namespace naylang
 

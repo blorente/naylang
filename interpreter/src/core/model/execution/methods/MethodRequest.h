@@ -8,7 +8,7 @@
 
 #include <string>
 #include <vector>
-#include <core/model/execution/Definitions.h>
+#include <core/model/execution/objects/GraceObject.h>
 
 namespace naylang {
 

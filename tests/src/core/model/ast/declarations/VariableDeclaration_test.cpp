@@ -20,7 +20,7 @@ TEST_CASE("VariableDeclaration Statements", "[Declarations]") {
 
     SECTION("A variable declaration can also contain an initial value") {
         auto name = "y";
-        auto five = make_node<NumberLiteral>(5);
+        auto five = make_node<NumberLiteral>(5.0);
         VariableDeclaration declareY(name, five);
 
         REQUIRE(declareY.name() == "y");

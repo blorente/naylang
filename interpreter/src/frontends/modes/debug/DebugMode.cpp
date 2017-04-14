@@ -20,7 +20,7 @@ void naylang::DebugMode::runCommand(const std::string &name, const std::string &
     std::cout << "Run debug mode " + name + " " + body << std::endl;
 }
 
-void naylang::DebugMode::readCodeFile(const std::__cxx11::string &filename) {
+void naylang::DebugMode::readCodeFile(const std::string &filename) {
     std::ifstream codeFile(filename, std::ios_base::in);
     if (codeFile.is_open()) {
         std::stringstream codeBuffer;

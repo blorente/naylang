@@ -6,6 +6,7 @@
 #include <core/model/execution/objects/UserObject.h>
 #include <core/model/execution/objects/GraceNumber.h>
 #include <core/model/ast/NodeFactory.h>
+#include <core/model/execution/methods/MethodFactory.h>
 #include "catch.h"
 
 using namespace naylang;
@@ -17,7 +18,7 @@ TEST_CASE("Grace User-defined object", "[GraceObjects]") {
 TEST_CASE("UserObject common utils", "[UserObject]") {
     SECTION("Calling prettyPrint on a UserObject a list of the fields and userMethods in brackets") {
         UserObject usr;
-        usr.setField("x", make_obj<GraceNumber>(5));
+        usr.setField("x", make_obj<GraceNumber>(5.0));
         auto param = make_node<VariableDeclaration>("n");
         std::vector<DeclarationPtr> params{param};
         std::vector<StatementPtr> body{};

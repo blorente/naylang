@@ -18,9 +18,9 @@ class GraceString : public GraceObject {
 public:
     GraceString(const std::string &value);
 
-    virtual void addDefaultMethods();
+    virtual void addDefaultMethods() override;
 
-    virtual const GraceString &asString() const;
+    virtual const GraceString &asString() const override;
 
     const std::string &value() const;
 

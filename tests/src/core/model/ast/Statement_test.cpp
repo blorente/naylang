@@ -19,7 +19,7 @@ TEST_CASE("Statements", "[AST]") {
     }
 
     SECTION("Statements have coordinates (-1, -1) by default") {
-        StatementPtr node = make_node<NumberLiteral>(4);
+        StatementPtr node = make_node<NumberLiteral>(5.0);
         REQUIRE(node->line() == -1);
         REQUIRE(node->col() == -1);
     }

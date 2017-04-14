@@ -22,10 +22,10 @@ public:
     GraceBoolean(bool value);
 
     virtual GraceObjectPtr
-    dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
-    virtual void addDefaultMethods();
+    dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) override;
+    virtual void addDefaultMethods() override;
 
-    virtual const GraceBoolean &asBoolean() const;
+    virtual const GraceBoolean &asBoolean() const override;
 
     bool value() const;
 

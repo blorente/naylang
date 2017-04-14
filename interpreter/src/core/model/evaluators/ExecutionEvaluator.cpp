@@ -12,6 +12,7 @@
 #include <core/model/execution/objects/GraceDoneDef.h>
 #include <core/model/execution/objects/UserObject.h>
 #include <core/model/execution/objects/GraceBlock.h>
+#include <core/model/execution/methods/MethodFactory.h>
 
 namespace naylang {
 

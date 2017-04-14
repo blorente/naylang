@@ -7,6 +7,7 @@
 
 
 #include <core/model/evaluators/ExecutionEvaluator.h>
+#include <core/model/execution/methods/Method.h>
 #include "GraceObject.h"
 
 namespace naylang {

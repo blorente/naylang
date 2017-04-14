@@ -6,6 +6,7 @@
 
 
 
+#include <core/model/execution/methods/MethodFactory.h>
 #include "GraceNumber.h"
 #include "GraceBoolean.h"
 #include "GraceString.h"

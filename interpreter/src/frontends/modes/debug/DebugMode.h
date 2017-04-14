@@ -23,7 +23,7 @@ public:
 
 private:
 
-    void readCodeFile(const std::__cxx11::string &filename);
+    void readCodeFile(const std::string &filename);
 };
 }
 

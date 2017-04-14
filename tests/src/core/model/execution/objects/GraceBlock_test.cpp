@@ -4,6 +4,8 @@
 //
 
 #include <core/model/execution/objects/GraceBlock.h>
+#include <core/model/execution/methods/MethodFactory.h>
+#include <core/model/ast/declarations/Declaration.h>
 #include "catch.h"
 
 using namespace naylang;

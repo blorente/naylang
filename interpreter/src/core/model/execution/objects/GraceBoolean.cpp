@@ -4,6 +4,7 @@
 //
 
 #include <core/model/evaluators/ExecutionEvaluator.h>
+#include <core/model/execution/methods/MethodFactory.h>
 #include "GraceBoolean.h"
 #include "GraceString.h"
 

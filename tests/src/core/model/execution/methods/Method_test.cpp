@@ -5,7 +5,6 @@
 
 #include <core/model/execution/methods/Method.h>
 #include <core/model/ast/NodeFactory.h>
-#include <core/model/evaluators/ExecutionEvaluator.h>
 #include <core/model/execution/objects/GraceBoolean.h>
 #include "catch.h"
 
@@ -48,7 +47,7 @@ TEST_CASE("Method", "[Methods]") {
         block->addParameter(make_node<VariableDeclaration>("zzz"));
 
         // Body ignored for prettyPrint
-        block->addStatement(make_node<NumberLiteral>(5));
+        block->addStatement(make_node<NumberLiteral>(5.0));
         Method meth(block);
         REQUIRE(meth.prettyPrint("two(_,_)things(_)", 0) == "method two(x,y)things(zzz) { }");
     }

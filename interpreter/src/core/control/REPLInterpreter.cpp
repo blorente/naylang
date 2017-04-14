@@ -6,7 +6,7 @@
 #include "REPLInterpreter.h"
 
 namespace naylang {
-void REPLInterpreter::execute(const std::__cxx11::string &line) {
+void REPLInterpreter::execute(const std::string &line) {
     eval.evaluateAST(parse(line));
     std::cout << eval.currentScope()->prettyPrint(0) << std::endl;
 }

@@ -44,3 +44,5 @@ cmake-build-debug/CMakeFiles/Makefile2
 /cmake-build-debug/antlr4cpp_generated_src/
 /cmake-build-debug/locals/
 /docs/page/_site
+/cmake-build-debugclang/
+/cmake-build-release/

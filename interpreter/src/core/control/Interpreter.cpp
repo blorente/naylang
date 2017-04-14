@@ -7,12 +7,12 @@
 
 namespace naylang {
 
-void Interpreter::printResult(const std::__cxx11::string &line) {
+void Interpreter::printResult(const std::string &line) {
     eval.evaluateAST(parse(line));
     std::cout << eval.partial()->prettyPrint(0) << std::endl;
 }
 
-GraceAST Interpreter::parse(const std::__cxx11::string &line) const {
+GraceAST Interpreter::parse(const std::string &line) const {
     ANTLRInputStream stream(line);
     GraceLexer lexer(&stream);
     CommonTokenStream tokens(&lexer);
