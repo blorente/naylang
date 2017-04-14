@@ -23,7 +23,7 @@
 #include <core/model/ast/expressions/primitives/StringLiteral.h>
 
 #include <core/model/ast/control/Return.h>
-#include <core/model/ast/ASTTreeDefinition.h>
+#include <core/model/ast/GraceAST.h>
 #include <core/model/execution/objects/GraceObject.h>
 
 namespace naylang {

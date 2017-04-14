@@ -11,7 +11,7 @@
 #include <memory>
 
 #include <core/model/ast/ASTNodeDefinitions.h>
-#include <core/model/ast/ASTTreeDefinition.h>
+#include <core/model/ast/GraceAST.h>
 #include <core/parser/NaylangParserStack.h>
 
 namespace naylang {

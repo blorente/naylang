@@ -10,7 +10,7 @@
 #include <GraceParser.h>
 
 #include <core/model/ast/ASTNodeDefinitions.h>
-#include <core/model/ast/ASTTreeDefinition.h>
+#include <core/model/ast/GraceAST.h>
 #include <core/parser/NaylangParserVisitor.h>
 
 using namespace naylang;
