@@ -26,8 +26,8 @@ public:
 private:
 
     void setCommand(const std::string &name, const std::string &body);
-
     void readCodeFile(const std::string &filename);
+    int parseInt(const std::string &raw);
 };
 }
 

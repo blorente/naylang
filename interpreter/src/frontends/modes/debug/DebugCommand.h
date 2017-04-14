@@ -18,7 +18,13 @@ public:
 class DebugRun : public DebugCommand {
 public:
     void execute(Debugger &debugger) override;
+};
 
+class DebugBreak : public DebugCommand {
+    int _line;
+public:
+    DebugBreak(int line);
+    void execute(Debugger &debugger) override;
 };
 }
 

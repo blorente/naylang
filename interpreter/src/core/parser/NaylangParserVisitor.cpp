@@ -343,7 +343,7 @@ antlrcpp::Any NaylangParserVisitor::visitProgram(GraceParser::ProgramContext *ct
     for (auto line : ctx->statement()) {
         clearPartials();
         line->accept(this);
-        _tree.push_back(popPartialStat());
+        _tree.addNode(popPartialStat());
     }
     return 0;
 }

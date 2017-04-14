@@ -20,7 +20,7 @@ ExecutionEvaluator::ExecutionEvaluator() : _currentScope{make_obj<GraceScope>()}
 
 void ExecutionEvaluator::evaluateAST(const GraceAST &ast) {
     _partial = make_obj<GraceDoneDef>();
-    for (auto inst : ast) {
+    for (auto inst : ast.nodes()) {
         inst->accept(*this);
     }
 }

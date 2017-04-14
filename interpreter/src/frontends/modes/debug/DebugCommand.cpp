@@ -9,4 +9,10 @@ namespace naylang {
 void DebugRun::execute(Debugger &debugger) {
     debugger.run();
 }
+
+DebugBreak::DebugBreak(int line) : _line{line} {}
+
+void DebugBreak::execute(Debugger &debugger) {
+    debugger.setBreakpoint(_line);
+}
 }

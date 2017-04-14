@@ -12,12 +12,15 @@ namespace naylang {
 class Debugger : public Interpreter {
 
     GraceAST _AST;
+    std::set<int> _breakpoints;
+    int _currentLine;
 
 public:
 
     Debugger(const std::string &filename);
 
     void run();
+    void setBreakpoint(int line);
 
 };
 }

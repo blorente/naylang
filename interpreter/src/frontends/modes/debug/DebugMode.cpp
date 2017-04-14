@@ -36,7 +36,13 @@ void naylang::DebugMode::readCodeFile(const std::string &filename) {
 void naylang::DebugMode::setCommand(const std::string &name, const std::string &body) {
     if (name == "run" || name == "r") {
         _command = std::make_unique<DebugRun>();
+    } else if (name == "break" || name == "b") {
+        _command = std::make_unique<DebugBreak>(parseInt(body));
     } else {
         std::cout << "Command not found, try again" << std::endl;
     }
+}
+
+int naylang::DebugMode::parseInt(const std::string &raw) {
+    return std::stoi(raw);
 }
