@@ -14,6 +14,7 @@ class Debugger : public Interpreter {
     GraceAST _AST;
     std::set<int> _breakpoints;
     int _currentLine;
+    bool _stopped;
 
 public:
 
@@ -21,7 +22,9 @@ public:
 
     void run();
     void setBreakpoint(int line);
-
+    void printEnvironment();
+    void resume();
+    void execLine();
 };
 }
 

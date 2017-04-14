@@ -13,7 +13,7 @@ namespace naylang {
 class REPLInterpreter : public Interpreter {
 
 public:
-    void execute(const std::string &line);
+    void execute(std::string line);
 };
 }
 

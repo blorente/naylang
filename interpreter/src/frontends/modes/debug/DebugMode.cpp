@@ -29,7 +29,7 @@ void naylang::DebugMode::readCodeFile(const std::string &filename) {
         _code = codeBuffer.str();
         codeFile.close();
     } else {
-        throw "Grace file could not be opened";
+        throw  "Grace file could not be opened";
     }
 }
 
@@ -38,8 +38,16 @@ void naylang::DebugMode::setCommand(const std::string &name, const std::string &
         _command = std::make_unique<DebugRun>();
     } else if (name == "break" || name == "b") {
         _command = std::make_unique<DebugBreak>(parseInt(body));
+    } else if (name == "env" || name == "e") {
+        _command = std::make_unique<DebugPrintEnv>();
+    } else if (name == "print" || name == "p") {
+        _command = std::make_unique<DebugPrintExp>(body);
+    } else if (name == "continue" || name == "c") {
+        _command = std::make_unique<DebugContinue>();
+    } else if (name == "next" || name == "n") {
+        _command = std::make_unique<DebugNext>();
     } else {
-        std::cout << "Command not found, try again" << std::endl;
+        _command = std::make_unique<DebugInvalid>();
     }
 }
 

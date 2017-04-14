@@ -7,17 +7,15 @@
 
 namespace naylang {
 
-Debugger::Debugger(const std::string &code) : _AST{parse(code)}, _currentLine{-1} {}
+Debugger::Debugger(const std::string &code) :
+        _AST{parse(code)},
+        _currentLine{1},
+        _stopped{false} {}
 
 void Debugger::run() {
     _currentLine = 1;
-    while(_breakpoints.count(_currentLine) == 0) {
-        _AST.getLine(_currentLine)->accept(eval);
-        _currentLine++;
-    }
-    if (_breakpoints.count(_currentLine) != 0) {
-        std::cout << "Breakpoint found at line " << _currentLine << ". Stopping..." << std::endl;
-    } else {
+    resume();
+    if (!_stopped) {
         std::cout << "Process finished. Resulting environment: " << std::endl;
         std::cout << eval.currentScope()->prettyPrint(0) << std::endl;
     }
@@ -28,4 +26,26 @@ void Debugger::setBreakpoint(int line) {
     std::cout << "Breakpoint set at line " << line << std::endl;
 }
 
+void Debugger::printEnvironment() {
+    std::cout << "Current environment: " << std::endl;
+    std::cout << eval.currentScope()->prettyPrint(0) << std::endl;
+}
+
+void Debugger::resume() {
+    // Execute breakpoint line
+    if (_stopped) { execLine(); }
+    _stopped = false;
+    while(!_stopped && _currentLine < _AST.lastLine()) {
+        execLine();
+    }
+}
+
+void Debugger::execLine() {
+    _AST.getNodeAt(_currentLine)->accept(eval);
+    _currentLine = _AST.getNextLine(_currentLine);
+    if (_breakpoints.count(_currentLine) != 0) {
+        std::cout << "Breakpoint found at line " << _currentLine << ". Stopping..." << std::endl;
+        _stopped = true;
+    }
+}
 }

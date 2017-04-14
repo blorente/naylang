@@ -25,6 +25,18 @@ void ExecutionEvaluator::evaluateAST(const GraceAST &ast) {
     }
 }
 
+
+GraceObjectPtr ExecutionEvaluator::evaluateSandbox(const GraceAST &ast) {
+    auto oldPart = _partial;
+    _partial = make_obj<GraceDoneDef>();
+    for (auto inst : ast.nodes()) {
+        inst->accept(*this);
+    }
+    auto res = _partial;
+    _partial = oldPart;
+    return res;
+}
+
 void ExecutionEvaluator::evaluate(BooleanLiteral &expression) {
     _partial = make_obj<GraceBoolean>(expression.value());
 }

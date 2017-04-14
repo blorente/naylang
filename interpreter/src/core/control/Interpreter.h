@@ -19,10 +19,11 @@ protected:
     ExecutionEvaluator eval;
 
 public:
-    void printResult(const std::string &line);
+    void printResult(std::string line);
 
 protected:
     GraceAST parse(const std::string &line) const;
+    void colonize(std::string &line);
 };
 
 }

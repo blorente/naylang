@@ -7,9 +7,10 @@
 
 namespace naylang {
 
-void Interpreter::printResult(const std::string &line) {
-    eval.evaluateAST(parse(line));
-    std::cout << eval.partial()->prettyPrint(0) << std::endl;
+void Interpreter::printResult(std::string line) {
+    colonize(line);
+    auto res = eval.evaluateSandbox(parse(line));
+    std::cout << res->prettyPrint(0) << std::endl;
 }
 
 GraceAST Interpreter::parse(const std::string &line) const {
@@ -20,5 +21,11 @@ GraceAST Interpreter::parse(const std::string &line) const {
     NaylangParserVisitor parserVisitor;
     parserVisitor.visit(parser.program());
     return parserVisitor.AST();
+}
+
+void Interpreter::colonize(std::string &line) {
+    if (line.at(line.length() - 1) != ';') {
+        line.append(";");
+    }
 }
 }

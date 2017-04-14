@@ -26,6 +26,33 @@ public:
     DebugBreak(int line);
     void execute(Debugger &debugger) override;
 };
+
+class DebugPrintEnv : public DebugCommand {
+public:
+    void execute(Debugger &debugger) override;
+};
+
+class DebugPrintExp : public DebugCommand {
+    std::string _code;
+public:
+    DebugPrintExp(const std::string &code);
+    void execute(Debugger &debugger) override;
+};
+
+class DebugContinue : public DebugCommand {
+public:
+    void execute(Debugger &debugger) override;
+};
+
+class DebugInvalid : public DebugCommand {
+public:
+    void execute(Debugger &debugger) override;
+};
+
+class DebugNext : public DebugCommand {
+public:
+    void execute(Debugger &debugger) override;
+};
 }
 
 #endif //NAYLANG_DEBUGCOMMAND_H

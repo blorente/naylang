@@ -18,13 +18,14 @@ public:
         return _nodes[index];
     }
 
-    StatementPtr getLine(int line) {
-        int stat = 0;
-        while (stat < _nodes.size()
-               && _nodes[stat]->line() < line) {
-            stat++;
-        }
-        return _nodes[stat];
+    StatementPtr getNodeAt(int line) const {
+        int index = getNodeIndexFromLine(line);
+        return _nodes[index];
+    }
+
+    int getNextLine(int cur) const {
+        int curIndex = getNodeIndexFromLine(cur);
+        return _nodes[curIndex + 1]->line();
     }
 
     void addNode(StatementPtr node) {
@@ -33,6 +34,21 @@ public:
 
     const std::vector<StatementPtr> &nodes() const {
         return _nodes;
+    }
+
+    int lastLine() const {
+        return _nodes.back()->line();
+    }
+
+private:
+
+    int getNodeIndexFromLine(int line) const {
+        int index = 0;
+        while (index < _nodes.size()
+               && _nodes[index]->line() != line) {
+            index++;
+        }
+        return index;
     }
 };
 }

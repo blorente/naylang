@@ -44,6 +44,7 @@ public:
     void restoreScope();
     void setScope(GraceObjectPtr scope);
     void evaluateAST(const GraceAST &ast);
+    GraceObjectPtr evaluateSandbox(const GraceAST &ast);
 
     virtual void evaluate(BooleanLiteral &expression) override;
     virtual void evaluate(NumberLiteral &expression) override;
