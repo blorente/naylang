@@ -23,4 +23,11 @@ TEST_CASE("Statements", "[AST]") {
         REQUIRE(node->line() == -1);
         REQUIRE(node->col() == -1);
     }
+
+    SECTION("A Statement can be stoppable") {
+        StatementPtr node = make_node<NumberLiteral>(0.0);
+        REQUIRE(!node->stoppable());
+        node->makeStoppable();
+        REQUIRE(node->stoppable());
+    }
 }

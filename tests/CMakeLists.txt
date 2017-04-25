@@ -20,6 +20,8 @@ FILE(GLOB_RECURSE MODEL_SOURCES ../interpreter/src/core/model/*.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} ${MODEL_SOURCES})
 FILE(GLOB_RECURSE PARSER_SOURCES ../interpreter/src/core/parser/*.cpp)
 set(SOURCE_FILES ${SOURCE_FILES} ${PARSER_SOURCES})
+FILE(GLOB_RECURSE CONTROL_SOURCES ../interpreter/src/core/control/*.cpp)
+set(SOURCE_FILES ${SOURCE_FILES} ${CONTROL_SOURCES})
 
 add_executable(tests ${SOURCE_FILES} ${antlr4cpp_src_files_naylang})
 add_dependencies(tests antlr4cpp antlr4cpp_generation_naylang)

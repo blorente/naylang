@@ -21,16 +21,19 @@ protected:
 
     int _line;
     int _col;
+    bool _stoppable;
 
 public:
 
-    Statement() : _line{-1}, _col{-1} {}
-    Statement(int line, int col) : _line{line}, _col{col} {}
+    Statement() : _line{-1}, _col{-1}, _stoppable{false} {}
+    Statement(int line, int col) : _line{line}, _col{col}, _stoppable{false} {}
 
     virtual void accept(Evaluator &evaluator) = 0;
 
     int line() {return _line;}
     int col() {return _col;}
+    bool stoppable() {return _stoppable;}
+    void makeStoppable() {_stoppable = true;}
 };
 
 }

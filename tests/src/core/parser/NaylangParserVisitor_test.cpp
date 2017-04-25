@@ -268,6 +268,44 @@ TEST_CASE("Code Coordinates", "[Naylang Parser Visitor]") {
     }
 }
 
+TEST_CASE("Stoppable nodes", "[Naylang Parser Visitor]") {
+    SECTION("Variable Declarations are stoppable") {
+        auto AST = translate("var x := 4;\n");
+        auto x = static_cast<VariableDeclaration &>(*(AST[0]));
+        REQUIRE(x.stoppable());
+    }
+
+    SECTION("Constant Declarations are stoppable") {
+        auto AST = translate("def x = 4;\n");
+        auto x = static_cast<ConstantDeclaration &>(*(AST[0]));
+        REQUIRE(x.stoppable());
+    }
+
+    SECTION("Every line inside a MethodDeclaration is stoppable") {
+        auto AST = translate("method twice(n,m) { var x := 4; x * m; }\n");
+        auto meth = static_cast<MethodDeclaration &>(*(AST[0]));
+        for (auto line : meth.body()) {
+            REQUIRE(line->stoppable());
+        }
+    }
+
+    SECTION("Every line inside a Prefix method is stoppable") {
+        auto AST = translate("method prefix! { var x := 4; var m := -1; x * m; }\n");
+        auto meth = static_cast<MethodDeclaration &>(*(AST[0]));
+        for (auto line : meth.body()) {
+            REQUIRE(line->stoppable());
+        }
+    }
+
+    SECTION("Every line inside a Block is stoppable") {
+        auto AST = translate("{ x, m -> var x := 4; x * m; };\n");
+        auto block = static_cast<Block &>(*(AST[0]));
+        for (auto line : block.body()) {
+            REQUIRE(line->stoppable());
+        }
+    }
+}
+
 GraceAST translate(std::string line) {
     ANTLRInputStream stream(line);
     GraceLexer lexer(&stream);

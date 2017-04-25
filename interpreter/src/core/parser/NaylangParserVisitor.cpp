@@ -125,7 +125,9 @@ antlrcpp::Any NaylangParserVisitor::visitConstantDeclaration(GraceParser::Consta
     auto name = popPartialStr();
     ctx->expression()->accept(this);
     auto value = popPartialExp();
-    pushPartialDecl(make_node<ConstantDeclaration>(name, value, getLine(ctx), getCol(ctx)));
+    auto decl = make_node<ConstantDeclaration>(name, value, getLine(ctx), getCol(ctx));
+    decl->makeStoppable();
+    pushPartialDecl(decl);
     return 0;
 }
 
@@ -139,7 +141,9 @@ antlrcpp::Any NaylangParserVisitor::visitVariableDeclaration(GraceParser::Variab
     auto name = popPartialStr();
     ctx->expression()->accept(this);
     auto value = popPartialExp();
-    pushPartialDecl(make_node<VariableDeclaration>(name, value, getLine(ctx), getCol(ctx)));
+    auto decl = make_node<VariableDeclaration>(name, value, getLine(ctx), getCol(ctx));
+    decl->makeStoppable();
+    pushPartialDecl(decl);
     return 0;
 }
 
@@ -160,6 +164,9 @@ antlrcpp::Any NaylangParserVisitor::visitUserMethod(GraceParser::UserMethodConte
     ctx->methodBody()->accept(this);
     int bodyLength = ctx->methodBody()->methodBodyLine().size();
     auto body = popPartialStats(bodyLength);
+    for (auto node : body) {
+        node->makeStoppable();
+    }
 
     auto methodDeclaration = make_node<MethodDeclaration>(methodName, formalParams, body, getLine(ctx), getCol(ctx));
     pushPartialDecl(methodDeclaration);
@@ -219,6 +226,7 @@ antlrcpp::Any NaylangParserVisitor::visitPrefixMethod(GraceParser::PrefixMethodC
     ctx->methodBody()->accept(this);
     int bodyLength = ctx->methodBody()->methodBodyLine().size();
     for (auto line : popPartialStats(bodyLength)) {
+        line->makeStoppable();
         body.push_back(line);
     }
 
@@ -315,7 +323,9 @@ antlrcpp::Any NaylangParserVisitor::visitBlock(GraceParser::BlockContext *ctx) {
 
     for (auto line : ctx->methodBodyLine()) {
         line->accept(this);
-        block->addStatement(popPartialStat());
+        auto node = popPartialStat();
+        node->makeStoppable();
+        block->addStatement(node);
     }
 
     std::vector<DeclarationPtr> params;
