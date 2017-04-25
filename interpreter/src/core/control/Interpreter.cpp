@@ -9,7 +9,7 @@ namespace naylang {
 
 void Interpreter::printResult(std::string line) {
     colonize(line);
-    auto res = eval.evaluateSandbox(parse(line));
+    auto res = _eval->evaluateSandbox(parse(line));
     std::cout << res->prettyPrint(0) << std::endl;
 }
 

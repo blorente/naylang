@@ -25,6 +25,8 @@ public:
     void printEnvironment();
     void resume();
     void execLine();
+
+    bool needsToStop(Statement *node);
 };
 }
 

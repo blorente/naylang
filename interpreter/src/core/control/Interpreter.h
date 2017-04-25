@@ -16,9 +16,10 @@ using namespace antlr4::tree;
 namespace naylang {
 class Interpreter {
 protected:
-    ExecutionEvaluator eval;
+    std::unique_ptr<ExecutionEvaluator> _eval;
 
 public:
+    Interpreter(std::unique_ptr<ExecutionEvaluator> eval) : _eval{std::move(eval)} {}
     void printResult(std::string line);
 
 protected:
