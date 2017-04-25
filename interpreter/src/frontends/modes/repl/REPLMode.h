@@ -10,6 +10,7 @@
 #include <core/control/REPLInterpreter.h>
 #include <frontends/modes/repl/REPLCommand.h>
 #include <frontends/modes/ConsoleExecutionMode.h>
+#include <frontends/ConsoleFrontend.h>
 
 namespace naylang {
 class REPLMode : public ConsoleExecutionMode {
@@ -21,7 +22,7 @@ class REPLMode : public ConsoleExecutionMode {
 
 public:
 
-    REPLMode();
+    REPLMode(ConsoleFrontend *frontend);
     void runCommand(const std::string &name, const std::string &body) override;
     void prompt() override;
 };

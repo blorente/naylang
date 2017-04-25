@@ -35,6 +35,10 @@ void DebugInvalid::execute(Debugger &debugger) {
 }
 
 void DebugNext::execute(Debugger &debugger) {
-    debugger.execLine();
+    debugger.step();
+}
+
+void DebugSkip::execute(Debugger &debugger) {
+    debugger.skip();
 }
 }

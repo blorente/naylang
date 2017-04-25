@@ -10,6 +10,7 @@
 #include <core/control/Debugger.h>
 
 namespace naylang {
+class Debugger;
 class DebugCommand {
 public:
     virtual void execute(Debugger &debugger) = 0;
@@ -50,6 +51,11 @@ public:
 };
 
 class DebugNext : public DebugCommand {
+public:
+    void execute(Debugger &debugger) override;
+};
+
+class DebugSkip : public DebugCommand {
 public:
     void execute(Debugger &debugger) override;
 };

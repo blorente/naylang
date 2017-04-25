@@ -9,19 +9,21 @@
 namespace naylang {
 
 ConsoleFrontend::ConsoleFrontend() :
-        _mode{std::move(std::make_unique<REPLMode>())},
+        _mode{std::move(std::make_unique<REPLMode>(this))},
         _quit{false} {}
 
 void ConsoleFrontend::run() {
     std::string line;
     while (!_quit) {
-        _mode->prompt();
-        getline(std::cin, line);
-        auto commandName = getCommandName(line);
-        auto commandBody = getCommandBody(line);
-        if (!handleMetaCommand(commandName, commandBody)) {
-            _mode->runCommand(commandName, commandBody);
-        }
+        promptAndRun();
+    }
+}
+
+void ConsoleFrontend::promptAndRun() {
+    _mode->prompt();
+    FrontendCommand command = _mode->getNextCommand();
+    if (!handleMetaCommand(command.name, command.body)) {
+        _mode->runCommand(command.name, command.body);
     }
 }
 
@@ -31,24 +33,12 @@ bool ConsoleFrontend::handleMetaCommand(const std::string &name, const std::stri
         _quit = true;
         handled = true;
     } else if (name == "debug") {
-        _mode = std::make_unique<DebugMode>(body);
+        _mode = std::make_unique<DebugMode>(this, body);
         handled = true;
     } else if (name == "interactive" || name == "repl") {
-        _mode = std::make_unique<REPLMode>();
+        _mode = std::make_unique<REPLMode>(this);
         handled = true;
     }
     return handled;
-}
-
-std::string ConsoleFrontend::getCommandName(const std::string &line) const {
-    return line.substr(0, line.find(" "));
-}
-
-std::string ConsoleFrontend::getCommandBody(const std::string &line) const {
-    if (line.find(" ") != -1) {
-        return std::regex_replace(line.substr(line.find(" ")), std::regex("^ +"), "");
-    } else {
-        return "";
-    }
 }
 }

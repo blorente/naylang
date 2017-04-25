@@ -8,16 +8,18 @@
 
 namespace naylang {
 
-Debugger::Debugger(const std::string &code) :
+Debugger::Debugger(DebugMode *mode, const std::string &code) :
         Interpreter(std::make_unique<DebuggerEvaluator>(this)),
+        _frontend{mode},
         _AST{parse(code)},
         _currentLine{1},
-        _stopped{false} {}
+        _paused{true},
+        _finished{false} {}
 
 void Debugger::run() {
     _currentLine = 1;
     resume();
-    if (!_stopped) {
+    if (!_paused) {
         std::cout << "Process finished. Resulting environment: " << std::endl;
         std::cout << _eval->currentScope()->prettyPrint(0) << std::endl;
     }
@@ -35,24 +37,54 @@ void Debugger::printEnvironment() {
 
 void Debugger::resume() {
     // Execute breakpoint line
-    if (_stopped) { execLine(); }
-    _stopped = false;
-    while(!_stopped && _currentLine < _AST.lastLine()) {
+    bool wasPaused = _paused;
+    _paused = false;
+    if (wasPaused) { execLine(); }
+    while(!_paused && _currentLine < _AST.lastLine()) {
         execLine();
     }
 }
 
-void Debugger::execLine() {
-    _AST.getNodeAt(_currentLine)->accept(*_eval);
-    _currentLine = _AST.getNextLine(_currentLine);
-    if (_breakpoints.count(_currentLine) != 0) {
-        std::cout << "Breakpoint found at line " << _currentLine << ". Stopping..." << std::endl;
-        _stopped = true;
+void Debugger::debug(Statement *node) {
+    if (!node->stoppable())
+        return;
+
+    if (_breakpoints.count(node->line()) != 0) {
+        pause(node);
     }
 }
 
-bool Debugger::needsToStop(Statement *node) {
-    std::cout << "Execution paused at line " << node->line() << ":" << node->col() << std::endl;
-    return node->stoppable() && _stopped;
+void Debugger::step() {
+    assert(_paused);
+    if (_currentLine >= _AST.lastLine()) {
+        finish();
+    } else {
+        execLine();
+    }
+}
+
+void Debugger::skip() {
+    assert(_paused);
+    std::cout << "Skip not yet implemented" << std::endl;
+}
+
+void Debugger::pause(Statement *node) {
+    // We notify the pause
+    std::cout << "Debugger paused at " << node->line() << ":" << node->col() << std::endl;
+    // Wait for commands?
+    _paused = true;
+    _frontend->executeNextCommand();
+}
+
+void Debugger::execLine() {
+    Statement *curNode = _AST.getNodeAt(_currentLine).get();
+    curNode->accept(*_eval);
+    _currentLine = _AST.getNextLine(_currentLine);
+}
+
+void Debugger::finish() {
+    _finished = true;
+    std::cout << "Process finished. Resulting environment: " << std::endl;
+    std::cout << _eval->currentScope()->prettyPrint(0) << std::endl;
 }
 }

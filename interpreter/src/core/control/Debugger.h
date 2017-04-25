@@ -6,27 +6,38 @@
 #ifndef NAYLANG_DEBUGGER_H
 #define NAYLANG_DEBUGGER_H
 
+#include <frontends/modes/debug/DebugMode.h>
 #include "Interpreter.h"
 
 namespace naylang {
+class DebugMode;
 class Debugger : public Interpreter {
 
     GraceAST _AST;
     std::set<int> _breakpoints;
     int _currentLine;
-    bool _stopped;
+    bool _paused;
+    bool _finished;
+    DebugMode *_frontend;
 
 public:
 
-    Debugger(const std::string &filename);
+    Debugger(DebugMode *frontend, const std::string &filename);
 
     void run();
     void setBreakpoint(int line);
     void printEnvironment();
     void resume();
-    void execLine();
+    void step();
+    void skip();
 
-    bool needsToStop(Statement *node);
+    void debug(Statement *node);
+
+private:
+
+    void pause(Statement *node);
+    void finish();
+    void execLine();
 };
 }
 

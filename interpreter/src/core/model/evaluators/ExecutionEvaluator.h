@@ -9,20 +9,7 @@
 #include <stack>
 #include <core/model/evaluators/Evaluator.h>
 
-#include <core/model/ast/declarations/ConstantDeclaration.h>
-#include <core/model/ast/declarations/MethodDeclaration.h>
-
-#include <core/model/ast/expressions/Block.h>
-#include <core/model/ast/expressions/ObjectConstructor.h>
-
-#include <core/model/ast/expressions/requests/ImplicitRequestNode.h>
-#include <core/model/ast/expressions/requests/ExplicitRequestNode.h>
-
-#include <core/model/ast/expressions/primitives/BooleanLiteral.h>
-#include <core/model/ast/expressions/primitives/NumberLiteral.h>
-#include <core/model/ast/expressions/primitives/StringLiteral.h>
-
-#include <core/model/ast/control/Return.h>
+#include <core/model/ast/ASTNodeDefinitions.h>
 #include <core/model/ast/GraceAST.h>
 #include <core/model/execution/objects/GraceObject.h>
 

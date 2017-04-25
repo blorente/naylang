@@ -9,16 +9,19 @@
 #include <frontends/modes/ConsoleExecutionMode.h>
 #include <core/control/Interpreter.h>
 #include <core/control/Debugger.h>
+#include <frontends/ConsoleFrontend.h>
 #include "DebugCommand.h"
 
 namespace naylang {
+class Debugger;
+class DebugCommand;
 class DebugMode : public ConsoleExecutionMode {
     std::string _code;
     std::unique_ptr<Debugger> _debugger;
     std::unique_ptr<DebugCommand> _command;
 
 public:
-    DebugMode(const std::string &filename);
+    DebugMode(ConsoleFrontend *frontend, const std::string &filename);
 
     void prompt() override;
     void runCommand(const std::string &name, const std::string &body) override;

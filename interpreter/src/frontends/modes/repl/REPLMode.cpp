@@ -6,7 +6,8 @@
 #include "REPLMode.h"
 
 namespace naylang {
-REPLMode::REPLMode() :
+REPLMode::REPLMode(ConsoleFrontend *frontend) :
+        ConsoleExecutionMode(frontend),
         _interpreter{std::move(std::make_unique<REPLInterpreter>())} {}
 
 void REPLMode::runCommand(const std::string &name, const std::string &body) {
