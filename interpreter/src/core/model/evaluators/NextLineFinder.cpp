@@ -3,42 +3,39 @@
 // Distributed under the GPLv3 license.
 //
 
-
-
-
 #include "NextLineFinder.h"
 
 namespace naylang {
 
 void NextLineFinder::evaluate(NumberLiteral &expression) {
-    _nextLine = _curLine + 1;
+    _nextLine = expression.lastLine() + 1;
 }
 
 void NextLineFinder::evaluate(BooleanLiteral &expression) {
-    _nextLine = _curLine + 1;
+    _nextLine = expression.lastLine() + 1;
 }
 
 void NextLineFinder::evaluate(CharLiteral &expression) {
-    _nextLine = _curLine + 1;
+    _nextLine = expression.lastLine() + 1;
 }
 
 void NextLineFinder::evaluate(StringLiteral &expression) {
-    _nextLine = _curLine + 1;
+    _nextLine = expression.lastLine() + 1;
 }
 
 void NextLineFinder::evaluate(ImplicitRequestNode &expression) {
-    _nextLine = _curLine + 1;
+    _nextLine = expression.lastLine() + 1;
 }
 
 void NextLineFinder::evaluate(ExplicitRequestNode &expression) {
-    _nextLine = _curLine + 1;
+    _nextLine = expression.lastLine() + 1;
 }
 
 void NextLineFinder::evaluate(Block &expression) {
     if (_stepIn) {
         _nextLine = expression.body().front()->line();
     } else {
-        _nextLine = expression.body().back()->line() + 1;
+        _nextLine = expression.lastLine() + 1;
     }
 }
 
@@ -50,7 +47,7 @@ void NextLineFinder::evaluate(ObjectConstructor &expression) {
     if (_stepIn) {
         _nextLine = expression.statements().front()->line();
     } else {
-        _nextLine = expression.statements().back()->line() + 1;
+        _nextLine = expression.lastLine() + 1;
     }
 }
 
@@ -70,7 +67,7 @@ void NextLineFinder::evaluate(MethodDeclaration &expression) {
     if (_stepIn) {
         _nextLine = expression.body().front()->line();
     } else {
-        _nextLine = expression.body().back()->line() + 1;
+        _nextLine = expression.lastLine() + 1;
     }
 }
 

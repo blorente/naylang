@@ -20,6 +20,8 @@ public:
 
     virtual void accept(Evaluator &evaluator);
 
+    void setLastLine(int line) override;
+
     const std::vector<StatementPtr> &statements() const;
 };
 } // end namespace naylang

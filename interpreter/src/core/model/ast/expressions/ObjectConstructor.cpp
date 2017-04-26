@@ -23,4 +23,9 @@ void ObjectConstructor::accept(Evaluator &evaluator) {
 const std::vector<StatementPtr> &ObjectConstructor::statements() const {
     return _statements;
 }
+
+void ObjectConstructor::setLastLine(int line) {
+    Statement::setLastLine(line);
+    _statements.back()->setLastLine(line);
+}
 }

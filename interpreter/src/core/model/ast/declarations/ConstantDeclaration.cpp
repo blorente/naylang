@@ -25,4 +25,9 @@ ExpressionPtr ConstantDeclaration::value() const {
     return _value;
 }
 
+void ConstantDeclaration::setLastLine(int line) {
+    Statement::setLastLine(line);
+    _value->setLastLine(line);
+}
+
 }

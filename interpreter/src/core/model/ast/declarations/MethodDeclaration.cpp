@@ -30,4 +30,9 @@ const std::vector<StatementPtr> & MethodDeclaration::body() const {
 const std::vector<DeclarationPtr> &MethodDeclaration::params() const {
     return _params;
 }
+
+void MethodDeclaration::setLastLine(int line) {
+    Statement::setLastLine(line);
+    _body.back()->setLastLine(line);
+}
 }

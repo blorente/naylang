@@ -37,7 +37,7 @@ public:
     bool stoppable() {return _stoppable;}
     void makeStoppable() {_stoppable = true;}
 
-    void setLastLine(int line) {_nextLine = line;}
+    virtual void setLastLine(int line) {_nextLine = line;}
     int lastLine() const {return _nextLine;}
 };
 
