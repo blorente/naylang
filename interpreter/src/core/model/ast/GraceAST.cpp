@@ -45,7 +45,7 @@ void GraceAST::addLineLink(StatementPtr node) {
 int GraceAST::getNextLine(int curLine, bool stepIn) {
     auto curNode = _nodeLinks[curLine];
     NextLineFinder eval;
-    return eval.getNextLine(curNode, stepIn);
+    return eval.getNextLine(curNode.get(), stepIn);
 }
 }
 

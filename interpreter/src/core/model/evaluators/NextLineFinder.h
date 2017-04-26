@@ -19,7 +19,7 @@ class NextLineFinder : public Evaluator {
 
 public:
 
-    int getNextLine(StatementPtr curNode, bool stepIn);
+    int getNextLine(Statement *curNode, bool stepIn);
 
     void evaluate(NumberLiteral &expression) override;
     void evaluate(BooleanLiteral &expression) override;

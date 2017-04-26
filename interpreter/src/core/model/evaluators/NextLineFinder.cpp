@@ -36,9 +36,9 @@ void NextLineFinder::evaluate(ExplicitRequestNode &expression) {
 
 void NextLineFinder::evaluate(Block &expression) {
     if (_stepIn) {
-        _nextLine = expression.body()[0]->line();
+        _nextLine = expression.body().front()->line();
     } else {
-        _nextLine = expression.nextLine();
+        _nextLine = expression.body().back()->line() + 1;
     }
 }
 
@@ -48,9 +48,9 @@ void NextLineFinder::evaluate(Lineup &expression) {
 
 void NextLineFinder::evaluate(ObjectConstructor &expression) {
     if (_stepIn) {
-        _nextLine = expression.statements()[0]->line();
+        _nextLine = expression.statements().front()->line();
     } else {
-        _nextLine = expression.nextLine();
+        _nextLine = expression.statements().back()->line() + 1;
     }
 }
 
@@ -68,9 +68,9 @@ void NextLineFinder::evaluate(VariableDeclaration &expression) {
 
 void NextLineFinder::evaluate(MethodDeclaration &expression) {
     if (_stepIn) {
-        _nextLine = expression.body()[0]->line();
+        _nextLine = expression.body().front()->line();
     } else {
-        _nextLine = expression.nextLine();
+        _nextLine = expression.body().back()->line() + 1;
     }
 }
 
@@ -90,7 +90,7 @@ void NextLineFinder::evaluate(Return &expression) {
     throw "Unimplemented NextLineFinder evaluation";
 }
 
-int NextLineFinder::getNextLine(StatementPtr curNode, bool stepIn) {
+int NextLineFinder::getNextLine(Statement *curNode, bool stepIn) {
     _curLine = curNode->line();
     _nextLine = _curLine;
     _stepIn = stepIn;
