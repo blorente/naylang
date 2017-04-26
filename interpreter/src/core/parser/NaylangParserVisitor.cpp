@@ -121,11 +121,14 @@ antlrcpp::Any NaylangParserVisitor::visitBoolean(GraceParser::BooleanContext *ct
 }
 
 antlrcpp::Any NaylangParserVisitor::visitConstantDeclaration(GraceParser::ConstantDeclarationContext *ctx) {
+    int lastLine = getLine(ctx->DELIMITER());
     ctx->identifier()->accept(this);
     auto name = popPartialStr();
     ctx->expression()->accept(this);
     auto value = popPartialExp();
+    value->setLastLine(lastLine);
     auto decl = make_node<ConstantDeclaration>(name, value, getLine(ctx), getCol(ctx));
+    decl->setLastLine(lastLine);
     notifyBreakable(decl);
     pushPartialDecl(decl);
     return 0;
@@ -137,11 +140,14 @@ antlrcpp::Any NaylangParserVisitor::visitIdentifier(GraceParser::IdentifierConte
 }
 
 antlrcpp::Any NaylangParserVisitor::visitVariableDeclaration(GraceParser::VariableDeclarationContext *ctx) {
+    int lastLine = getLine(ctx->DELIMITER());
     ctx->identifier()->accept(this);
     auto name = popPartialStr();
     ctx->expression()->accept(this);
     auto value = popPartialExp();
+    value->setLastLine(lastLine);
     auto decl = make_node<VariableDeclaration>(name, value, getLine(ctx), getCol(ctx));
+    decl->setLastLine(lastLine);
     notifyBreakable(decl);
     pushPartialDecl(decl);
     return 0;
@@ -371,5 +377,9 @@ int NaylangParserVisitor::getCol(const antlr4::ParserRuleContext *ctx) const {
 
 int NaylangParserVisitor::getLine(const antlr4::ParserRuleContext *ctx) const {
     return ctx->start->getLine();
+}
+
+int NaylangParserVisitor::getLine(antlr4::tree::TerminalNode *terminal) const {
+    return terminal->getSymbol()->getLine();
 }
 }

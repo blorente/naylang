@@ -31,10 +31,10 @@ TEST_CASE("Statements", "[AST]") {
         REQUIRE(node->stoppable());
     }
 
-    SECTION("A Statement has the line number of the next breakable node") {
+    SECTION("A Statement has the line number of the last line") {
         StatementPtr node = make_node<NumberLiteral>(0.0);
         REQUIRE(!node->stoppable());
-        node->setNextLine(1337);
-        REQUIRE(node->nextLine() == 1337);
+        node->setLastLine(1337);
+        REQUIRE(node->lastLine() == 1337);
     }
 }

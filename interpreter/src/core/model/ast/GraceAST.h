@@ -14,7 +14,6 @@ class GraceAST {
     std::vector<StatementPtr> _nodes;
     std::map<int, StatementPtr> _nodeLinks;
     int _lastLine = 0;
-    StatementPtr _lastAdded = nullptr;
 
 public:
 

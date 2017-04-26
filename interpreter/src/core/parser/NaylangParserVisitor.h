@@ -89,6 +89,7 @@ private:
     antlrcpp::Any defaultResult() override;
 
     int getLine(const antlr4::ParserRuleContext *ctx) const;
+    int getLine(antlr4::tree::TerminalNode *terminal) const;
     int getCol(const antlr4::ParserRuleContext *ctx) const;
 
     void notifyBreakable(StatementPtr node);

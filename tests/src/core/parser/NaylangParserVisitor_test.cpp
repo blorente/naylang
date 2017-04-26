@@ -304,6 +304,18 @@ TEST_CASE("Stoppable nodes", "[Naylang Parser Visitor]") {
             REQUIRE(line->stoppable());
         }
     }
+
+    SECTION("Every stoppable node has a lastLine") {
+        auto AST = translate("def obj = object {\ndef v1 = 1;\nvar v2 := 2;\n};");
+        auto decl = static_cast<ConstantDeclaration &>(*(AST[0]));
+        auto obj = static_cast<ObjectConstructor &>(*(decl.value()));
+        REQUIRE(decl.line() == 1);
+        REQUIRE(obj.statements()[0]->line() == 2);
+        REQUIRE(obj.statements()[0]->lastLine() == 2);
+        REQUIRE(obj.statements()[1]->line() == 3);
+        REQUIRE(obj.statements()[1]->lastLine() == 3);
+        REQUIRE(decl.lastLine() == 4);
+    }
 }
 
 GraceAST translate(std::string line) {

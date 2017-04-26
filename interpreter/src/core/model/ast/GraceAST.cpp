@@ -35,10 +35,6 @@ void GraceAST::addLineLink(StatementPtr node) {
     if (_nodeLinks.count(node->line()) == 0) {
         _nodeLinks[node->line()] = node;
         _lastLine = node->line() > _lastLine ? node->line() : _lastLine;
-        if (_lastAdded != nullptr) {
-            _lastAdded->setNextLine(node->line());
-        }
-        _lastAdded = node;
     }
 }
 
