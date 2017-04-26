@@ -14,7 +14,8 @@ Debugger::Debugger(DebugMode *mode, const std::string &code) :
         _AST{parse(code)},
         _currentLine{1},
         _paused{true},
-        _finished{false} {}
+        _finished{false},
+        _lastPause{-1}{}
 
 void Debugger::run() {
     _currentLine = 1;
@@ -44,13 +45,18 @@ void Debugger::resume() {
     }
 }
 
-void Debugger::debug(Statement *node) {
+bool Debugger::debug(Statement *node) {
     if (!node->stoppable())
-        return;
+        return false;
 
-    if (_breakpoints.count(node->line()) != 0) {
-        pause(node);
-    }
+    if (_breakpoints.count(node->line()) == 0)
+        return false;
+
+    if (node->line() == _lastPause)
+        return false;
+
+    pause(node);
+    return true;
 }
 
 void Debugger::step() {
@@ -72,6 +78,7 @@ void Debugger::pause(Statement *node) {
     std::cout << "Debugger paused at " << node->line() << ":" << node->col() << std::endl;
     // Wait for commands?
     _paused = true;
+    _lastPause = node->line();
     _currentLine = node->line();
     _frontend->executeNextCommand();
 }
@@ -84,6 +91,7 @@ void Debugger::execLine() {
 
 void Debugger::finish() {
     _finished = true;
+    _lastPause = -1;
     std::cout << "Process finished. Resulting environment: " << std::endl;
     std::cout << _eval->currentScope()->prettyPrint(0) << std::endl;
 }

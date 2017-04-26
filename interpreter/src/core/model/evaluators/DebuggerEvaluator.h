@@ -33,7 +33,7 @@ public:
 
 private:
 
-    void debug(Statement *node);
+    bool debug(Statement *node);
 };
 } // end namespace naylang
 

@@ -19,6 +19,7 @@ class Debugger : public Interpreter {
     bool _paused;
     bool _finished;
     DebugMode *_frontend;
+    int _lastPause;
 
 public:
 
@@ -31,7 +32,7 @@ public:
     void step();
     void skip();
 
-    void debug(Statement *node);
+    bool debug(Statement *node);
 
 private:
 
