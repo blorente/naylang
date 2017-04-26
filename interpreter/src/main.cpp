@@ -10,7 +10,11 @@ using namespace naylang;
 
 int main() {
     ConsoleFrontend frontend;
-    frontend.run();
+    try {
+        frontend.run();
+    } catch (std::string msg){
+        std::cerr << msg << std::endl;
+    }
     return 0;
 }
 

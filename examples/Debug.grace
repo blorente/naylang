@@ -1,7 +1,7 @@
-def x = 4;
+def out1 = 4;
 def obj = object {
-  var y := 3;
-  var z := 5;
-  var zz := 8;
-};
-def w = 6;
+  var in1 := 3;
+  var in2 := 5;
+  var in3 := 8;};
+def out2 = 6;
+def out3 = 6;

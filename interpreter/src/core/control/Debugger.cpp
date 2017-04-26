@@ -20,8 +20,7 @@ void Debugger::run() {
     _currentLine = 1;
     resume();
     if (!_paused) {
-        std::cout << "Process finished. Resulting environment: " << std::endl;
-        std::cout << _eval->currentScope()->prettyPrint(0) << std::endl;
+        finish();
     }
 }
 
@@ -40,7 +39,7 @@ void Debugger::resume() {
     bool wasPaused = _paused;
     _paused = false;
     if (wasPaused) { execLine(); }
-    while(!_paused && _currentLine < _AST.lastLine()) {
+    while(!_paused && _currentLine <= _AST.lastLine()) {
         execLine();
     }
 }
@@ -56,7 +55,7 @@ void Debugger::debug(Statement *node) {
 
 void Debugger::step() {
     assert(_paused);
-    if (_currentLine >= _AST.lastLine()) {
+    if (_currentLine > _AST.lastLine()) {
         finish();
     } else {
         execLine();
@@ -73,13 +72,14 @@ void Debugger::pause(Statement *node) {
     std::cout << "Debugger paused at " << node->line() << ":" << node->col() << std::endl;
     // Wait for commands?
     _paused = true;
+    _currentLine = node->line();
     _frontend->executeNextCommand();
 }
 
 void Debugger::execLine() {
     Statement *curNode = _AST.getNodeAt(_currentLine).get();
     curNode->accept(*_eval);
-    _currentLine = _AST.getNextLine(_currentLine);
+    _currentLine = _AST.getNextLine(_currentLine, false);
 }
 
 void Debugger::finish() {

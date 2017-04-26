@@ -3,6 +3,7 @@
 // Distributed under the GPLv3 license.
 //
 
+#include <core/model/evaluators/NextLineFinder.h>
 #include "GraceAST.h"
 
 namespace naylang {
@@ -11,13 +12,11 @@ StatementPtr GraceAST::operator[](int index) {
 }
 
 StatementPtr GraceAST::getNodeAt(int line) const {
-    int index = getNodeIndexFromLine(line);
-    return _nodes[index];
-}
-
-int GraceAST::getNextLine(int cur) const {
-    int curIndex = getNodeIndexFromLine(cur);
-    return _nodes[curIndex + 1]->line();
+    if (_nodeLinks.count(line) > 0) {
+        return _nodeLinks.at(line);
+    } else {
+        throw "No node found at line " + std::to_string(line);
+    }
 }
 
 void GraceAST::addNode(StatementPtr node) {
@@ -29,16 +28,24 @@ const std::vector<StatementPtr> &GraceAST::nodes() const {
 }
 
 int GraceAST::lastLine() const {
-    return _nodes.back()->line();
+    return _lastLine;
 }
 
-int GraceAST::getNodeIndexFromLine(int line) const {
-    int index = 0;
-    while (index < _nodes.size()
-           && _nodes[index]->line() != line) {
-        index++;
+void GraceAST::addLineLink(StatementPtr node) {
+    if (_nodeLinks.count(node->line()) == 0) {
+        _nodeLinks[node->line()] = node;
+        _lastLine = node->line() > _lastLine ? node->line() : _lastLine;
+        if (_lastAdded != nullptr) {
+            _lastAdded->setNextLine(node->line());
+        }
+        _lastAdded = node;
     }
-    return index;
+}
+
+int GraceAST::getNextLine(int curLine, bool stepIn) {
+    auto curNode = _nodeLinks[curLine];
+    NextLineFinder eval;
+    return eval.getNextLine(curNode, stepIn);
 }
 }
 

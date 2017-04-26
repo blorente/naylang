@@ -90,6 +90,8 @@ private:
 
     int getLine(const antlr4::ParserRuleContext *ctx) const;
     int getCol(const antlr4::ParserRuleContext *ctx) const;
+
+    void notifyBreakable(StatementPtr node);
 };
 }
 
