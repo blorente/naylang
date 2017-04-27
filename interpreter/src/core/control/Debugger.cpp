@@ -79,7 +79,9 @@ void Debugger::pause(Statement *node) {
     _paused = true;
     _lastPause = node->line();
     _currentLine = node->line();
-    _frontend->executeNextCommand();
+    while(_paused) {
+        _frontend->executeNextCommand();
+    }
 }
 
 void Debugger::execLine() {

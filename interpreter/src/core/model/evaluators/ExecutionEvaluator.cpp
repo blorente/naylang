@@ -24,7 +24,7 @@ ExecutionEvaluator::ExecutionEvaluator(Debugger *debugger) :
         _currentScope{make_obj<GraceScope>()},
         _partial{make_obj<GraceDoneDef>()},
         _debugger{debugger} {
-        _debugging = _debugger != nullptr;
+    _debugging = _debugger != nullptr;
 }
 
 void ExecutionEvaluator::evaluateAST(const GraceAST &ast) {
@@ -47,18 +47,30 @@ GraceObjectPtr ExecutionEvaluator::evaluateSandbox(const GraceAST &ast) {
 }
 
 void ExecutionEvaluator::evaluate(BooleanLiteral &expression) {
+    if (debug(&expression))
+        return;
+
     _partial = make_obj<GraceBoolean>(expression.value());
 }
 
 void ExecutionEvaluator::evaluate(NumberLiteral &expression) {
+    if (debug(&expression))
+        return;
+
     _partial = make_obj<GraceNumber>(expression.value());
 }
 
 void ExecutionEvaluator::evaluate(StringLiteral &expression) {
+    if (debug(&expression))
+        return;
+
     _partial = make_obj<GraceString>(expression.value());
 }
 
 void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
+    if (debug(&expression))
+        return;
+
     if (expression.params().size() == 0) {
         if (_currentScope->hasField(expression.identifier())) {
             _partial = _currentScope->getField(expression.identifier());
@@ -67,7 +79,7 @@ void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
     }
 
     std::vector<GraceObjectPtr> paramValues;
-    for (int i = 0; i < expression.params().size(); i++) {
+    for (int i = 0; i < expression.params().size(); i++) {        
         expression.params()[i]->accept(*this);
         paramValues.push_back(_partial);
     }
@@ -75,17 +87,24 @@ void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
     _partial = _currentScope->dispatch(expression.identifier(), *this, paramValues);
 }
 
-
 void ExecutionEvaluator::evaluate(MethodDeclaration &expression) {
+    if (debug(&expression))
+        return;
+    
     MethodPtr method = make_meth(expression.params(), expression.body());
     _currentScope->addMethod(expression.name(), method);
 }
 
 void ExecutionEvaluator::evaluate(Return &expression) {
+    if (debug(&expression))
+        return;
     return;
 }
 
 void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
+    if (debug(&expression))
+        return;
+    
     expression.receiver()->accept(*this);
     auto self = _partial;
 
@@ -102,9 +121,13 @@ void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
         paramValues.push_back(_partial);
     }
     _partial = self->dispatch(expression.identifier(), *this, paramValues);
+
 }
 
 void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {
+    if (debug(&expression))
+        return;
+    
     GraceObjectPtr oldScope = _currentScope;
     _currentScope = make_obj<UserObject>();
     for (auto node : expression.statements()) {
@@ -112,23 +135,35 @@ void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {
     }
     _partial = _currentScope;
     _currentScope = oldScope;
+
 }
 
 void ExecutionEvaluator::evaluate(ConstantDeclaration &expression) {
+    if (debug(&expression))
+        return;
+    
     expression.value()->accept(*this);
     _currentScope->setField(expression.name(), _partial);
+
 }
 
 void ExecutionEvaluator::evaluate(VariableDeclaration &expression) {
+    if (debug(&expression))
+        return;
+    
     if (expression.value()) {
         expression.value()->accept(*this);
         _currentScope->setField(expression.name(), _partial);
     } else {
         _currentScope->setField(expression.name(), make_obj<UserObject>());
     }
+    
 }
 
 void ExecutionEvaluator::evaluate(Block &expression) {
+    if (debug(&expression))
+        return;
+    
     auto meth = make_meth(expression.params(), expression.body());
     _partial = make_obj<GraceBlock>(meth);
 }
