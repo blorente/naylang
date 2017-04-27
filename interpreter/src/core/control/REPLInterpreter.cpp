@@ -4,6 +4,7 @@
 //
 
 #include "REPLInterpreter.h"
+#include <core/control/Debugger.h>
 
 namespace naylang {
 void REPLInterpreter::execute(std::string line) {

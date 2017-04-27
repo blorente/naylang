@@ -3,13 +3,12 @@
 // Distributed under the GPLv3 license.
 //
 
-#include <core/model/evaluators/DebuggerEvaluator.h>
 #include "Debugger.h"
 
 namespace naylang {
 
 Debugger::Debugger(DebugMode *mode, const std::string &code) :
-        Interpreter(std::make_unique<DebuggerEvaluator>(this)),
+        Interpreter(std::make_unique<ExecutionEvaluator>(this)),
         _frontend{mode},
         _AST{parse(code)},
         _currentLine{1},

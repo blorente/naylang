@@ -5,6 +5,8 @@
 
 #include "ExecutionEvaluator.h"
 
+#include <core/control/Debugger.h>
+
 #include <core/model/execution/objects/GraceBoolean.h>
 #include <core/model/execution/objects/GraceNumber.h>
 #include <core/model/execution/objects/GraceString.h>
@@ -15,8 +17,15 @@
 #include <core/model/execution/methods/MethodFactory.h>
 
 namespace naylang {
+ExecutionEvaluator::ExecutionEvaluator() :
+        ExecutionEvaluator(nullptr) {}
 
-ExecutionEvaluator::ExecutionEvaluator() : _currentScope{make_obj<GraceScope>()}, _partial{make_obj<GraceDoneDef>()}{}
+ExecutionEvaluator::ExecutionEvaluator(Debugger *debugger) :
+        _currentScope{make_obj<GraceScope>()},
+        _partial{make_obj<GraceDoneDef>()},
+        _debugger{debugger} {
+        _debugging = _debugger != nullptr;
+}
 
 void ExecutionEvaluator::evaluateAST(const GraceAST &ast) {
     _partial = make_obj<GraceDoneDef>();
@@ -146,4 +155,11 @@ void ExecutionEvaluator::restoreScope() {
 void ExecutionEvaluator::setScope(GraceObjectPtr scope) {
     _currentScope = scope;
 }
+
+bool ExecutionEvaluator::debug(Statement *node) {
+    if (_debugging) {
+        return _debugger->debug(node);
+    }
+}
+
 }

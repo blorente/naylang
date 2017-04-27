@@ -8,7 +8,6 @@
 
 #include <stack>
 #include <core/model/evaluators/Evaluator.h>
-
 #include <core/model/ast/ASTNodeDefinitions.h>
 #include <core/model/ast/GraceAST.h>
 #include <core/model/execution/objects/GraceObject.h>
@@ -16,14 +15,22 @@
 namespace naylang {
 
 class GraceObject;
-
+class Debugger;
 class ExecutionEvaluator : public Evaluator {
 
     GraceObjectPtr _partial;
     GraceObjectPtr _currentScope;
+
+    Debugger *_debugger;
+    bool _debugging;
+
+    bool debug(Statement *node);
+
 public:
 
     ExecutionEvaluator();
+    ExecutionEvaluator(Debugger *debugger);
+
 
     const GraceObjectPtr &partial() const;
     GraceObjectPtr currentScope() const;
