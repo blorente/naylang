@@ -16,11 +16,7 @@ class Debugger : public Interpreter {
 
     GraceAST _AST;
     std::set<int> _breakpoints;
-    int _currentLine;
-    bool _paused;
-    bool _finished;
     DebugMode *_frontend;
-    int _lastPause;
 
 public:
 
@@ -37,7 +33,6 @@ public:
 
 private:
 
-    void pause(Statement *node);
     void finish();
 };
 }
