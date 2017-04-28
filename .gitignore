@@ -30,10 +30,10 @@
 
 # Build files
 bin/
-cmake-build-debug/
-/cmake-build-debug/
+cmake-build-beginDebug/
+/cmake-build-beginDebug/
 *.make
-cmake-build-debug/CMakeFiles/Makefile2
+cmake-build-beginDebug/CMakeFiles/Makefile2
 
 /interpreter/src/core/parser/generated/
 /deps/antlr/build/
@@ -41,8 +41,7 @@ cmake-build-debug/CMakeFiles/Makefile2
 /deps/antlr/run/
 /deps/antlr/cmake/
 .idea
-/cmake-build-debug/antlr4cpp_generated_src/
-/cmake-build-debug/locals/
+/cmake-build-debug/
 /docs/page/_site
 /cmake-build-debugclang/
 /cmake-build-release/

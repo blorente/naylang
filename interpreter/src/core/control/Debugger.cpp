@@ -3,13 +3,12 @@
 // Distributed under the GPLv3 license.
 //
 
-#include <core/model/evaluators/DebuggerEvaluator.h>
 #include "Debugger.h"
 
 namespace naylang {
 
 Debugger::Debugger(DebugMode *mode, const std::string &code) :
-        Interpreter(std::make_unique<DebuggerEvaluator>(this)),
+        Interpreter(std::make_unique<ExecutionEvaluator>(this)),
         _frontend{mode},
         _AST{parse(code)},
         _currentLine{1},
@@ -18,11 +17,10 @@ Debugger::Debugger(DebugMode *mode, const std::string &code) :
         _lastPause{-1}{}
 
 void Debugger::run() {
-    _currentLine = 1;
-    resume();
-    if (!_paused) {
-        finish();
-    }
+    _finished = false;
+    _eval->setDebugState(CONTINUE);
+    _eval->evaluateAST(_AST);
+    finish();
 }
 
 void Debugger::setBreakpoint(int line) {
@@ -36,57 +34,30 @@ void Debugger::printEnvironment() {
 }
 
 void Debugger::resume() {
-    // Execute breakpoint line
-    bool wasPaused = _paused;
-    _paused = false;
-    if (wasPaused) { execLine(); }
-    while(!_paused && _currentLine <= _AST.lastLine()) {
-        execLine();
-    }
+    _eval->setDebugState(CONTINUE);
 }
 
-bool Debugger::debug(Statement *node) {
-    if (!node->stoppable())
-        return false;
-
-    if (_breakpoints.count(node->line()) == 0)
-        return false;
-
-    if (node->line() == _lastPause)
-        return false;
-
-    pause(node);
-    return true;
+void Debugger::debug(Statement *node) {
+    if (node->stoppable()) {
+        if (_breakpoints.count(node->line()) != 0) {
+            _eval->setDebugState(STOP);
+        }
+        while(_eval->getDebugState() == STOP) {
+            _frontend->executeNextCommand();
+        }
+    }
 }
 
 void Debugger::step() {
-    assert(_paused);
-    if (_currentLine > _AST.lastLine()) {
-        finish();
-    } else {
-        execLine();
-    }
+    _eval->setDebugState(STEP);
 }
 
 void Debugger::skip() {
-    assert(_paused);
     std::cout << "Skip not yet implemented" << std::endl;
 }
 
 void Debugger::pause(Statement *node) {
-    // We notify the pause
-    std::cout << "Debugger paused at " << node->line() << ":" << node->col() << std::endl;
-    // Wait for commands?
-    _paused = true;
-    _lastPause = node->line();
-    _currentLine = node->line();
-    _frontend->executeNextCommand();
-}
 
-void Debugger::execLine() {
-    Statement *curNode = _AST.getNodeAt(_currentLine).get();
-    curNode->accept(*_eval);
-    _currentLine = _AST.getNextLine(_currentLine, false);
 }
 
 void Debugger::finish() {
