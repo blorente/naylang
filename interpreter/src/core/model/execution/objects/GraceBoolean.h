@@ -14,9 +14,6 @@
 namespace naylang {
 
 class GraceBoolean : public GraceObject {
-
-    bool _value;
-
 public:
 
     GraceBoolean(bool value);

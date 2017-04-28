@@ -12,9 +12,6 @@
 namespace naylang {
 
 class GraceIterable : public GraceObject {
-
-    std::vector<GraceObjectPtr> _contents;
-
 public:
 
     GraceIterable(const std::vector<GraceObjectPtr> &contents);

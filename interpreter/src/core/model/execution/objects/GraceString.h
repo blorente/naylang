@@ -12,9 +12,6 @@
 namespace naylang {
 
 class GraceString : public GraceObject {
-
-    std::string _value;
-
 public:
     GraceString(const std::string &value);
 

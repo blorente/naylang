@@ -11,7 +11,8 @@
 
 namespace naylang {
 
-GraceBoolean::GraceBoolean(bool value) : _value{value}{
+GraceBoolean::GraceBoolean(bool value) {
+    _cell._boolVal = value;
     addDefaultMethods();
 }
 
@@ -20,7 +21,7 @@ const GraceBoolean & GraceBoolean::asBoolean() const {
 }
 
 bool GraceBoolean::value() const {
-    return _value;
+    return _cell._boolVal;
 }
 
 GraceObjectPtr GraceBoolean::dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) {
@@ -35,7 +36,7 @@ void GraceBoolean::addDefaultMethods() {
 }
 
 bool GraceBoolean::operator==(const GraceObject &rhs) const {
-    return rhs.asBoolean()._value == _value;
+    return rhs.asBoolean().value() == _cell._boolVal;
 }
 
 bool GraceBoolean::operator!=(const GraceObject &rhs) const {
@@ -43,7 +44,7 @@ bool GraceBoolean::operator!=(const GraceObject &rhs) const {
 }
 
 std::string GraceBoolean::prettyPrint(int indentLevel) {
-    return _value ? "true" : "false";
+    return _cell._boolVal ? "true" : "false";
 }
 
 GraceObjectPtr GraceBoolean::PrefixNot::respond(GraceObject &self, MethodRequest &request) {
@@ -61,7 +62,7 @@ GraceObjectPtr GraceBoolean::AndAnd::respond(GraceObject &self, MethodRequest &r
 }
 
 GraceObjectPtr GraceBoolean::OrOr::respond(GraceObject &self, MethodRequest &request) {
-    if (self.asBoolean()._value || request.params()[0]->asBoolean().value()) {
+    if (self.asBoolean().value() || request.params()[0]->asBoolean().value()) {
         return GraceTrue;
     }
     return GraceFalse;

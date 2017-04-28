@@ -11,12 +11,13 @@
 
 namespace naylang {
 
-GraceString::GraceString(const std::string &value) : _value(value) {
+GraceString::GraceString(const std::string &value) {
+    _cell._strVal = value;
     addDefaultMethods();
 }
 
 const std::string &GraceString::value() const {
-    return _value;
+    return _cell._strVal;
 }
 
 void GraceString::addDefaultMethods() {
@@ -37,7 +38,7 @@ const GraceString &GraceString::asString() const {
 }
 
 std::string GraceString::prettyPrint(int indentLevel) {
-    return std::string{"\"" + _value + "\""};
+    return std::string{"\"" + _cell._strVal + "\""};
 }
 
 GraceObjectPtr GraceString::Equals::respond(GraceObject &self, MethodRequest &request) {

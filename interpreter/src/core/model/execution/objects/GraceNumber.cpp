@@ -12,7 +12,8 @@
 
 namespace naylang {
 
-GraceNumber::GraceNumber(double value) : _value{value} {
+GraceNumber::GraceNumber(double value) {
+    _cell._numVal = value;
     addDefaultMethods();
 }
 
@@ -34,11 +35,11 @@ const GraceNumber &GraceNumber::asNumber() const {
 }
 
 double GraceNumber::value() const {
-    return _value;
+    return _cell._numVal;
 }
 
 std::string GraceNumber::prettyPrint(int indentLevel) {
-    return std::to_string(_value);
+    return std::to_string(_cell._numVal);
 }
 
 GraceObjectPtr GraceNumber::Equals::respond(GraceObject &self, MethodRequest &request) {

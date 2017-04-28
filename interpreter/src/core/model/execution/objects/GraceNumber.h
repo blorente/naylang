@@ -12,9 +12,6 @@
 namespace naylang {
 
 class GraceNumber : public GraceObject {
-
-    double _value;
-
 public:
     GraceNumber(double value);
 

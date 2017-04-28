@@ -26,9 +26,15 @@ class MethodRequest;
 class GraceObject;
 
 struct ObjectCell {
+    ~ObjectCell() = default;
     std::map<std::string, MethodPtr> _nativeMethods;
     std::map<std::string, MethodPtr> _userMethods;
     std::map<std::string, GraceObjectPtr> _fields;
+
+    double _numVal;
+    std::string _strVal;
+    bool _boolVal;
+    std::vector<GraceObjectPtr> _vectorVal;
 };
 
 class GraceObject {

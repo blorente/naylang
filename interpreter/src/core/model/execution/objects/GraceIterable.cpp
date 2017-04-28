@@ -11,14 +11,16 @@
 
 namespace naylang {
 
+GraceIterable::GraceIterable(const std::vector<GraceObjectPtr> &contents) {
+    _cell._vectorVal = contents;
+}
+
 void GraceIterable::addDefaultMethods() {
     // Some methods
 }
 
-GraceIterable::GraceIterable(const std::vector<GraceObjectPtr> &contents) : _contents{contents} {}
-
 const std::vector<GraceObjectPtr> &GraceIterable::values() const {
-    return _contents;
+    return _cell._vectorVal;
 }
 
 GraceIterable &GraceIterable::asIterable() const {
@@ -26,19 +28,19 @@ GraceIterable &GraceIterable::asIterable() const {
 }
 
 void GraceIterable::setElem(int index, GraceObjectPtr value) {
-    _contents[index] = value;
+    _cell._vectorVal[index] = value;
 }
 
 GraceObjectPtr GraceIterable::Append::respond(GraceObject &self, MethodRequest &request) {
-    static_cast<GraceIterable &>(self)._contents.push_back(request.params()[0]);
+    static_cast<GraceIterable &>(self)._cell._vectorVal.push_back(request.params()[0]);
     return make_obj<GraceDoneDef>();
 }
 
 GraceObjectPtr GraceIterable::Do::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
     auto block = static_cast<GraceBlock &>(*request.params()[0]);
     auto lineup = self.asIterable();
-    for (int i = 0; i < lineup._contents.size(); i++) {
-        self.asIterable().setElem(i, block.dispatch("apply", context, {lineup._contents[i]}));
+    for (int i = 0; i < lineup._cell._vectorVal.size(); i++) {
+        self.asIterable().setElem(i, block.dispatch("apply", context, {lineup._cell._vectorVal[i]}));
     }
     return make_obj<GraceDoneDef>();
 }

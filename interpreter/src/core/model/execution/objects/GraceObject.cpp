@@ -138,6 +138,16 @@ void GraceObject::indent(int indentLevel, std::string &res) const {
 }
 
 GraceObjectPtr GraceObject::Assignment::respond(GraceObject &self, MethodRequest &request) {
+    ObjectCell newCell;
+    ObjectCell *other = &request.params()[0]->_cell;
+    newCell._fields = other->_fields;
+    newCell._nativeMethods = other->_nativeMethods;
+    newCell._userMethods = other->_userMethods;
+    newCell._numVal = other->_numVal;
+    newCell._strVal = other->_strVal;
+    newCell._boolVal = other->_boolVal;
+    newCell._vectorVal = other->_vectorVal;
+    self._cell = newCell;
     return nullptr;
 }
 }
