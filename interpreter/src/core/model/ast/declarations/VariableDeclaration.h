@@ -28,7 +28,6 @@ public:
     const std::string &name() const;
     const ExpressionPtr &value() const;
 
-    void setLastLine(int line) override;
 };
 
 }

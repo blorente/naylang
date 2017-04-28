@@ -30,11 +30,4 @@ TEST_CASE("Statements", "[AST]") {
         node->makeStoppable();
         REQUIRE(node->stoppable());
     }
-
-    SECTION("A Statement has the line number of the last line") {
-        StatementPtr node = make_node<NumberLiteral>(0.0);
-        REQUIRE(!node->stoppable());
-        node->setLastLine(1337);
-        REQUIRE(node->lastLine() == 1337);
-    }
 }

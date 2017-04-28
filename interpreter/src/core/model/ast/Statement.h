@@ -22,12 +22,11 @@ protected:
     int _line;
     int _col;
     bool _stoppable;
-    int _nextLine;
 
 public:
 
-    Statement() : _line{-1}, _col{-1}, _stoppable{false}, _nextLine{-1} {}
-    Statement(int line, int col) : _line{line}, _col{col}, _stoppable{false}, _nextLine{-1} {}
+    Statement() : _line{-1}, _col{-1}, _stoppable{false}{}
+    Statement(int line, int col) : _line{line}, _col{col}, _stoppable{false}{}
 
     virtual void accept(Evaluator &evaluator) = 0;
 
@@ -36,9 +35,6 @@ public:
 
     bool stoppable() {return _stoppable;}
     void makeStoppable() {_stoppable = true;}
-
-    virtual void setLastLine(int line) {_nextLine = line;}
-    int lastLine() const {return _nextLine;}
 };
 
 }

@@ -35,8 +35,6 @@ public:
     const std::string &name() const override;
     const std::vector<DeclarationPtr> &params() const;
     const std::vector<StatementPtr> &body() const;
-
-    void setLastLine(int line) override;
 };
 
 } // end namespace naylang

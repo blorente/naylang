@@ -78,7 +78,6 @@ antlrcpp::Any NaylangParserVisitor::visitPrefixExp(GraceParser::PrefixExpContext
     ctx->rec->accept(this);
     auto rec = popPartialExp();
     auto req = make_node<ExplicitRequestNode>(opname, rec, getLine(ctx), getCol(ctx));
-    req->setLastLine(getLastLine(ctx));
     pushPartialExp(req);
     return 0;
 }
@@ -87,7 +86,6 @@ antlrcpp::Any NaylangParserVisitor::visitPrefixExp(GraceParser::PrefixExpContext
 antlrcpp::Any NaylangParserVisitor::visitNumber(GraceParser::NumberContext *ctx) {
     int lastLine = ctx->stop->getLine();
     auto num = make_node<NumberLiteral>(std::stod(ctx->getText()), getLine(ctx), getCol(ctx));
-    num->setLastLine(lastLine);
     pushPartialExp(num);
     return 0;
 }
@@ -99,7 +97,6 @@ antlrcpp::Any NaylangParserVisitor::visitMulDivExp(GraceParser::MulDivExpContext
     auto op = ctx->op->getText() + "(_)";
     std::vector<ExpressionPtr> params{param};
     auto req = make_node<ExplicitRequestNode>(op, reciever, params, getLine(ctx), getCol(ctx));
-    req->setLastLine(getLastLine(ctx));
     pushPartialExp(req);
     return 0;
 }
@@ -112,7 +109,6 @@ antlrcpp::Any NaylangParserVisitor::visitAddSubExp(GraceParser::AddSubExpContext
     auto op = ctx->op->getText() + "(_)";
     std::vector<ExpressionPtr> params{param};
     auto req = make_node<ExplicitRequestNode>(op, reciever, params, getLine(ctx), getCol(ctx));
-    req->setLastLine(getLastLine(ctx));
     pushPartialExp(req);
     return 0;
 }
@@ -120,7 +116,6 @@ antlrcpp::Any NaylangParserVisitor::visitAddSubExp(GraceParser::AddSubExpContext
 antlrcpp::Any NaylangParserVisitor::visitString(GraceParser::StringContext *ctx) {
     auto contents = ctx->content->getText();
     auto str = make_node<StringLiteral>(contents, getLine(ctx), getCol(ctx));
-    str->setLastLine(getLastLine(ctx));
     pushPartialExp(str);
     return 0;
 }
@@ -128,7 +123,6 @@ antlrcpp::Any NaylangParserVisitor::visitString(GraceParser::StringContext *ctx)
 antlrcpp::Any NaylangParserVisitor::visitBoolean(GraceParser::BooleanContext *ctx) {
     bool value = ctx->TRUE() != nullptr;
     auto bul = make_node<BooleanLiteral>(value, getLine(ctx), getCol(ctx));
-    bul->setLastLine(getLastLine(ctx));
     pushPartialExp(bul);
     return 0;
 }
@@ -140,7 +134,6 @@ antlrcpp::Any NaylangParserVisitor::visitConstantDeclaration(GraceParser::Consta
     ctx->expression()->accept(this);
     auto value = popPartialExp();
     auto decl = make_node<ConstantDeclaration>(name, value, getLine(ctx), getCol(ctx));
-    decl->setLastLine(lastLine);
     notifyBreakable(decl);
     pushPartialDecl(decl);
     return 0;
@@ -158,7 +151,6 @@ antlrcpp::Any NaylangParserVisitor::visitVariableDeclaration(GraceParser::Variab
     ctx->expression()->accept(this);
     auto value = popPartialExp();
     auto decl = make_node<VariableDeclaration>(name, value, getLine(ctx), getCol(ctx));
-    decl->setLastLine(lastLine);
     notifyBreakable(decl);
     pushPartialDecl(decl);
     return 0;
@@ -186,7 +178,6 @@ antlrcpp::Any NaylangParserVisitor::visitUserMethod(GraceParser::UserMethodConte
     }
 
     auto methodDeclaration = make_node<MethodDeclaration>(methodName, formalParams, body, getLine(ctx), getCol(ctx));
-    methodDeclaration->setLastLine(getLastLine(ctx));
     pushPartialDecl(methodDeclaration);
     return 0;
 }

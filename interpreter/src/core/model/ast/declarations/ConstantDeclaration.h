@@ -31,8 +31,6 @@ public:
     const std::string &name() const;
 
     ExpressionPtr value() const;
-
-    void setLastLine(int line) override;
 };
 
 } // end namespace naylang

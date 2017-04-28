@@ -32,9 +32,4 @@ const ExpressionPtr &VariableDeclaration::value() const {
     return _initialValue;
 }
 
-void VariableDeclaration::setLastLine(int line) {
-    Statement::setLastLine(line);
-    _initialValue->setLastLine(line);
-}
-
 }
