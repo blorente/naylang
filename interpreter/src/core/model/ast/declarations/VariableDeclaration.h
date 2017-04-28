@@ -27,6 +27,7 @@ public:
     virtual void accept(Evaluator &evaluator);
     const std::string &name() const;
     const ExpressionPtr &value() const;
+
 };
 
 }

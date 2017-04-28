@@ -9,14 +9,11 @@
 using namespace naylang;
 
 int main() {
-    std::string command;
     ConsoleFrontend frontend;
-
-    while (command != "quit") {
-        std::cout << ">>> ";
-        getline(std::cin, command);
-
-        frontend.runCommand(command);
+    try {
+        frontend.run();
+    } catch (std::string msg){
+        std::cerr << msg << std::endl;
     }
     return 0;
 }

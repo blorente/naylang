@@ -30,4 +30,5 @@ const std::vector<StatementPtr> & MethodDeclaration::body() const {
 const std::vector<DeclarationPtr> &MethodDeclaration::params() const {
     return _params;
 }
+
 }

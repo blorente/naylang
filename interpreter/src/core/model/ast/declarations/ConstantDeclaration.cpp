@@ -24,5 +24,4 @@ const std::string & ConstantDeclaration::name() const {
 ExpressionPtr ConstantDeclaration::value() const {
     return _value;
 }
-
 }

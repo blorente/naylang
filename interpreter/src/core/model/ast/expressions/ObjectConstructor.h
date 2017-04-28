@@ -19,7 +19,7 @@ public:
     ObjectConstructor(const std::vector<StatementPtr> &statements);
 
     virtual void accept(Evaluator &evaluator);
-
+    
     const std::vector<StatementPtr> &statements() const;
 };
 } // end namespace naylang

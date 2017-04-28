@@ -6,7 +6,7 @@
 #ifndef NAYLANG_NAYLANGPARSERSTACK_H
 #define NAYLANG_NAYLANGPARSERSTACK_H
 
-#include <core/model/ast/ASTTreeDefinition.h>
+#include <core/model/ast/GraceAST.h>
 
 namespace naylang {
 class NaylangParserStack {

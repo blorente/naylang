@@ -9,10 +9,9 @@
 #include <memory>
 #include <core/model/evaluators/Evaluator.h>
 #include <map>
-#include <core/model/evaluators/ExecutionEvaluator.h>
-#include <core/model/execution/methods/Method.h>
-#include <core/model/execution/Definitions.h>
+#include <vector>
 #include <core/model/execution/objects/GraceObjectFactory.h>
+#include <core/model/execution/methods/MethodPtr.h>
 
 namespace naylang {
 
@@ -21,6 +20,9 @@ class GraceNumber;
 class GraceString;
 class GraceIterable;
 class ExecutionEvaluator;
+class GraceObject;
+
+typedef std::shared_ptr<GraceObject> GraceObjectPtr;
 
 class GraceObject {
 protected:

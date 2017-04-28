@@ -23,4 +23,5 @@ void ObjectConstructor::accept(Evaluator &evaluator) {
 const std::vector<StatementPtr> &ObjectConstructor::statements() const {
     return _statements;
 }
+
 }

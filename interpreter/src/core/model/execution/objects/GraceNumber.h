@@ -18,9 +18,9 @@ class GraceNumber : public GraceObject {
 public:
     GraceNumber(double value);
 
-    virtual const GraceNumber &asNumber() const;
+    virtual const GraceNumber &asNumber() const override;
 
-    virtual void addDefaultMethods();
+    virtual void addDefaultMethods() override;
 
     double value() const;
 

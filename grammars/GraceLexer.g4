@@ -41,7 +41,7 @@ tokens {
 	DUMMY
 }
 
-WS : [ \r\t\n]+ -> skip ;
+WS : [ \r\t\n]+ -> channel(HIDDEN);
 INT: Digit+;
 Digit: [0-9];
 

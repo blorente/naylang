@@ -6,7 +6,6 @@
 #ifndef NAYLANG_INTERPRETER_H
 #define NAYLANG_INTERPRETER_H
 
-#include <core/parser/NaylangParserVisitor.h>
 #include <core/model/evaluators/ExecutionEvaluator.h>
 #include <core/model/execution/objects/GraceObject.h>
 #include <GraceLexer.h>
@@ -16,17 +15,17 @@ using namespace antlr4::tree;
 
 namespace naylang {
 class Interpreter {
-
-    ExecutionEvaluator eval;
+protected:
+    std::unique_ptr<ExecutionEvaluator> _eval;
 
 public:
+    Interpreter(std::unique_ptr<ExecutionEvaluator> eval) : _eval{std::move(eval)} {}
+    void printResult(std::string line);
 
-    void execute(const std::string &line);
-    void printResult(const std::string &line);
-
-private:
+protected:
     GraceAST parse(const std::string &line) const;
+    void colonize(std::string &line);
 };
-}
 
-#endif //NAYLANG__INTERPRETER_H
+}
+#endif //NAYLANG_INTERPRETER_H

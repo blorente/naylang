@@ -12,6 +12,7 @@
 #include <core/model/ast/declarations/VariableDeclaration.h>
 #include <core/model/ast/expressions/primitives/NumberLiteral.h>
 #include <core/model/ast/expressions/requests/ExplicitRequestNode.h>
+#include <core/model/execution/methods/MethodFactory.h>
 
 #include "catch.h"
 

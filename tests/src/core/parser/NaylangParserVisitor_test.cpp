@@ -10,7 +10,7 @@
 #include <GraceParser.h>
 
 #include <core/model/ast/ASTNodeDefinitions.h>
-#include <core/model/ast/ASTTreeDefinition.h>
+#include <core/model/ast/GraceAST.h>
 #include <core/parser/NaylangParserVisitor.h>
 
 using namespace naylang;
@@ -39,8 +39,8 @@ TEST_CASE("Naylang Parser Visitor", "[Parser]") {
         auto request = static_cast<ExplicitRequestNode &>(*(AST[0]));
         auto receiver = static_cast<NumberLiteral &>(*request.receiver());
 
-        REQUIRE_NOTHROW(request.identifier() == "prefix-");
-        REQUIRE_NOTHROW(receiver.value() == 4);
+        REQUIRE(request.identifier() == "prefix-");
+        REQUIRE(receiver.value() == 4);
     }
 
     SECTION("Parsing 4 + 5 * 6 create the explicit request 4.+(5.*(6))") {
@@ -51,11 +51,11 @@ TEST_CASE("Naylang Parser Visitor", "[Parser]") {
         auto five = static_cast<NumberLiteral &>(*subrequest.receiver());
         auto six = static_cast<NumberLiteral &>(*subrequest.params()[0]);
 
-        REQUIRE_NOTHROW(request.identifier() == "+(_)");
-        REQUIRE_NOTHROW(four.value() == 4);
-        REQUIRE_NOTHROW(subrequest.identifier() == "*(_)");
-        REQUIRE_NOTHROW(five.value() == 5);
-        REQUIRE_NOTHROW(six.value() == 6);
+        REQUIRE(request.identifier() == "+(_)");
+        REQUIRE(four.value() == 4);
+        REQUIRE(subrequest.identifier() == "*(_)");
+        REQUIRE(five.value() == 5);
+        REQUIRE(six.value() == 6);
     }
 
 }
@@ -63,18 +63,17 @@ TEST_CASE("Naylang Parser Visitor", "[Parser]") {
 TEST_CASE("Primitives", "[Naylang Parser Visitor]") {
     SECTION("Parsing an integer creates a NumberLiteral") {
         auto AST = translate("4\n;");
-        REQUIRE_NOTHROW(dynamic_cast<NumberLiteral &>(*(AST[0])));
-        REQUIRE_NOTHROW(dynamic_cast<NumberLiteral &>(*(AST[0])).value() == 4);
+        REQUIRE(dynamic_cast<NumberLiteral &>(*(AST[0])).value() == 4);
     }
 
     SECTION("Parsing a string in between quotes generates a StringLiteral") {
         auto AST = translate("\"Hello\";\n");
-        REQUIRE_NOTHROW(dynamic_cast<StringLiteral &>(*(AST[0])).value() == "Hello");
+        REQUIRE(dynamic_cast<StringLiteral &>(*(AST[0])).value() == "Hello");
     }
 
     SECTION("Parsing a boolean generates a BooleanLiteral") {
         auto AST = translate("true;\n");
-        REQUIRE_NOTHROW(dynamic_cast<BooleanLiteral &>(*(AST[0])).value());
+        REQUIRE(dynamic_cast<BooleanLiteral &>(*(AST[0])).value());
     }
 }
 
@@ -167,7 +166,6 @@ TEST_CASE("Declarations", "[Naylang Parser Visitor]") {
         auto AST = translate("def x = 5;");
         auto decl = static_cast<ConstantDeclaration &>(*(AST[0]));
         auto value = static_cast<NumberLiteral &>(*decl.value());
-        REQUIRE_NOTHROW(static_cast<ConstantDeclaration &>(*(AST[0])));
         REQUIRE(decl.name() == "x");
         REQUIRE(value.value() == 5);
     }
@@ -176,7 +174,6 @@ TEST_CASE("Declarations", "[Naylang Parser Visitor]") {
         auto AST = translate("var x := 5;");
         auto decl = static_cast<VariableDeclaration &>(*(AST[0]));
         auto value = static_cast<NumberLiteral &>(*decl.value());
-        REQUIRE_NOTHROW(static_cast<VariableDeclaration &>(*(AST[0])));
         REQUIRE(decl.name() == "x");
         REQUIRE(value.value() == 5);
     }
@@ -268,6 +265,44 @@ TEST_CASE("Code Coordinates", "[Naylang Parser Visitor]") {
         auto var = static_cast<VariableDeclaration &>(*(AST[2]));
         REQUIRE(var.line() == 3);
         REQUIRE(var.col() == 0);
+    }
+}
+
+TEST_CASE("Stoppable nodes", "[Naylang Parser Visitor]") {
+    SECTION("Variable Declarations are stoppable") {
+        auto AST = translate("var x := 4;\n");
+        auto x = static_cast<VariableDeclaration &>(*(AST[0]));
+        REQUIRE(x.stoppable());
+    }
+
+    SECTION("Constant Declarations are stoppable") {
+        auto AST = translate("def x = 4;\n");
+        auto x = static_cast<ConstantDeclaration &>(*(AST[0]));
+        REQUIRE(x.stoppable());
+    }
+
+    SECTION("Every line inside a MethodDeclaration is stoppable") {
+        auto AST = translate("method twice(n,m) { var x := 4; x * m; }\n");
+        auto meth = static_cast<MethodDeclaration &>(*(AST[0]));
+        for (auto line : meth.body()) {
+            REQUIRE(line->stoppable());
+        }
+    }
+
+    SECTION("Every line inside a Prefix method is stoppable") {
+        auto AST = translate("method prefix! { var x := 4; var m := -1; x * m; }\n");
+        auto meth = static_cast<MethodDeclaration &>(*(AST[0]));
+        for (auto line : meth.body()) {
+            REQUIRE(line->stoppable());
+        }
+    }
+
+    SECTION("Every line inside a Block is stoppable") {
+        auto AST = translate("{ x, m -> var x := 4; x * m; };\n");
+        auto block = static_cast<Block &>(*(AST[0]));
+        for (auto line : block.body()) {
+            REQUIRE(line->stoppable());
+        }
     }
 }
 

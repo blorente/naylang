@@ -5,9 +5,11 @@
 #ifndef NAYLANG_METHODFACTORY_H
 #define NAYLANG_METHODFACTORY_H
 
-namespace naylang {
+#include <core/model/execution/methods/Method.h>
 
+namespace naylang {
 class Method;
+
 static std::shared_ptr<Method> make_meth(std::shared_ptr<Block> &block) {
     return std::make_shared<Method>(block);
 }

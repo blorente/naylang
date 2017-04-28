@@ -11,7 +11,7 @@
 #include <memory>
 
 #include <core/model/ast/ASTNodeDefinitions.h>
-#include <core/model/ast/ASTTreeDefinition.h>
+#include <core/model/ast/GraceAST.h>
 #include <core/parser/NaylangParserStack.h>
 
 namespace naylang {
@@ -86,10 +86,15 @@ private:
 
     void clearPartials();
 
-    antlrcpp::Any defaultResult();
+    antlrcpp::Any defaultResult() override;
 
     int getLine(const antlr4::ParserRuleContext *ctx) const;
+    int getLine(antlr4::tree::TerminalNode *terminal) const;
     int getCol(const antlr4::ParserRuleContext *ctx) const;
+
+    void notifyBreakable(StatementPtr node);
+
+    int getLastLine(const antlr4::ParserRuleContext *ctx) const;
 };
 }
 

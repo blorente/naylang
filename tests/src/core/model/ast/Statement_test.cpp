@@ -19,8 +19,15 @@ TEST_CASE("Statements", "[AST]") {
     }
 
     SECTION("Statements have coordinates (-1, -1) by default") {
-        StatementPtr node = make_node<NumberLiteral>(4);
+        StatementPtr node = make_node<NumberLiteral>(5.0);
         REQUIRE(node->line() == -1);
         REQUIRE(node->col() == -1);
+    }
+
+    SECTION("A Statement can be stoppable") {
+        StatementPtr node = make_node<NumberLiteral>(0.0);
+        REQUIRE(!node->stoppable());
+        node->makeStoppable();
+        REQUIRE(node->stoppable());
     }
 }

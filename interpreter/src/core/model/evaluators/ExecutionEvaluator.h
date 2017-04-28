@@ -7,54 +7,60 @@
 #define NAYLANG_EXECUTIONEVALUATOR_H
 
 #include <stack>
-#include <core/model/execution/Definitions.h>
 #include <core/model/evaluators/Evaluator.h>
-
-#include <core/model/ast/declarations/ConstantDeclaration.h>
-#include <core/model/ast/declarations/MethodDeclaration.h>
-
-#include <core/model/ast/expressions/Block.h>
-#include <core/model/ast/expressions/ObjectConstructor.h>
-
-#include <core/model/ast/expressions/requests/ImplicitRequestNode.h>
-#include <core/model/ast/expressions/requests/ExplicitRequestNode.h>
-
-#include <core/model/ast/expressions/primitives/BooleanLiteral.h>
-#include <core/model/ast/expressions/primitives/NumberLiteral.h>
-#include <core/model/ast/expressions/primitives/StringLiteral.h>
-
-#include <core/model/ast/control/Return.h>
-#include <core/model/ast/ASTTreeDefinition.h>
+#include <core/model/ast/ASTNodeDefinitions.h>
+#include <core/model/ast/GraceAST.h>
+#include <core/model/execution/objects/GraceObject.h>
+#include <core/control/DebugState.h>
 
 namespace naylang {
+
+class GraceObject;
+class Debugger;
 
 class ExecutionEvaluator : public Evaluator {
 
     GraceObjectPtr _partial;
     GraceObjectPtr _currentScope;
+
+    Debugger *_debugger;
+    bool _debugging;
+
+    DebugState _state;
+
 public:
 
     ExecutionEvaluator();
 
+    ExecutionEvaluator(Debugger *debugger);
     const GraceObjectPtr &partial() const;
+
     GraceObjectPtr currentScope() const;
     GraceObjectPtr createNewScope();
     void restoreScope();
     void setScope(GraceObjectPtr scope);
     void evaluateAST(const GraceAST &ast);
+    GraceObjectPtr evaluateSandbox(const GraceAST &ast);
 
-    virtual void evaluate(BooleanLiteral &expression);
-    virtual void evaluate(NumberLiteral &expression);
-    virtual void evaluate(StringLiteral &expression);
-    virtual void evaluate(ImplicitRequestNode &expression);
-    virtual void evaluate(ExplicitRequestNode &expression);
-    virtual void evaluate(MethodDeclaration &expression);
-    virtual void evaluate(ConstantDeclaration &expression);
-    virtual void evaluate(Return &expression);
-    virtual void evaluate(Block &expression);
-    virtual void evaluate(ObjectConstructor &expression);
+    virtual void evaluate(BooleanLiteral &expression) override;
+    virtual void evaluate(NumberLiteral &expression) override;
+    virtual void evaluate(StringLiteral &expression) override;
+    virtual void evaluate(ImplicitRequestNode &expression) override;
+    virtual void evaluate(ExplicitRequestNode &expression) override;
+    virtual void evaluate(MethodDeclaration &expression) override;
+    virtual void evaluate(ConstantDeclaration &expression) override;
+    virtual void evaluate(Return &expression) override;
+    virtual void evaluate(Block &expression) override;
+    virtual void evaluate(ObjectConstructor &expression) override;
+    virtual void evaluate(VariableDeclaration &expression) override;
 
-    void evaluate(VariableDeclaration &expression) override;
+    // Debug Methods
+    void setDebugState(DebugState state);
+    DebugState getDebugState() const;
+
+private:
+    void beginDebug(Statement *node);
+    void endDebug(Statement *node, DebugState prevState);
 };
 } // end namespace naylang
 

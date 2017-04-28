@@ -7,6 +7,7 @@
 #include <core/model/ast/NodeFactory.h>
 #include <core/model/ast/declarations/VariableDeclaration.h>
 #include <core/model/execution/objects/GraceBoolean.h>
+#include <core/model/execution/methods/MethodFactory.h>
 #include "catch.h"
 
 using namespace naylang;

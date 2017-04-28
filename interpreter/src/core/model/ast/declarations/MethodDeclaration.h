@@ -35,7 +35,6 @@ public:
     const std::string &name() const override;
     const std::vector<DeclarationPtr> &params() const;
     const std::vector<StatementPtr> &body() const;
-
 };
 
 } // end namespace naylang
