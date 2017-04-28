@@ -18,12 +18,9 @@ class GraceAST {
 public:
 
     virtual StatementPtr operator[](int index);
-    StatementPtr getNodeAt(int line) const;
     void addNode(StatementPtr node);
-    int getNextLine(int curLine, bool stepIn);
     void addLineLink(StatementPtr node);
     const std::vector<StatementPtr> &nodes() const;
-    int lastLine() const;
 
 };
 }
