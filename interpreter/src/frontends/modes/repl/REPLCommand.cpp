@@ -25,7 +25,7 @@ void LoadCommand::execute(REPLInterpreter &interpreter) {
         interpreter.execute(codeBuffer.str());
         codeFile.close();
     } else {
-        throw "Grace file could not be opened";
+        throw std::string{"Grace file could not be opened"};
     }
 }
 

@@ -15,19 +15,19 @@ namespace naylang {
 GraceObject::GraceObject() : _outer{nullptr} {}
 
 const GraceBoolean & GraceObject::asBoolean() const {
-    throw "Trying to cast a generic GraceObject as GraceBoolean";
+    throw std::string{"Trying to cast a generic GraceObject as GraceBoolean"};
 }
 
 const GraceNumber &GraceObject::asNumber() const {
-    throw "Trying to cast a generic GraceObject as GraceNumber";
+    throw std::string{"Trying to cast a generic GraceObject as GraceNumber"};
 }
 
 const GraceString &GraceObject::asString() const {
-    throw "Trying to cast a generic GraceObject as GraceString";
+    throw std::string{"Trying to cast a generic GraceObject as GraceString"};
 }
 
 GraceIterable &GraceObject::asIterable() const {
-    throw "Trying to cast a generic GraceObject as GraceIterable";
+    throw std::string{"Trying to cast a generic GraceObject as GraceIterable"};
 }
 
 bool GraceObject::isUndefined() const {
@@ -91,14 +91,14 @@ MethodPtr GraceObject::getMethod(const std::string &name) {
     }
 
     if (_outer == nullptr)
-        throw "Method not found";
+        throw std::string{"Method not found"};
 
     return _outer->getMethod(name);
 }
 
 GraceObjectPtr GraceObject::getField(const std::string &name) {
     if (_fields.find(name) == _fields.end()) {
-        throw "Field not found in object";
+        throw std::string{"Field not found in object"};
     }
     return _fields[name];
 }

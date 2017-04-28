@@ -23,7 +23,7 @@ void REPLMode::setCommand(const std::string &name, const std::string &body) {
     } else if (name == "print" || name == "p") {
         _command = std::make_unique<PrintCommand>(body);
     } else {
-        throw "Command not found";
+        throw std::string{"Command not found"};
     }
 }
 

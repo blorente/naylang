@@ -13,35 +13,35 @@ const std::map<std::string, Declaration *> &BindingEvaluator::symbolTable() cons
 
 void BindingEvaluator::evaluate(ImplicitRequestNode &expression) {
     if (_symbolTable.find(expression.identifier()) == _symbolTable.end()) {
-        throw "Binding not found in symbol table";
+        throw std::string{"Binding not found in symbol table"};
     }
     expression.bindTo(static_cast<MethodDeclaration &>(*_symbolTable[expression.identifier()]));
 }
 
 void BindingEvaluator::evaluate(ConstantDeclaration &expression) {
     if(_symbolTable.find(expression.name()) != _symbolTable.end()) {
-        throw "Binding exists in symbol table";
+        throw std::string{"Binding exists in symbol table"};
     }
     _symbolTable[expression.name()] = &expression;
 }
 
 void BindingEvaluator::evaluate(VariableDeclaration &expression) {
     if(_symbolTable.find(expression.name()) != _symbolTable.end()) {
-        throw "Binding exists in symbol table";
+        throw std::string{"Binding exists in symbol table"};
     }
     _symbolTable[expression.name()] = &expression;
 }
 
 void BindingEvaluator::evaluate(MethodDeclaration &expression) {
     if(_symbolTable.find(expression.name()) != _symbolTable.end()) {
-        throw "Binding exists in symbol table";
+        throw std::string{"Binding exists in symbol table"};
     }
     _symbolTable[expression.name()] = &expression;
 }
 
 void BindingEvaluator::evaluate(ExplicitRequestNode &expression) {
     if (_symbolTable.find(expression.identifier()) == _symbolTable.end()) {
-        throw "Binding not found in symbol table";
+        throw std::string{"Binding not found in symbol table"};
     }
     expression.bindTo(static_cast<MethodDeclaration &>(*_symbolTable[expression.identifier()]));
 }
