@@ -31,7 +31,7 @@ void DebugMode::readCodeFile(const std::string &filename) {
         _code = codeBuffer.str();
         codeFile.close();
     } else {
-        throw "Grace file could not be opened";
+        throw std::string{"Grace file could not be opened"};
     }
 }
 

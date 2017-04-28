@@ -7,6 +7,7 @@
 #define NAYLANG_DEBUGGER_H
 
 #include <frontends/modes/debug/DebugMode.h>
+#include <core/control/DebugState.h>
 #include "Interpreter.h"
 
 namespace naylang {
@@ -32,13 +33,12 @@ public:
     void step();
     void skip();
 
-    bool debug(Statement *node);
+    void debug(Statement *node);
 
 private:
 
     void pause(Statement *node);
     void finish();
-    void execLine();
 };
 }
 
