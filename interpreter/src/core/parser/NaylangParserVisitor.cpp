@@ -83,8 +83,26 @@ antlrcpp::Any NaylangParserVisitor::visitPrefixExp(GraceParser::PrefixExpContext
 }
 
 
+antlrcpp::Any NaylangParserVisitor::visitInfixExp(GraceParser::InfixExpContext *ctx) {
+    ctx->infix_op()->accept(this);
+    auto opname = popPartialStr();
+    ctx->rec->accept(this);
+    auto rec = popPartialExp();
+    ctx->param->accept(this);
+    auto param = popPartialExp();
+    std::vector<ExpressionPtr> params{param};
+    auto req = make_node<ExplicitRequestNode>(opname, rec, params, getLine(ctx), getCol(ctx));
+    pushPartialExp(req);
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitInfix_op(GraceParser::Infix_opContext *ctx) {
+    pushPartialStr(ctx->getText() + "(_)");
+    return 0;
+}
+
+
 antlrcpp::Any NaylangParserVisitor::visitNumber(GraceParser::NumberContext *ctx) {
-    int lastLine = ctx->stop->getLine();
     auto num = make_node<NumberLiteral>(std::stod(ctx->getText()), getLine(ctx), getCol(ctx));
     pushPartialExp(num);
     return 0;
@@ -367,6 +385,7 @@ antlrcpp::Any NaylangParserVisitor::visitLineup(GraceParser::LineupContext *ctx)
 antlrcpp::Any NaylangParserVisitor::visitProgram(GraceParser::ProgramContext *ctx) {
     for (auto line : ctx->statement()) {
         clearPartials();
+        line->accept(this);
         line->accept(this);
         auto node = popPartialStat();
         _tree.addNode(node);

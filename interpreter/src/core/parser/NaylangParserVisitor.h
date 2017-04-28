@@ -32,6 +32,9 @@ public:
     antlrcpp::Any visitPrefixExp(GraceParser::PrefixExpContext *ctx) override;
     antlrcpp::Any visitPrefix_op(GraceParser::Prefix_opContext *ctx) override;
 
+    antlrcpp::Any visitInfixExp(GraceParser::InfixExpContext *ctx) override;
+    antlrcpp::Any visitInfix_op(GraceParser::Infix_opContext *ctx) override;
+
     antlrcpp::Any visitNumber(GraceParser::NumberContext *ctx) override;
     antlrcpp::Any visitString(GraceParser::StringContext *ctx) override;
     antlrcpp::Any visitBoolean(GraceParser::BooleanContext *ctx) override;
@@ -47,6 +50,7 @@ public:
     antlrcpp::Any visitUserMethod(GraceParser::UserMethodContext *ctx) override;
 
     antlrcpp::Any visitPrefixMethod(GraceParser::PrefixMethodContext *ctx) override;
+
 
     antlrcpp::Any visitMethodSignature(GraceParser::MethodSignatureContext *ctx) override;
     antlrcpp::Any visitMethodSignaturePart(GraceParser::MethodSignaturePartContext *ctx) override;

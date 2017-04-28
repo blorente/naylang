@@ -251,6 +251,16 @@ TEST_CASE("Requests", "[Naylang Parser Visitor]") {
         REQUIRE(rec.identifier() == "x");
         REQUIRE(five.value() == 5);
     }
+
+    SECTION("Assignment Requests") {
+        auto AST = translate("x := 6;\n");
+        auto req = static_cast<ExplicitRequestNode &>(*(AST[0]));
+        auto rec = static_cast<ImplicitRequestNode &>(*req.receiver());
+        auto six = static_cast<NumberLiteral &>(*req.params()[0]);
+        REQUIRE(req.identifier() == ":=(_)");
+        REQUIRE(rec.identifier() == "x");
+        REQUIRE(six.value() == 6);
+    }
 }
 
 TEST_CASE("Code Coordinates", "[Naylang Parser Visitor]") {

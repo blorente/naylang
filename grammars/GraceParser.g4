@@ -100,7 +100,7 @@ expression  : rec=expression op=(MUL | DIV) param=expression        #MulDivExp
             | explicitRequest                                       #ExplicitReqExp
             | implicitRequest                                       #ImplicitReqExp
             | prefix_op rec=expression                              #PrefixExp
-            | rec=expression infix_op param=expression              #InficExp
+            | rec=expression infix_op param=expression              #InfixExp
             | value                                                 #ValueExp
             ;
 
@@ -139,5 +139,5 @@ number: INT;
 boolean: TRUE | FALSE;
 string: QUOTE content=.*? QUOTE;
 prefix_op: MINUS | EXCLAMATION;
-infix_op: MOD | POW | CONCAT;
+infix_op: MOD | POW | CONCAT | VAR_ASSIGN;
 
