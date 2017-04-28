@@ -3,10 +3,9 @@
 // Distributed under the GPLv3 license.
 //
 
-
-
-
 #include <core/model/execution/methods/MethodFactory.h>
+#include <core/model/execution/methods/MethodRequest.h>
+
 #include "GraceNumber.h"
 #include "GraceBoolean.h"
 #include "GraceString.h"
@@ -18,16 +17,16 @@ GraceNumber::GraceNumber(double value) : _value{value} {
 }
 
 void GraceNumber::addDefaultMethods() {
-    _nativeMethods["prefix!"] = make_native<Negative>();
-    _nativeMethods["==(_)"] = make_native<Equals>();
-    _nativeMethods["!=(_)"] = make_native<NotEquals>();
-    _nativeMethods["+(_)"] = make_native<Add>();
-    _nativeMethods["-(_)"] = make_native<Sub>();
-    _nativeMethods["*(_)"] = make_native<Mul>();
-    _nativeMethods["/(_)"] = make_native<Div>();
-    _nativeMethods["%(_)"] = make_native<Mod>();
-    _nativeMethods["^(_)"] = make_native<Pow>();
-    _nativeMethods["asString(_)"] = make_native<AsString>();
+    _cell._nativeMethods["prefix!"] = make_native<Negative>();
+    _cell._nativeMethods["==(_)"] = make_native<Equals>();
+    _cell._nativeMethods["!=(_)"] = make_native<NotEquals>();
+    _cell._nativeMethods["+(_)"] = make_native<Add>();
+    _cell._nativeMethods["-(_)"] = make_native<Sub>();
+    _cell._nativeMethods["*(_)"] = make_native<Mul>();
+    _cell._nativeMethods["/(_)"] = make_native<Div>();
+    _cell._nativeMethods["%(_)"] = make_native<Mod>();
+    _cell._nativeMethods["^(_)"] = make_native<Pow>();
+    _cell._nativeMethods["asString(_)"] = make_native<AsString>();
 }
 
 const GraceNumber &GraceNumber::asNumber() const {

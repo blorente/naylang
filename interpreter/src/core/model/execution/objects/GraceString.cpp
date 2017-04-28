@@ -3,10 +3,8 @@
 // Distributed under the GPLv3 license.
 //
 
-
-
-
 #include <core/model/execution/methods/MethodFactory.h>
+#include <core/model/execution/methods/MethodRequest.h>
 #include "GraceString.h"
 #include "GraceBoolean.h"
 #include "GraceNumber.h"
@@ -22,16 +20,16 @@ const std::string &GraceString::value() const {
 }
 
 void GraceString::addDefaultMethods() {
-    _nativeMethods["==(_)"] = make_native<Equals>();
-    _nativeMethods["!=(_)"] = make_native<NotEquals>();
-    _nativeMethods[">(_)"] = make_native<Greater>();
-    _nativeMethods[">=(_)"] = make_native<GreaterEq>();
-    _nativeMethods["<(_)"] = make_native<Less>();
-    _nativeMethods["<=(_)"] = make_native<LessEq>();
-    _nativeMethods["++(_)"] = make_native<Concat>();
-    _nativeMethods["at(_)"] = make_native<At>();
-    _nativeMethods["substringFrom(_)to(_)"] = make_native<Substring>();
-    _nativeMethods["asString"] = make_native<AsString>();
+    _cell._nativeMethods["==(_)"] = make_native<Equals>();
+    _cell._nativeMethods["!=(_)"] = make_native<NotEquals>();
+    _cell._nativeMethods[">(_)"] = make_native<Greater>();
+    _cell._nativeMethods[">=(_)"] = make_native<GreaterEq>();
+    _cell._nativeMethods["<(_)"] = make_native<Less>();
+    _cell._nativeMethods["<=(_)"] = make_native<LessEq>();
+    _cell._nativeMethods["++(_)"] = make_native<Concat>();
+    _cell._nativeMethods["at(_)"] = make_native<At>();
+    _cell._nativeMethods["substringFrom(_)to(_)"] = make_native<Substring>();
+    _cell._nativeMethods["asString"] = make_native<AsString>();
 }
 
 const GraceString &GraceString::asString() const {

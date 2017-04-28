@@ -5,6 +5,7 @@
 
 #include <core/model/evaluators/ExecutionEvaluator.h>
 #include <core/model/execution/methods/MethodFactory.h>
+#include <core/model/execution/methods/MethodRequest.h>
 #include "GraceBoolean.h"
 #include "GraceString.h"
 
@@ -26,11 +27,11 @@ GraceObjectPtr GraceBoolean::dispatch(const std::string &methodName, ExecutionEv
    return GraceObject::dispatch(methodName, eval, paramValues);
 }
 void GraceBoolean::addDefaultMethods() {
-    _nativeMethods["prefix!"] = make_native<PrefixNot>();
-    _nativeMethods["&&(_)"] = make_native<AndAnd>();
-    _nativeMethods["||(_)"] = make_native<OrOr>();
-    _nativeMethods["not"] = make_native<Not>();
-    _nativeMethods["asString"] = make_native<AsString>();
+    _cell._nativeMethods["prefix!"] = make_native<PrefixNot>();
+    _cell._nativeMethods["&&(_)"] = make_native<AndAnd>();
+    _cell._nativeMethods["||(_)"] = make_native<OrOr>();
+    _cell._nativeMethods["not"] = make_native<Not>();
+    _cell._nativeMethods["asString"] = make_native<AsString>();
 }
 
 bool GraceBoolean::operator==(const GraceObject &rhs) const {

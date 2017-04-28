@@ -3,16 +3,17 @@
 // Distributed under the GPLv3 license.
 //
 
-
-
-
 #include <core/model/evaluators/ExecutionEvaluator.h>
 #include <core/model/execution/methods/Method.h>
+#include <core/model/execution/methods/MethodFactory.h>
+#include <core/model/execution/methods/MethodRequest.h>
 #include "GraceObject.h"
 
 namespace naylang {
 
-GraceObject::GraceObject() : _outer{nullptr} {}
+GraceObject::GraceObject() : _outer{nullptr} {
+    addDefaultMethods();
+}
 
 const GraceBoolean & GraceObject::asBoolean() const {
     throw std::string{"Trying to cast a generic GraceObject as GraceBoolean"};
@@ -38,6 +39,10 @@ bool GraceObject::isDone() const {
     return false;
 }
 
+void GraceObject::addDefaultMethods() {
+    _cell._nativeMethods[":=(_)"] = make_native<Assignment>();
+}
+
 GraceObjectPtr GraceObject::dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) {
     MethodPtr meth = getMethod(methodName);
     MethodRequest req(methodName, paramValues);
@@ -46,7 +51,7 @@ GraceObjectPtr GraceObject::dispatch(const std::string &methodName, ExecutionEva
 }
 
 void GraceObject::addMethod(const std::string &name, MethodPtr method) {
-    _userMethods[name] = method;
+    _cell._userMethods[name] = method;
 }
 
 bool GraceObject::isScope() const {
@@ -66,28 +71,28 @@ bool GraceObject::isClosure() const {
 }
 
 bool GraceObject::hasField(const std::string &name) const {
-    return _fields.find(name) != _fields.end();
+    return _cell._fields.find(name) != _cell._fields.end();
 }
 
 bool GraceObject::hasMethod(const std::string &name) const {
     bool found = false;
     found = found || (_outer != nullptr && _outer->hasMethod(name));
-    found = found || _nativeMethods.find(name) != _nativeMethods.end();
-    found = found || _userMethods.find(name) != _userMethods.end();
+    found = found || _cell._nativeMethods.find(name) != _cell._nativeMethods.end();
+    found = found || _cell._userMethods.find(name) != _cell._userMethods.end();
     return found;
 }
 
 void GraceObject::setField(const std::string &name, GraceObjectPtr value) {
-    _fields[name] = value;
+    _cell._fields[name] = value;
 }
 
 MethodPtr GraceObject::getMethod(const std::string &name) {
-    if (_userMethods.find(name) != _userMethods.end()) {
-        return _userMethods[name];
+    if (_cell._userMethods.find(name) != _cell._userMethods.end()) {
+        return _cell._userMethods[name];
     }
 
-    if (_nativeMethods.find(name) != _nativeMethods.end()) {
-        return _nativeMethods[name];
+    if (_cell._nativeMethods.find(name) != _cell._nativeMethods.end()) {
+        return _cell._nativeMethods[name];
     }
 
     if (_outer == nullptr)
@@ -97,10 +102,10 @@ MethodPtr GraceObject::getMethod(const std::string &name) {
 }
 
 GraceObjectPtr GraceObject::getField(const std::string &name) {
-    if (_fields.find(name) == _fields.end()) {
+    if (_cell._fields.find(name) == _cell._fields.end()) {
         throw std::string{"Field not found in object"};
     }
-    return _fields[name];
+    return _cell._fields[name];
 }
 
 bool GraceObject::isBlock() const {
@@ -112,11 +117,11 @@ std::string GraceObject::prettyPrint(int indentLevel) {
     int oldIndent = indentLevel;
     res += "object {\n";
     indentLevel += 2;
-    for (auto field : _fields) {
+    for (auto field : _cell._fields) {
         indent(indentLevel, res);
         res += field.first + " = " + field.second->prettyPrint(indentLevel + 2) + "\n";
     }
-    for (auto method : _userMethods) {
+    for (auto method : _cell._userMethods) {
         indent(indentLevel, res);
         res += method.second->prettyPrint(method.first, indentLevel) + "\n";
     }
@@ -130,5 +135,9 @@ void GraceObject::indent(int indentLevel, std::string &res) const {
     for (int i = 0; i < indentLevel; i++) {
         res += " ";
     }
+}
+
+GraceObjectPtr GraceObject::Assignment::respond(GraceObject &self, MethodRequest &request) {
+    return nullptr;
 }
 }

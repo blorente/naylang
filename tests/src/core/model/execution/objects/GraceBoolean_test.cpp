@@ -5,6 +5,7 @@
 
 #include <core/model/execution/objects/GraceBoolean.h>
 #include <core/model/execution/objects/GraceString.h>
+#include <core/model/execution/methods/MethodRequest.h>
 #include "catch.h"
 
 using namespace naylang;

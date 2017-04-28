@@ -6,6 +6,7 @@
 #include <core/model/execution/methods/Method.h>
 #include <core/model/ast/NodeFactory.h>
 #include <core/model/execution/objects/GraceBoolean.h>
+#include <core/model/execution/methods/MethodRequest.h>
 #include "catch.h"
 
 using namespace naylang;

@@ -9,14 +9,13 @@
 #include <memory>
 #include <core/model/ast/expressions/Block.h>
 #include <core/model/execution/objects/GraceObjectFactory.h>
-#include <core/model/execution/objects/GraceObject.h>
-#include <core/model/evaluators/ExecutionEvaluator.h>
-#include "MethodRequest.h"
+#include <core/model/execution/objects/GraceObjectPtr.h>
 
 namespace naylang {
 
 class ExecutionEvaluator;
 class GraceObject;
+class MethodRequest;
 
 class Method {
     std::vector<DeclarationPtr> _params;

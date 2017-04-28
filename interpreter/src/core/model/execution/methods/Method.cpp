@@ -2,21 +2,17 @@
 // Copyright (c) 2017 by Borja Lorente.
 // Distributed under the GPLv3 license.
 //
+#include <core/model/execution/objects/GraceObject.h>
 #include <core/model/execution/objects/GraceDoneDef.h>
 #include <core/model/execution/objects/GraceClosure.h>
+#include <core/model/execution/methods/MethodRequest.h>
+#include <core/model/evaluators/ExecutionEvaluator.h>
 #include "Method.h"
 
 namespace naylang {
 
 Method::Method(BlockPtr code) :
         _params{code->params()}, _code{code->body()} {}
-
-/*{
-    _params.reserve(code->params().size());
-    std::copy(code->params().begin(), code->params().end(), std::back_inserter(_params));
-    _code.reserve(code->body().size());
-    std::copy(code->body().begin(), code->body().end(), std::back_inserter(_code));
-}*/
 
 Method::Method(const std::vector<DeclarationPtr> &params, const std::vector<StatementPtr> &body) :
     _params{params}, _code{body} {}

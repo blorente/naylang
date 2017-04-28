@@ -13,6 +13,7 @@
 #include <core/model/ast/expressions/primitives/NumberLiteral.h>
 #include <core/model/ast/expressions/requests/ExplicitRequestNode.h>
 #include <core/model/execution/methods/MethodFactory.h>
+#include <core/model/execution/methods/MethodRequest.h>
 
 #include "catch.h"
 
