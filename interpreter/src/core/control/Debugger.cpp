@@ -44,12 +44,12 @@ void Debugger::debug(Statement *node) {
     }
 }
 
-void Debugger::step() {
-    _eval->setDebugState(STEP);
+void Debugger::stepIn() {
+    _eval->setDebugState(STEP_IN);
 }
 
-void Debugger::skip() {
-    std::cout << "Skip not yet implemented" << std::endl;
+void Debugger::stepOver() {
+    _eval->setDebugState(STEP_OVER);
 }
 
 void Debugger::finish() {

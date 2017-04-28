@@ -50,12 +50,12 @@ public:
     void execute(Debugger &debugger) override;
 };
 
-class DebugNext : public DebugCommand {
+class DebugStepIn : public DebugCommand {
 public:
     void execute(Debugger &debugger) override;
 };
 
-class DebugSkip : public DebugCommand {
+class DebugStepOver : public DebugCommand {
 public:
     void execute(Debugger &debugger) override;
 };

@@ -8,6 +8,8 @@
 enum DebugState {
     CONTINUE,
     STOP,
-    STEP
+    STEP_IN,
+    STEP_OVER,
+    STEP_OVER_SKIP
 };
 #endif //NAYLANG_DEBUGSTATE_H

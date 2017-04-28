@@ -46,10 +46,10 @@ void DebugMode::setCommand(const std::string &name, const std::string &body) {
         _command = std::make_unique<DebugPrintExp>(body);
     } else if (name == "continue" || name == "c") {
         _command = std::make_unique<DebugContinue>();
-    } else if (name == "next" || name == "n") {
-        _command = std::make_unique<DebugNext>();
-    } else if (name == "skip" || name == "s") {
-        _command = std::make_unique<DebugSkip>();
+    } else if (name == "step" || name == "st") {
+        _command = std::make_unique<DebugStepIn>();
+    } else if (name == "skip" || name == "sk") {
+        _command = std::make_unique<DebugStepOver>();
     } else {
         _command = std::make_unique<DebugInvalid>();
     }

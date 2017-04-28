@@ -34,11 +34,11 @@ void DebugInvalid::execute(Debugger &debugger) {
     std::cout << "Command not found, try again" << std::endl;
 }
 
-void DebugNext::execute(Debugger &debugger) {
-    debugger.step();
+void DebugStepIn::execute(Debugger &debugger) {
+    debugger.stepIn();
 }
 
-void DebugSkip::execute(Debugger &debugger) {
-    debugger.skip();
+void DebugStepOver::execute(Debugger &debugger) {
+    debugger.stepOver();
 }
 }

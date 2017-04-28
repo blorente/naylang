@@ -26,8 +26,8 @@ public:
     void setBreakpoint(int line);
     void printEnvironment();
     void resume();
-    void step();
-    void skip();
+    void stepIn();
+    void stepOver();
 
     void debug(Statement *node);
 

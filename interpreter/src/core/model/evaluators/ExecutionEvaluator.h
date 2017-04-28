@@ -60,7 +60,7 @@ public:
 
 private:
     void beginDebug(Statement *node);
-    void endDebug(Statement *node);
+    void endDebug(Statement *node, DebugState prevState);
 };
 } // end namespace naylang
 

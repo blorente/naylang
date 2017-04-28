@@ -102,7 +102,7 @@ void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
         paramValues.push_back(_partial);
     }
     _partial = self->dispatch(expression.identifier(), *this, paramValues);
-    endDebug(&expression);
+    endDebug(&expression, STEP_OVER_SKIP);
 }
 
 void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {
@@ -117,20 +117,22 @@ void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {
 
 void ExecutionEvaluator::evaluate(ConstantDeclaration &expression) {
     beginDebug(&expression);
+    DebugState prevState = _state;
     expression.value()->accept(*this);
     _currentScope->setField(expression.name(), _partial);
-    endDebug(&expression);
+    endDebug(&expression, prevState);
 }
 
 void ExecutionEvaluator::evaluate(VariableDeclaration &expression) {
     beginDebug(&expression);
+    DebugState prevState = _state;
     if (expression.value()) {
         expression.value()->accept(*this);
         _currentScope->setField(expression.name(), _partial);
     } else {
         _currentScope->setField(expression.name(), make_obj<UserObject>());
     }
-    endDebug(&expression);
+    endDebug(&expression, prevState);
 }
 
 void ExecutionEvaluator::evaluate(Block &expression) {
@@ -165,16 +167,24 @@ void ExecutionEvaluator::beginDebug(Statement *node) {
     if (!_debugging)
         return;
 
+    if (_state == STEP_OVER)
+        _state = CONTINUE;
+
     _debugger->debug(node);
 }
 
-void ExecutionEvaluator::endDebug(Statement *node) {
+void ExecutionEvaluator::endDebug(Statement *node, DebugState prevState) {
     if (!_debugging)
         return;
 
-    if (node->stoppable() && _state == STEP) {
+    if (!node->stoppable())
+        return;
+
+    if (prevState == STEP_OVER)
         _state = STOP;
-    }
+
+    if (_state == STEP_IN)
+        _state = STOP;
 }
 
 void ExecutionEvaluator::setDebugState(DebugState state) {
