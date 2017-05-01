@@ -13,8 +13,8 @@
 #include <core/model/execution/objects/GraceObjectFactory.h>
 #include <core/model/execution/methods/MethodPtr.h>
 #include <core/model/execution/methods/Method.h>
-#include <core/model/execution/objects/GraceObjectPtr.h>
 #include <core/model/execution/methods/NativeMethod.h>
+#include <core/model/execution/objects/GraceObjectPtr.h>
 
 namespace naylang {
 
@@ -25,10 +25,11 @@ class GraceIterable;
 class ExecutionEvaluator;
 class MethodRequest;
 class GraceObject;
+class NativeMethod;
 
 struct ObjectCell {
     ~ObjectCell() = default;
-    std::map<std::string, MethodPtr> _nativeMethods;
+    std::map<std::string, std::shared_ptr<NativeMethod>> _nativeMethods;
     std::map<std::string, MethodPtr> _userMethods;
     std::map<std::string, GraceObjectPtr> _fields;
 
@@ -72,6 +73,8 @@ public:
     virtual bool isClosure() const;
     virtual bool isBlock() const;
 
+    const ObjectCell &cell() const;
+
     virtual GraceObjectPtr outer();
     virtual void setOuter(GraceObjectPtr outer);
 
@@ -85,6 +88,11 @@ public:
     virtual std::string prettyPrint(int indentLevel);
 
     void indent(int indentLevel, std::string &res) const;
+
+    class Assignment : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
 };
 } // end namespace naylang
 

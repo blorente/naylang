@@ -196,7 +196,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             ExecutionEvaluator eval;
 
             auto xTruDecl = make_node<VariableDeclaration>("x", trueLiteral);
-            auto assParams{five};
+            std::vector<ExpressionPtr> assParams{five};
             auto assFive = make_node<ExplicitRequestNode>(":=(_)", xRef, assParams);
 
             xTruDecl->accept(eval);

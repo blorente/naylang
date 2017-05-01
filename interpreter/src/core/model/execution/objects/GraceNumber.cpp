@@ -28,7 +28,7 @@ void GraceNumber::addDefaultMethods() {
     _cell._nativeMethods["/(_)"] = make_native<Div>();
     _cell._nativeMethods["%(_)"] = make_native<Mod>();
     _cell._nativeMethods["^(_)"] = make_native<Pow>();
-    _cell._nativeMethods["asString(_)"] = make_native<AsString>();
+    _cell._nativeMethods["asString"] = make_native<AsString>();
 }
 
 const GraceNumber &GraceNumber::asNumber() const {
@@ -40,7 +40,9 @@ double GraceNumber::value() const {
 }
 
 std::string GraceNumber::prettyPrint(int indentLevel) {
-    return std::to_string(_cell._numVal);
+    MethodRequest req("asString", {});
+    auto str = this->_cell._nativeMethods["asString"]->respond(*this, req);
+    return str->asString().value();
 }
 
 GraceObjectPtr GraceNumber::createCopy() {
@@ -130,12 +132,7 @@ GraceObjectPtr GraceNumber::LessEq::respond(GraceObject &self, MethodRequest &re
 }
 
 GraceObjectPtr GraceNumber::AsString::respond(GraceObject &self, MethodRequest &request) {
-    std::string value = std::to_string(self.asNumber().value());
+    std::string value = std::to_string(self.cell()._numVal);
     return make_obj<GraceString>(value);
-}
-
-GraceObjectPtr GraceNumber::Assignment::respond(GraceObject &self, MethodRequest &request) {
-    self = *make_obj<GraceNumber>(request.params()[0]->asNumber().value());
-    return nullptr;
 }
 }

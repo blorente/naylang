@@ -5,6 +5,7 @@
 
 #include <core/model/evaluators/ExecutionEvaluator.h>
 #include <core/model/execution/methods/Method.h>
+#include <core/model/execution/methods/NativeMethod.h>
 #include <core/model/execution/methods/MethodFactory.h>
 #include <core/model/execution/methods/MethodRequest.h>
 #include "GraceObject.h"
@@ -36,6 +37,7 @@ bool GraceObject::isDone() const {
 }
 
 void GraceObject::addDefaultMethods() {
+    _cell._nativeMethods[":=(_)"] = make_native<Assignment>();
 }
 
 GraceObjectPtr GraceObject::dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) {
@@ -132,4 +134,12 @@ void GraceObject::indent(int indentLevel, std::string &res) const {
     }
 }
 
+const ObjectCell &GraceObject::cell() const {
+    return _cell;
+}
+
+GraceObjectPtr GraceObject::Assignment::respond(GraceObject &self, MethodRequest &request) {
+    self._cell = request.params()[0]->_cell.clone();
+    return nullptr;
+}
 }

@@ -21,14 +21,14 @@ TEST_CASE("Grace Object Native methods", "[GraceObject]") {
     auto hi = make_obj<GraceString>("Hi");
 
     SECTION("Assignment") {
+        GraceObject::Assignment assig;
 
         SECTION("Number Assignment") {
             UserObject usr;
             usr.setField("x", five);
             REQUIRE(usr.getField("x")->asNumber().value() == 5.0);
             MethodRequest req(":=(_)", {six});
-            GraceNumber::Assignment ass;
-            ass.respond(*usr.getField("x"), req);
+            assig.respond(*usr.getField("x"), req);
             REQUIRE(usr.getField("x")->asNumber().value() == 6.0);
         }
 
@@ -42,7 +42,7 @@ TEST_CASE("Grace Object Native methods", "[GraceObject]") {
             other->addMethod("add", make_meth(make_node<Block>()));
 
             MethodRequest req(":=(_)", {other});
-            assignment.respond(one, req);
+            assig.respond(one, req);
 
             REQUIRE(one.hasField("x"));
             REQUIRE(one.hasField("y"));

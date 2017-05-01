@@ -45,7 +45,9 @@ bool GraceBoolean::operator!=(const GraceObject &rhs) const {
 }
 
 std::string GraceBoolean::prettyPrint(int indentLevel) {
-    return _cell._boolVal ? "true" : "false";
+    MethodRequest req("asString", {});
+    auto str = this->_cell._nativeMethods["asString"]->respond(*this, req);
+    return str->asString().value();
 }
 
 GraceObjectPtr GraceBoolean::createCopy() {
@@ -81,7 +83,7 @@ GraceObjectPtr GraceBoolean::Not::respond(GraceObject &self, MethodRequest &requ
 }
 
 GraceObjectPtr GraceBoolean::AsString::respond(GraceObject &self, MethodRequest &request) {
-    if (self.asBoolean().value()) {
+    if (self.cell()._boolVal) {
         return make_obj<GraceString>("true");
     }
     return make_obj<GraceString>("false");

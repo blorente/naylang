@@ -6,12 +6,13 @@
 #ifndef NAYLANG_NATIVEMETHOD_H
 #define NAYLANG_NATIVEMETHOD_H
 
-#include <core/model/execution/objects/GraceObject.h>
 #include <core/model/evaluators/Evaluator.h>
+#include <core/model/execution/objects/GraceObjectPtr.h>
 #include "Method.h"
 
 namespace naylang {
 
+class GraceObject;
 class NativeMethod : public Method {
 
 public:

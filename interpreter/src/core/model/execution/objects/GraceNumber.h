@@ -95,12 +95,6 @@ public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
     };
 
-    class Assignment : public NativeMethod {
-    public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
-    };
-    friend class Assignment;
-
 };
 } // end namespace naylang
 
