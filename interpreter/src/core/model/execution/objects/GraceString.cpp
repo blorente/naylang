@@ -21,6 +21,7 @@ const std::string &GraceString::value() const {
 }
 
 void GraceString::addDefaultMethods() {
+    GraceObject::addDefaultMethods();
     _cell._nativeMethods["==(_)"] = make_native<Equals>();
     _cell._nativeMethods["!=(_)"] = make_native<NotEquals>();
     _cell._nativeMethods[">(_)"] = make_native<Greater>();
@@ -39,6 +40,10 @@ const GraceString &GraceString::asString() const {
 
 std::string GraceString::prettyPrint(int indentLevel) {
     return std::string{"\"" + _cell._strVal + "\""};
+}
+
+GraceObjectPtr GraceString::createCopy() {
+    return make_obj<GraceString>(_cell._strVal);
 }
 
 GraceObjectPtr GraceString::Equals::respond(GraceObject &self, MethodRequest &request) {

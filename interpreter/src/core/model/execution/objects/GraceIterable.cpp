@@ -13,10 +13,11 @@ namespace naylang {
 
 GraceIterable::GraceIterable(const std::vector<GraceObjectPtr> &contents) {
     _cell._vectorVal = contents;
+    addDefaultMethods();
 }
 
 void GraceIterable::addDefaultMethods() {
-    // Some methods
+    GraceObject::addDefaultMethods();
 }
 
 const std::vector<GraceObjectPtr> &GraceIterable::values() const {
@@ -29,6 +30,10 @@ GraceIterable &GraceIterable::asIterable() const {
 
 void GraceIterable::setElem(int index, GraceObjectPtr value) {
     _cell._vectorVal[index] = value;
+}
+
+GraceObjectPtr GraceIterable::createCopy() {
+    return make_obj<GraceIterable>(_cell._vectorVal);
 }
 
 GraceObjectPtr GraceIterable::Append::respond(GraceObject &self, MethodRequest &request) {

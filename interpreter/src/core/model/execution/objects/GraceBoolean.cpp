@@ -28,6 +28,7 @@ GraceObjectPtr GraceBoolean::dispatch(const std::string &methodName, ExecutionEv
    return GraceObject::dispatch(methodName, eval, paramValues);
 }
 void GraceBoolean::addDefaultMethods() {
+    GraceObject::addDefaultMethods();
     _cell._nativeMethods["prefix!"] = make_native<PrefixNot>();
     _cell._nativeMethods["&&(_)"] = make_native<AndAnd>();
     _cell._nativeMethods["||(_)"] = make_native<OrOr>();
@@ -45,6 +46,10 @@ bool GraceBoolean::operator!=(const GraceObject &rhs) const {
 
 std::string GraceBoolean::prettyPrint(int indentLevel) {
     return _cell._boolVal ? "true" : "false";
+}
+
+GraceObjectPtr GraceBoolean::createCopy() {
+    return make_obj<GraceBoolean>(_cell._boolVal);
 }
 
 GraceObjectPtr GraceBoolean::PrefixNot::respond(GraceObject &self, MethodRequest &request) {

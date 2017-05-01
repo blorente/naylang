@@ -11,15 +11,19 @@
 namespace naylang {
 
 GraceBlock::GraceBlock(MethodPtr apply) {
-    addMethod("apply", apply);
     addDefaultMethods();
+    addMethod("apply", apply);
 }
 
 void GraceBlock::addDefaultMethods() {
-    // add some methods
+    GraceObject::addDefaultMethods();
 }
 
 bool GraceBlock::isBlock() const {
     return true;
+}
+
+GraceObjectPtr GraceBlock::createCopy() {
+    return make_obj<GraceBlock>(getMethod("apply"));
 }
 }

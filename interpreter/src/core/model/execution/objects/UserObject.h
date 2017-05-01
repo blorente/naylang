@@ -13,6 +13,8 @@ namespace naylang {
 class UserObject : public GraceObject {
 public:
     virtual void addDefaultMethods();
+
+    GraceObjectPtr createCopy() override;
 };
 } // end namespace naylang
 

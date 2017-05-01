@@ -18,6 +18,7 @@ GraceNumber::GraceNumber(double value) {
 }
 
 void GraceNumber::addDefaultMethods() {
+    GraceObject::addDefaultMethods();
     _cell._nativeMethods["prefix!"] = make_native<Negative>();
     _cell._nativeMethods["==(_)"] = make_native<Equals>();
     _cell._nativeMethods["!=(_)"] = make_native<NotEquals>();
@@ -40,6 +41,10 @@ double GraceNumber::value() const {
 
 std::string GraceNumber::prettyPrint(int indentLevel) {
     return std::to_string(_cell._numVal);
+}
+
+GraceObjectPtr GraceNumber::createCopy() {
+    return make_obj<GraceNumber>(_cell._numVal);
 }
 
 GraceObjectPtr GraceNumber::Equals::respond(GraceObject &self, MethodRequest &request) {
@@ -127,5 +132,10 @@ GraceObjectPtr GraceNumber::LessEq::respond(GraceObject &self, MethodRequest &re
 GraceObjectPtr GraceNumber::AsString::respond(GraceObject &self, MethodRequest &request) {
     std::string value = std::to_string(self.asNumber().value());
     return make_obj<GraceString>(value);
+}
+
+GraceObjectPtr GraceNumber::Assignment::respond(GraceObject &self, MethodRequest &request) {
+    self = *make_obj<GraceNumber>(request.params()[0]->asNumber().value());
+    return nullptr;
 }
 }

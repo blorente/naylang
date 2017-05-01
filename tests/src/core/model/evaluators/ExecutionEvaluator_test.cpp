@@ -27,6 +27,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
     auto trueLiteral = make_node<BooleanLiteral>(true);
     auto falseLiteral = make_node<BooleanLiteral>(false);
     auto ctruConstDecl = make_node<ConstantDeclaration>("ctru", trueLiteral);
+    auto five = make_node<NumberLiteral>(5.0);
 
     SECTION("An execution evaluator has a partial GraceObject") {
         ExecutionEvaluator eval;
@@ -189,6 +190,19 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
 
             applyReq->accept(eval);
             REQUIRE(*GraceFalse == *eval.partial());
+        }
+
+        SECTION("Evaluating assignment can change the type of the object") {
+            ExecutionEvaluator eval;
+
+            auto xTruDecl = make_node<VariableDeclaration>("x", trueLiteral);
+            auto assParams{five};
+            auto assFive = make_node<ExplicitRequestNode>(":=(_)", xRef, assParams);
+
+            xTruDecl->accept(eval);
+            assFive->accept(eval);
+
+            REQUIRE(eval.currentScope()->getField("x")->prettyPrint(0) == "5.000000");
         }
     }
 

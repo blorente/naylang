@@ -24,6 +24,8 @@ public:
 
     virtual const GraceBoolean &asBoolean() const override;
 
+    GraceObjectPtr createCopy() override;
+
     bool value() const;
 
     std::string prettyPrint(int indentLevel) override;

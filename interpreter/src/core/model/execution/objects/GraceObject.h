@@ -14,6 +14,7 @@
 #include <core/model/execution/methods/MethodPtr.h>
 #include <core/model/execution/methods/Method.h>
 #include <core/model/execution/objects/GraceObjectPtr.h>
+#include <core/model/execution/methods/NativeMethod.h>
 
 namespace naylang {
 
@@ -35,21 +36,31 @@ struct ObjectCell {
     std::string _strVal;
     bool _boolVal;
     std::vector<GraceObjectPtr> _vectorVal;
+
+    ObjectCell clone() {
+        ObjectCell newCell;
+        newCell._numVal = _numVal;
+        newCell._vectorVal = _vectorVal;
+        newCell._boolVal = _boolVal;
+        newCell._strVal = _strVal;
+        newCell._fields = _fields;
+        newCell._nativeMethods = _nativeMethods;
+        newCell._userMethods = _userMethods;
+        return newCell;
+    }
 };
 
 class GraceObject {
 protected:
     ObjectCell _cell;
-
     GraceObjectPtr _outer;
 
 public:
-    GraceObject();
-
     virtual GraceObjectPtr
     dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
     virtual void addDefaultMethods();
     virtual void addMethod(const std::string &name, MethodPtr method);
+    virtual GraceObjectPtr createCopy() = 0;
 
     virtual const GraceBoolean &asBoolean() const;
     virtual const GraceNumber &asNumber() const;
@@ -74,11 +85,6 @@ public:
     virtual std::string prettyPrint(int indentLevel);
 
     void indent(int indentLevel, std::string &res) const;
-
-    class Assignment : public Method {
-    public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
-    };
 };
 } // end namespace naylang
 

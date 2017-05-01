@@ -11,13 +11,18 @@
 namespace naylang {
 
 class GraceClosure : public GraceObject {
+    std::string _methodName;
+    MethodPtr _methodPtr;
 public:
 
     GraceClosure() = default;
     GraceClosure(const std::string &name, MethodPtr method);
 
     virtual void addDefaultMethods();
+
     virtual bool isClosure() const;
+
+    GraceObjectPtr createCopy() override;
 };
 } // end namespace naylang
 

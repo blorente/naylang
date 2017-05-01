@@ -17,6 +17,8 @@ public:
     GraceBlock(MethodPtr apply);
 
     virtual void addDefaultMethods();
+
+    GraceObjectPtr createCopy() override;
 };
 } // end namespace naylang
 

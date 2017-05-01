@@ -384,8 +384,6 @@ antlrcpp::Any NaylangParserVisitor::visitLineup(GraceParser::LineupContext *ctx)
 
 antlrcpp::Any NaylangParserVisitor::visitProgram(GraceParser::ProgramContext *ctx) {
     for (auto line : ctx->statement()) {
-        clearPartials();
-        line->accept(this);
         line->accept(this);
         auto node = popPartialStat();
         _tree.addNode(node);

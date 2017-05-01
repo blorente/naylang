@@ -86,6 +86,7 @@ void ExecutionEvaluator::evaluate(Return &expression) {
 
 void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
     beginDebug(&expression);
+    DebugState prevState = _state;
     expression.receiver()->accept(*this);
     auto self = _partial;
 
@@ -102,7 +103,7 @@ void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
         paramValues.push_back(_partial);
     }
     _partial = self->dispatch(expression.identifier(), *this, paramValues);
-    endDebug(&expression, STEP_OVER_SKIP);
+    endDebug(&expression, prevState);
 }
 
 void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {

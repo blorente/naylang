@@ -19,6 +19,8 @@ public:
     const std::vector<GraceObjectPtr> &values() const;
     void setElem(int index, GraceObjectPtr value);
 
+    GraceObjectPtr createCopy() override;
+
     virtual void addDefaultMethods();
     virtual GraceIterable &asIterable() const;
 

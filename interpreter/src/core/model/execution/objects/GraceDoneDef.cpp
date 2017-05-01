@@ -15,7 +15,7 @@ bool GraceDoneDef::isDone() const {
 }
 
 void GraceDoneDef::addDefaultMethods() {
-    // Some methods
+    GraceObject::addDefaultMethods();
 }
 
 GraceObjectPtr GraceDoneDef::dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues) {
@@ -28,5 +28,9 @@ bool GraceDoneDef::operator==(const GraceObject &rhs) const {
 
 bool GraceDoneDef::operator!=(const GraceObject &rhs) const {
     return !(*this == rhs);
+}
+
+GraceObjectPtr GraceDoneDef::createCopy() {
+    return make_obj<GraceDoneDef>();
 }
 }

@@ -23,6 +23,8 @@ public:
 
     std::string prettyPrint(int indentLevel) override;
 
+    GraceObjectPtr createCopy() override;
+
     class Equals : public NativeMethod {
     public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
@@ -92,6 +94,13 @@ public:
     public:
         virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
     };
+
+    class Assignment : public NativeMethod {
+    public:
+        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+    };
+    friend class Assignment;
+
 };
 } // end namespace naylang
 

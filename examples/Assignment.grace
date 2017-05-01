@@ -1,6 +1,6 @@
 var x := 4;
 x := 5;
 def y = object {
-    var x := "t";
+    var r := "t";
 };
 x := y;

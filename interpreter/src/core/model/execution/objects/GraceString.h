@@ -14,14 +14,12 @@ namespace naylang {
 class GraceString : public GraceObject {
 public:
     GraceString(const std::string &value);
-
     virtual void addDefaultMethods() override;
-
     virtual const GraceString &asString() const override;
-
     const std::string &value() const;
-
     std::string prettyPrint(int indentLevel) override;
+
+    GraceObjectPtr createCopy() override;
 
     class Equals : public NativeMethod {
     public:

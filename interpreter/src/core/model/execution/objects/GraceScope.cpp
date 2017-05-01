@@ -10,7 +10,7 @@
 
 namespace naylang {
 void GraceScope::addDefaultMethods() {
-    // Do nothing
+    GraceObject::addDefaultMethods();
 }
 
 GraceObjectPtr GraceScope::dispatch(const std::string &methodName, ExecutionEvaluator &eval,
@@ -20,5 +20,9 @@ GraceObjectPtr GraceScope::dispatch(const std::string &methodName, ExecutionEval
 
 bool GraceScope::isScope() const {
     return true;
+}
+
+GraceObjectPtr GraceScope::createCopy() {
+    return make_obj<GraceScope>();
 }
 }

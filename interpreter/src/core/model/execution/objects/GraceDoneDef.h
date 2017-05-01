@@ -22,6 +22,8 @@ public:
     bool operator==(const GraceObject& rhs) const;
     bool operator!=(const GraceObject& rhs) const;
 
+    GraceObjectPtr createCopy() override;
+
     bool isDone() const;
 };
 } // end namespace naylang

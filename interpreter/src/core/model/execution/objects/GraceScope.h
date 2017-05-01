@@ -14,12 +14,11 @@ class GraceScope : public GraceObject {
 
 public:
     GraceScope() = default;
-
     virtual void addDefaultMethods();
-
-    virtual GraceObjectPtr  dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
-
+    virtual GraceObjectPtr dispatch(const std::string &methodName, ExecutionEvaluator &eval, const std::vector<GraceObjectPtr> &paramValues);
     virtual bool isScope() const;
+
+    GraceObjectPtr createCopy() override;
 };
 } // end namespace naylang
 
