@@ -82,6 +82,24 @@ antlrcpp::Any NaylangParserVisitor::visitPrefixExp(GraceParser::PrefixExpContext
     return 0;
 }
 
+antlrcpp::Any NaylangParserVisitor::visitInfixExp(GraceParser::InfixExpContext *ctx) {
+    ctx->infix_op()->accept(this);
+    auto opname = popPartialStr();
+    ctx->rec->accept(this);
+    auto rec = popPartialExp();
+    ctx->param->accept(this);
+    auto param = popPartialExp();
+    std::vector<ExpressionPtr> params{param};
+    auto req = make_node<ExplicitRequestNode>(opname, rec, params, getLine(ctx), getCol(ctx));
+    pushPartialExp(req);
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitInfix_op(GraceParser::Infix_opContext *ctx) {
+    pushPartialStr(ctx->getText() + "(_)");
+    return 0;
+}
+
 
 antlrcpp::Any NaylangParserVisitor::visitNumber(GraceParser::NumberContext *ctx) {
     int lastLine = ctx->stop->getLine();
@@ -420,6 +438,46 @@ antlrcpp::Any NaylangParserVisitor::visitExplAssign(GraceParser::ExplAssignConte
     auto val = popPartialExp();
     auto assign = make_node<Assignment>(field, scope, val);
     pushPartialStat(assign);
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitIfThen(GraceParser::IfThenContext *ctx) {
+    ctx->cond->accept(this);
+    auto cond = popPartialExp();
+
+    ctx->thn->accept(this);
+    auto bodyLength = ctx->thn->methodBodyLine().size();
+    auto body = popPartialStats(bodyLength);
+
+    pushPartialStat(make_node<IfThen>(cond, body));
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitIfThenElse(GraceParser::IfThenElseContext *ctx) {
+    ctx->cond->accept(this);
+    auto cond = popPartialExp();
+
+    ctx->thn->accept(this);
+    auto thenLength = ctx->thn->methodBodyLine().size();
+    auto thenBlock = popPartialStats(thenLength);
+
+    ctx->els->accept(this);
+    auto elsLen = ctx->els->methodBodyLine().size();
+    auto elseBlock = popPartialStats(elsLen);
+
+    pushPartialStat(make_node<IfThenElse>(cond, thenBlock, elseBlock));
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitWhileNode(GraceParser::WhileNodeContext *ctx) {
+    ctx->cond->accept(this);
+    auto cond = popPartialExp();
+
+    ctx->body->accept(this);
+    auto bodyLength = ctx->body->methodBodyLine().size();
+    auto body = popPartialStats(bodyLength);
+
+    pushPartialStat(make_node<While>(cond, body));
     return 0;
 }
 }

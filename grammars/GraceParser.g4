@@ -70,12 +70,21 @@ void doAfter() {}
  * Parser Rules
  */
 program: (statement)*;
-statement: expression DELIMITER | declaration | assignment; //| control;
+statement: expression DELIMITER | declaration | assignment | control;
 
 assignment : field=identifier VAR_ASSIGN val=expression DELIMITER                       #SelfAssign
            | scope=explicitRequest DOT field=identifier VAR_ASSIGN val=expression DELIMITER   #ExplAssign
            | scope=implicitRequest DOT field=identifier VAR_ASSIGN val=expression DELIMITER   #ImplAssign
            ;
+
+control : ifThen
+        | ifThenElse
+        | whileNode
+        ;
+
+ifThen : IF OPEN_PAREN cond=expression CLOSE_PAREN thn=methodBody;
+ifThenElse : IF OPEN_PAREN cond=expression CLOSE_PAREN thn=methodBody ELSE els=methodBody;
+whileNode : WHILE OPEN_BRACE cond=expression CLOSE_BRACE body=methodBody;
 
 declaration : variableDeclaration
             | constantDeclaration
@@ -97,7 +106,7 @@ formalParameterList: formalParameter (COMMA formalParameter)*;
 formalParameter: identifier;
 
 methodBody: OPEN_BRACE methodBodyLine* CLOSE_BRACE;
-methodBodyLine: variableDeclaration | constantDeclaration | expression DELIMITER; //| control;
+methodBodyLine: variableDeclaration | constantDeclaration | expression DELIMITER | control | assignment;
 
 // Using left-recursion and implicit operator precendence. ANTLR 4 Reference, page 70
 expression  : rec=expression op=(MUL | DIV) param=expression        #MulDivExp
@@ -105,7 +114,7 @@ expression  : rec=expression op=(MUL | DIV) param=expression        #MulDivExp
             | explicitRequest                                       #ExplicitReqExp
             | implicitRequest                                       #ImplicitReqExp
             | prefix_op rec=expression                              #PrefixExp
-            | rec=expression infix_op param=expression              #InficExp
+            | rec=expression infix_op param=expression              #InfixExp
             | value                                                 #ValueExp
             ;
 
@@ -144,5 +153,14 @@ number: INT;
 boolean: TRUE | FALSE;
 string: QUOTE content=.*? QUOTE;
 prefix_op: MINUS | EXCLAMATION;
-infix_op: MOD | POW | CONCAT;
+infix_op: MOD
+        | POW
+        | CONCAT
+        | LESS
+        | LESS_EQUAL
+        | GREATER
+        | GREATER_EQUAL
+        | EQUAL EQUAL
+        | EXCLAMATION EQUAL
+        ;
 

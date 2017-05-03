@@ -51,6 +51,9 @@ VAR: 'var ';
 DEF: 'def ';
 PREFIX: 'prefix';
 OBJECT: 'object';
+IF: 'if';
+ELSE: 'else';
+WHILE: 'while';
 
 COMMA: ',';
 DOT: '.';
@@ -73,6 +76,10 @@ DIV: '/';
 MOD: '%';
 POW: '^';
 EQUAL: '=';
+LESS: '<';
+LESS_EQUAL: '<=';
+GREATER: '>';
+GREATER_EQUAL: '>=';
 
 TRUE: 'true';
 FALSE: 'false';

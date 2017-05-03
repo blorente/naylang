@@ -33,8 +33,15 @@ public:
     antlrcpp::Any visitImplAssign(GraceParser::ImplAssignContext *ctx) override;
     antlrcpp::Any visitExplAssign(GraceParser::ExplAssignContext *ctx) override;
 
+    antlrcpp::Any visitIfThen(GraceParser::IfThenContext *ctx) override;
+    antlrcpp::Any visitIfThenElse(GraceParser::IfThenElseContext *ctx) override;
+    antlrcpp::Any visitWhileNode(GraceParser::WhileNodeContext *ctx) override;
+
     antlrcpp::Any visitPrefixExp(GraceParser::PrefixExpContext *ctx) override;
     antlrcpp::Any visitPrefix_op(GraceParser::Prefix_opContext *ctx) override;
+
+    antlrcpp::Any visitInfixExp(GraceParser::InfixExpContext *ctx) override;
+    antlrcpp::Any visitInfix_op(GraceParser::Infix_opContext *ctx) override;
 
     antlrcpp::Any visitNumber(GraceParser::NumberContext *ctx) override;
     antlrcpp::Any visitString(GraceParser::StringContext *ctx) override;

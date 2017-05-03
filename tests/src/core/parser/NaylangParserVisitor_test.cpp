@@ -340,6 +340,45 @@ TEST_CASE("Assignment", "[Naylang Parser Visitor]") {
     }
 }
 
+TEST_CASE("Control Structures") {
+    SECTION("IfThen") {
+        auto AST = translate("if (6 < 5) {5;}");
+        auto it = static_cast<IfThen &>(*(AST[0]));
+        auto cond = static_cast<ExplicitRequestNode &>(*it.condition());
+        auto rec = static_cast<NumberLiteral &>(*cond.receiver());
+        auto param = static_cast<NumberLiteral &>(*cond.params()[0]);
+        auto five = static_cast<NumberLiteral &>(*it.thenPart()[0]);
+        REQUIRE(it.thenPart().size() == 1);
+        REQUIRE(cond.identifier() == "<(_)");
+        REQUIRE(rec.value() == 6.0);
+        REQUIRE(param.value() == 5.0);
+        REQUIRE(five.value() == 5.0);
+    }
+
+    SECTION("IfThenElse") {
+        auto AST = translate("if (true) {\n 5;\n } else {\n 6;\n }\n");
+        auto ite = static_cast<IfThenElse &>(*(AST[0]));
+        auto tr = static_cast<BooleanLiteral &>(*ite.condition());
+        auto five = static_cast<NumberLiteral &>(*ite.thenPart()[0]);
+        auto six = static_cast<NumberLiteral &>(*ite.elsePart()[0]);
+        REQUIRE(ite.thenPart().size() == 1);
+        REQUIRE(ite.elsePart().size() == 1);
+        REQUIRE(tr.value());
+        REQUIRE(five.value() == 5.0);
+        REQUIRE(six.value() == 6.0);
+    }
+
+    SECTION("While") {
+        auto AST = translate("while {true} {\n 5;\n }\n");
+        auto wh = static_cast<While &>(*(AST[0]));
+        auto tr = static_cast<BooleanLiteral &>(*wh.condition());
+        auto five = static_cast<NumberLiteral &>(*wh.body()[0]);
+        REQUIRE(wh.body().size() == 1);
+        REQUIRE(tr.value());
+        REQUIRE(five.value() == 5.0);
+    }
+}
+
 GraceAST translate(std::string line) {
     ANTLRInputStream stream(line);
     GraceLexer lexer(&stream);
