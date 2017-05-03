@@ -113,8 +113,10 @@ std::string GraceObject::prettyPrint(int indentLevel) {
     res += "object {\n";
     indentLevel += 2;
     for (auto field : _fields) {
-        indent(indentLevel, res);
-        res += field.first + " = " + field.second->prettyPrint(indentLevel + 2) + "\n";
+        if (field.first != "self") {
+            indent(indentLevel, res);
+            res += field.first + " = " + field.second->prettyPrint(indentLevel + 2) + "\n";
+        }
     }
     for (auto method : _userMethods) {
         indent(indentLevel, res);
