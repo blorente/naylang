@@ -12,6 +12,7 @@
 #include <core/model/ast/control/IfThenElse.h>
 #include <core/model/ast/control/While.h>
 #include <core/model/ast/control/Return.h>
+#include <core/model/ast/control/Assignment.h>
 
 #include <core/model/ast/declarations/Declaration.h>
 #include <core/model/ast/declarations/ConstantDeclaration.h>

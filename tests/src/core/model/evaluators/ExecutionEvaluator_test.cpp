@@ -120,6 +120,10 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             REQUIRE(eval.currentScope() == oldScope);
             REQUIRE(eval.partial()->hasField("x"));
         }
+
+        SECTION("Evaluating an AssignmentNode places the value into the field of the receiver") {
+            //TODO: Fill
+        }
     }
 
     SECTION("Environment") {
