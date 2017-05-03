@@ -17,19 +17,20 @@
 #include <core/model/execution/methods/MethodFactory.h>
 
 namespace naylang {
+
 ExecutionEvaluator::ExecutionEvaluator() :
         ExecutionEvaluator(nullptr) {}
 
 ExecutionEvaluator::ExecutionEvaluator(Debugger *debugger) :
-        _currentScope{make_obj<GraceScope>()},
-        _partial{make_obj<GraceDoneDef>()},
+        _currentScope{create_obj<GraceScope>()},
+        _partial{create_obj<GraceDoneDef>()},
         _debugger{debugger} {
     _debugging = _debugger != nullptr;
     _state = STOP;
 }
 
 void ExecutionEvaluator::evaluateAST(const GraceAST &ast) {
-    _partial = make_obj<GraceDoneDef>();
+    _partial = create_obj<GraceDoneDef>();
     for (auto inst : ast.nodes()) {
         inst->accept(*this);
     }
@@ -37,7 +38,7 @@ void ExecutionEvaluator::evaluateAST(const GraceAST &ast) {
 
 GraceObjectPtr ExecutionEvaluator::evaluateSandbox(const GraceAST &ast) {
     auto oldPart = _partial;
-    _partial = make_obj<GraceDoneDef>();
+    _partial = create_obj<GraceDoneDef>();
     for (auto inst : ast.nodes()) {
         inst->accept(*this);
     }
@@ -47,15 +48,15 @@ GraceObjectPtr ExecutionEvaluator::evaluateSandbox(const GraceAST &ast) {
 }
 
 void ExecutionEvaluator::evaluate(BooleanLiteral &expression) {
-    _partial = make_obj<GraceBoolean>(expression.value());
+    _partial = create_obj<GraceBoolean>(expression.value());
 }
 
 void ExecutionEvaluator::evaluate(NumberLiteral &expression) {
-    _partial = make_obj<GraceNumber>(expression.value());
+    _partial = create_obj<GraceNumber>(expression.value());
 }
 
 void ExecutionEvaluator::evaluate(StringLiteral &expression) {
-    _partial = make_obj<GraceString>(expression.value());
+    _partial = create_obj<GraceString>(expression.value());
 }
 
 void ExecutionEvaluator::evaluate(ImplicitRequestNode &expression) {
@@ -107,7 +108,7 @@ void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
 
 void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {
     GraceObjectPtr oldScope = _currentScope;
-    _currentScope = make_obj<UserObject>();
+    _currentScope = create_obj<UserObject>();
     for (auto node : expression.statements()) {
         node->accept(*this);
     }
@@ -130,14 +131,14 @@ void ExecutionEvaluator::evaluate(VariableDeclaration &expression) {
         expression.value()->accept(*this);
         _currentScope->setField(expression.name(), _partial);
     } else {
-        _currentScope->setField(expression.name(), make_obj<UserObject>());
+        _currentScope->setField(expression.name(), create_obj<UserObject>());
     }
     endDebug(&expression, prevState);
 }
 
 void ExecutionEvaluator::evaluate(Block &expression) {
     auto meth = make_meth(expression.params(), expression.body());
-    _partial = make_obj<GraceBlock>(meth);
+    _partial = create_obj<GraceBlock>(meth);
 }
 
 const GraceObjectPtr &ExecutionEvaluator::partial() const {
@@ -149,7 +150,7 @@ GraceObjectPtr ExecutionEvaluator::currentScope() const {
 }
 
 GraceObjectPtr ExecutionEvaluator::createNewScope() {
-    GraceObjectPtr newScope = make_obj<GraceScope>();
+    GraceObjectPtr newScope = create_obj<GraceScope>();
     newScope->setOuter(_currentScope);
     _currentScope = newScope;
     return newScope;
@@ -193,5 +194,11 @@ void ExecutionEvaluator::setDebugState(DebugState state) {
 
 DebugState ExecutionEvaluator::getDebugState() const {
     return _state;
+}
+
+void ExecutionEvaluator::evaluate(Assignment &expression) {
+    expression.value()->accept(*this);
+    auto val = _partial;
+    _currentScope->setField(expression.field(), val);
 }
 }

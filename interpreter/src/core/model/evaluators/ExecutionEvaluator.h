@@ -53,6 +53,7 @@ public:
     virtual void evaluate(Block &expression) override;
     virtual void evaluate(ObjectConstructor &expression) override;
     virtual void evaluate(VariableDeclaration &expression) override;
+    void evaluate(Assignment &expression) override;
 
     // Debug Methods
     void setDebugState(DebugState state);
@@ -61,6 +62,13 @@ public:
 private:
     void beginDebug(Statement *node);
     void endDebug(Statement *node, DebugState prevState);
+
+    template <typename T, typename... Args>
+    std::shared_ptr<T> create_obj(Args&&...args) {
+        std::shared_ptr<T> obj = make_obj<T>(std::forward<Args>(args)...);
+        obj->setField("self", obj);
+        return obj;
+    };
 };
 } // end namespace naylang
 

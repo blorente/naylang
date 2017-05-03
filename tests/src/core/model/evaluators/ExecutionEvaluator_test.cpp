@@ -12,6 +12,7 @@
 #include <core/model/execution/objects/GraceString.h>
 #include <core/model/execution/objects/GraceScope.h>
 #include <core/model/execution/objects/GraceDoneDef.h>
+#include <core/model/execution/objects/UserObject.h>
 
 
 using namespace naylang;
@@ -27,6 +28,9 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
     auto trueLiteral = make_node<BooleanLiteral>(true);
     auto falseLiteral = make_node<BooleanLiteral>(false);
     auto ctruConstDecl = make_node<ConstantDeclaration>("ctru", trueLiteral);
+    auto five = make_node<NumberLiteral>(5.0);
+    auto six = make_node<NumberLiteral>(6.0);
+    auto hiStr = make_node<StringLiteral>("Hi");
 
     SECTION("An execution evaluator has a partial GraceObject") {
         ExecutionEvaluator eval;
@@ -122,16 +126,60 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
         }
 
         SECTION("Evaluating an AssignmentNode places the value into the field of the receiver") {
-            //TODO: Fill
+            SECTION("Number assignment") {
+                ExecutionEvaluator eval;
+                xDec->accept(eval);
+                Assignment toFive("x", five);
+                toFive.accept(eval);
+                REQUIRE(eval.currentScope()->getField("x")->asNumber().value() == 5.0);
+            }
+
+            SECTION("Object assignment") {
+                ExecutionEvaluator eval;
+                auto field1 = make_node<VariableDeclaration>("f1", six);
+                auto field2 = make_node<VariableDeclaration>("f2", hiStr);
+                auto field3 = make_node<VariableDeclaration>("f3", trueLiteral);
+
+                std::vector<DeclarationPtr> oneParam{xDec};
+                std::vector<StatementPtr> emptyBody{};
+                auto addMeth = make_node<MethodDeclaration>("add(_)", oneParam, emptyBody);
+                std::vector<StatementPtr> objLines = {field1, field2, field3, addMeth};
+
+                auto oneDecl = make_node<VariableDeclaration>("one");
+                auto obj = make_node<ObjectConstructor>(objLines);
+
+                oneDecl->accept(eval);
+
+                Assignment objAssign("one", obj);
+                objAssign.accept(eval);
+
+                auto one = static_cast<UserObject &>(*eval.currentScope()->getField("one"));
+
+                REQUIRE(one.hasField("f1"));
+                REQUIRE(one.hasField("f2"));
+                REQUIRE(one.hasField("f3"));
+                REQUIRE(one.hasMethod("add(_)"));
+                REQUIRE(one.getField("f1")->asNumber().value() == 6.0);
+                REQUIRE(one.getField("f2")->asString().value() == "Hi");
+                REQUIRE(one.getField("f3")->asBoolean().value() == true);
+                REQUIRE(one.getMethod("add(_)")->params().size() == 1);
+                REQUIRE(one.getMethod("add(_)")->code().size() == 0);
+            }
+
+            SECTION("Type change") {
+                ExecutionEvaluator eval;
+                xDec->accept(eval);
+                Assignment toFive("x", five);
+                toFive.accept(eval);
+                REQUIRE(eval.currentScope()->getField("x")->asNumber().value() == 5.0);
+                Assignment toTrue("x", trueLiteral);
+                toTrue.accept(eval);
+                REQUIRE(eval.currentScope()->getField("x")->asBoolean().value());
+            }
         }
     }
 
     SECTION("Environment") {
-        SECTION("The evaluator has a GraceScope environment object") {
-            ExecutionEvaluator eval;
-            REQUIRE(eval.currentScope()->isScope());
-        }
-
         SECTION("An Execution Evaluator can create a scope") {
             ExecutionEvaluator eval;
             GraceObjectPtr newEnv = eval.createNewScope();
@@ -157,6 +205,13 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             eval.setScope(newEnv);
             REQUIRE(!eval.currentScope()->hasField("x"));
             REQUIRE(eval.currentScope()->hasField("y"));
+        }
+
+        SECTION("Every time it generates an object it sets the self field") {
+            ExecutionEvaluator eval;
+            trueLiteral->accept(eval);
+            auto tr = eval.partial();
+            REQUIRE(tr->getField("self") == tr);
         }
     }
 
