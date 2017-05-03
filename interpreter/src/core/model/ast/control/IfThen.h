@@ -3,8 +3,8 @@
 // Distributed under the GPLv3 license.
 //
 
-#ifndef NAYLANG_IFTHENELSE_H
-#define NAYLANG_IFTHENELSE_H
+#ifndef NAYLANG_IFTHEN_H
+#define NAYLANG_IFTHEN_H
 
 #include <memory>
 #include <core/model/ast/Statement.h>
@@ -14,24 +14,24 @@ namespace naylang {
 class IfThen : public Statement {
 
     ExpressionPtr _condition;
-    BlockPtr _then;
+    std::vector<StatementPtr> _then;
 
 public:
 
     IfThen(
             ExpressionPtr condition,
-            BlockPtr thenExp,
+            std::vector<StatementPtr> thenExp,
             int line, int col);
 
     IfThen(
             ExpressionPtr condition,
-            BlockPtr thenExp);
+            std::vector<StatementPtr> thenExp);
 
     virtual void accept(Evaluator &evaluator);
     ExpressionPtr condition() const;
-    BlockPtr thenExpression() const;
+    const std::vector<StatementPtr> &thenPart() const;
 };
 }
 
 
-#endif //NAYLANG_IFTHENELSE_H
+#endif //NAYLANG_IFTHEN_H

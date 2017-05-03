@@ -10,21 +10,21 @@
 
 namespace naylang {
 
-While::While(BlockPtr condition, BlockPtr body, int line, int col) :
+While::While(ExpressionPtr condition, const std::vector<StatementPtr> &body, int line, int col) :
         _condition{condition}, _body{body}, While::Statement(line, col) {}
 
-While::While(BlockPtr condition, BlockPtr body) :
+    While::While(ExpressionPtr condition, const std::vector<StatementPtr> &body) :
         While(condition, body, -1, -1) {}
 
 void While::accept(Evaluator &evaluator) {
     evaluator.evaluate(*this);
 }
 
-const std::shared_ptr<Block> &While::condition() const {
+ExpressionPtr While::condition() const {
     return _condition;
 }
 
-const std::shared_ptr<Block> &While::body() const {
+const std::vector<StatementPtr> &While::body() const {
     return _body;
 }
 }

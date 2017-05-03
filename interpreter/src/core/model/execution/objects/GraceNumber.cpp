@@ -21,6 +21,10 @@ void GraceNumber::addDefaultMethods() {
     _nativeMethods["prefix!"] = make_native<Negative>();
     _nativeMethods["==(_)"] = make_native<Equals>();
     _nativeMethods["!=(_)"] = make_native<NotEquals>();
+    _nativeMethods["<(_)"] = make_native<Less>();
+    _nativeMethods["<=(_)"] = make_native<LessEq>();
+    _nativeMethods[">(_)"] = make_native<Greater>();
+    _nativeMethods[">=(_)"] = make_native<GreaterEq>();
     _nativeMethods["+(_)"] = make_native<Add>();
     _nativeMethods["-(_)"] = make_native<Sub>();
     _nativeMethods["*(_)"] = make_native<Mul>();

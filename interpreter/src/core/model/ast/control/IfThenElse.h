@@ -14,25 +14,25 @@ namespace naylang {
 class IfThenElse : public Statement {
 
     ExpressionPtr _condition;
-    BlockPtr _then;
-    BlockPtr _else;
+    std::vector<StatementPtr> _then;
+    std::vector<StatementPtr> _else;
 
 public:
 
     IfThenElse(
             ExpressionPtr condition,
-            BlockPtr thenExp,
-            BlockPtr elseExp,
+            std::vector<StatementPtr> thenExp,
+            std::vector<StatementPtr> elseExp,
             int line, int col);
     IfThenElse(
             ExpressionPtr condition,
-            BlockPtr thenExp,
-            BlockPtr elseExp);
+            std::vector<StatementPtr> thenExp,
+            std::vector<StatementPtr> elseExp);
 
     virtual void accept(Evaluator &evaluator);
     ExpressionPtr condition() const;
-    BlockPtr thenExpression() const;
-    BlockPtr elseExpression() const;
+    const std::vector<StatementPtr> &thenPart() const;
+    const std::vector<StatementPtr> &elsePart() const;
 };
 }
 

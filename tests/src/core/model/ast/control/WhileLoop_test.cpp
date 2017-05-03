@@ -15,20 +15,17 @@ using namespace naylang;
 TEST_CASE("While Loop", "[Control]") {
 
     auto tru = make_node<BooleanLiteral>(true);
-    auto truBlock = make_node<Block>();
-    truBlock->addStatement(tru);
 
     auto five = make_node<NumberLiteral>(5.0);
-    auto fiveBlock = make_node<Block>();
-    fiveBlock->addStatement(five);
+    std::vector<StatementPtr> fiveBlock{five};
 
     SECTION("A while loop accepts a condition block and a body block") {
-        REQUIRE_NOTHROW(While loop(truBlock, fiveBlock););
+        REQUIRE_NOTHROW(While loop(tru, fiveBlock););
     }
 
     SECTION("A while loop can return it's condition and body") {
-        While loop(truBlock, fiveBlock);
-        REQUIRE(loop.condition() == truBlock);
+        While loop(tru, fiveBlock);
+        REQUIRE(loop.condition() == tru);
         REQUIRE(loop.body() == fiveBlock);
     }
 }

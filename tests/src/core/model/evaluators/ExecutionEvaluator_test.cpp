@@ -30,6 +30,8 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
     auto ctruConstDecl = make_node<ConstantDeclaration>("ctru", trueLiteral);
     auto five = make_node<NumberLiteral>(5.0);
     auto six = make_node<NumberLiteral>(6.0);
+    auto zero = make_node<NumberLiteral>(0.0);
+    auto twentyTwo = make_node<NumberLiteral>(22.0);
     auto hiStr = make_node<StringLiteral>("Hi");
 
     SECTION("An execution evaluator has a partial GraceObject") {
@@ -125,7 +127,44 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
             REQUIRE(eval.partial()->hasField("x"));
         }
 
-        SECTION("Evaluating an AssignmentNode places the value into the field of the receiver") {
+        SECTION("IfThen & IfThenElse") {
+            ExecutionEvaluator eval;
+
+            auto five = make_node<NumberLiteral>(5.0);
+            auto six = make_node<NumberLiteral>(6.0);
+            std::vector<StatementPtr> thenBlock{five};
+            std::vector<StatementPtr> elseBlock{six};
+
+            IfThenElse ite(falseLiteral, thenBlock, elseBlock);
+            ite.accept(eval);
+            REQUIRE(eval.partial()->asNumber().value() == 6.0);
+
+            IfThen it(trueLiteral, thenBlock);
+            it.accept(eval);
+            REQUIRE(eval.partial()->asNumber().value() == 5.0);
+        }
+
+        SECTION("While loop") {
+            ExecutionEvaluator eval;
+
+            auto xDeclToZero = make_node<VariableDeclaration>("x", zero);
+            xDeclToZero->accept(eval);
+
+            std::vector<ExpressionPtr> addParams{five};
+            auto addFive = make_node<ExplicitRequestNode>("+(_)", xRef, addParams);
+            auto assign = make_node<Assignment>("x", addFive);
+            std::vector<StatementPtr> whileBody{assign};
+            std::vector<ExpressionPtr> lessThanParams{twentyTwo};
+            auto whileCond = make_node<ExplicitRequestNode>("<(_)", xRef, lessThanParams);
+
+            While wh(whileCond, whileBody);
+            wh.accept(eval);
+
+            xRef->accept(eval);
+            REQUIRE(eval.partial()->asNumber().value() == 25.0);
+        }
+
+        SECTION("Evaluating an Assignment places the value into the field of the receiver") {
             SECTION("Number assignment") {
                 ExecutionEvaluator eval;
                 xDec->accept(eval);

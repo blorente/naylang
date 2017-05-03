@@ -16,8 +16,7 @@ TEST_CASE("If Then Expressions", "[Control]") {
     auto tru = make_node<BooleanLiteral>(true);
     auto five = make_node<NumberLiteral>(5.0);
     auto six = make_node<NumberLiteral>(6.0);
-    auto thenBlock = make_node<Block>();
-    thenBlock->addStatement(five);
+    std::vector<StatementPtr> thenBlock{five};
 
     SECTION("IThen Expressions take a condition expression and a then block") {
         REQUIRE_NOTHROW(IfThen it(tru, thenBlock););
@@ -26,6 +25,6 @@ TEST_CASE("If Then Expressions", "[Control]") {
     SECTION("ITE Expressions can return either of their fields") {
         IfThen it(tru, thenBlock);
         REQUIRE(it.condition() == tru);
-        REQUIRE(it.thenExpression() == thenBlock);
+        REQUIRE(it.thenPart() == thenBlock);
     }
 }

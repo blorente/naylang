@@ -15,17 +15,17 @@ namespace naylang {
 
 class While : public Statement {
 
-    BlockPtr _condition;
-    BlockPtr _body;
+    ExpressionPtr _condition;
+    std::vector<StatementPtr> _body;
 
 public:
-    While(BlockPtr condition, BlockPtr body, int line, int col);
-    While(BlockPtr condition, BlockPtr body);
+    While(ExpressionPtr condition, const std::vector<StatementPtr> &body, int line, int col);
+    While(ExpressionPtr condition, const std::vector<StatementPtr> &body);
 
     void accept(Evaluator &evaluator) override;
 
-    const std::shared_ptr<Block> &condition() const;
-    const std::shared_ptr<Block> &body() const;
+    ExpressionPtr condition() const;
+    const std::vector<StatementPtr> &body() const;
 };
 
 } // end namespace naylang

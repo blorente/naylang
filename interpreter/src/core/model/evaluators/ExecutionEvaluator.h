@@ -53,7 +53,11 @@ public:
     virtual void evaluate(Block &expression) override;
     virtual void evaluate(ObjectConstructor &expression) override;
     virtual void evaluate(VariableDeclaration &expression) override;
-    void evaluate(Assignment &expression) override;
+    virtual void evaluate(Assignment &expression) override;
+    void evaluate(IfThen &expression) override;
+    void evaluate(IfThenElse &expression) override;
+
+    void evaluate(While &expression) override;
 
     // Debug Methods
     void setDebugState(DebugState state);

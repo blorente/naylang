@@ -205,7 +205,42 @@ void ExecutionEvaluator::evaluate(Assignment &expression) {
     _currentScope = _partial;
 
     _currentScope->setField(expression.field(), val);
-
     _currentScope = oldScope;
+}
+
+void ExecutionEvaluator::evaluate(IfThen &expression) {
+    expression.condition()->accept(*this);
+    auto cond = _partial->asBoolean().value();
+    if (cond) {
+        for (auto exp : expression.thenPart()) {
+            exp->accept(*this);
+        }
+    }
+}
+
+void ExecutionEvaluator::evaluate(IfThenElse &expression) {
+    expression.condition()->accept(*this);
+    auto cond = _partial->asBoolean().value();
+    if (cond) {
+        for (auto exp : expression.thenPart()) {
+            exp->accept(*this);
+        }
+    } else {
+        for (auto exp : expression.elsePart()) {
+            exp->accept(*this);
+        }
+    }
+}
+
+void ExecutionEvaluator::evaluate(While &expression) {
+    expression.condition()->accept(*this);
+    auto cond = _partial->asBoolean().value();
+    while (cond) {
+        for (auto exp : expression.body()) {
+            exp->accept(*this);
+        }
+        expression.condition()->accept(*this);
+        cond = _partial->asBoolean().value();
+    }
 }
 }

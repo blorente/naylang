@@ -6,10 +6,10 @@
 #include "IfThen.h"
 
 namespace naylang {
-IfThen::IfThen(ExpressionPtr condition, BlockPtr thenExp, int line, int col) :
+IfThen::IfThen(ExpressionPtr condition, std::vector<StatementPtr> thenExp, int line, int col) :
         _condition{condition}, _then{thenExp}, IfThen::Statement(line, col) {}
 
-IfThen::IfThen(ExpressionPtr condition, BlockPtr thenExp) :
+IfThen::IfThen(ExpressionPtr condition, std::vector<StatementPtr> thenExp) :
         IfThen(condition, thenExp, -1, -1) {}
 
 void IfThen::accept(Evaluator &evaluator) {
@@ -20,7 +20,7 @@ ExpressionPtr IfThen::condition() const {
     return _condition;
 }
 
-BlockPtr IfThen::thenExpression() const {
+const std::vector<StatementPtr> &IfThen::thenPart() const {
     return _then;
 }
 }
