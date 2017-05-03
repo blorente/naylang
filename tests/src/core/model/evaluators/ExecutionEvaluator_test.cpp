@@ -176,6 +176,23 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
                 toTrue.accept(eval);
                 REQUIRE(eval.currentScope()->getField("x")->asBoolean().value());
             }
+
+            SECTION("Request assignment") {
+                ExecutionEvaluator eval;
+                auto field1 = make_node<VariableDeclaration>("f1", six);
+                std::vector<StatementPtr> objLines = {field1};
+                auto obj = make_node<ObjectConstructor>(objLines);
+                auto oneDecl = make_node<VariableDeclaration>("one", obj);
+
+                oneDecl->accept(eval);
+                REQUIRE(eval.currentScope()->getField("one")->getField("f1")->asNumber().value() == 6.0);
+
+                auto oneRef = make_node<ImplicitRequestNode>("one");
+                Assignment assignF1("f1", oneRef, five);
+                assignF1.accept(eval);
+
+                REQUIRE(eval.currentScope()->getField("one")->getField("f1")->asNumber().value() == 5.0);
+            }
         }
     }
 

@@ -70,7 +70,12 @@ void doAfter() {}
  * Parser Rules
  */
 program: (statement)*;
-statement: expression DELIMITER | declaration; //| control;
+statement: expression DELIMITER | declaration | assignment; //| control;
+
+assignment : field=identifier VAR_ASSIGN val=expression DELIMITER                       #SelfAssign
+           | scope=explicitRequest DOT field=identifier VAR_ASSIGN val=expression DELIMITER   #ExplAssign
+           | scope=implicitRequest DOT field=identifier VAR_ASSIGN val=expression DELIMITER   #ImplAssign
+           ;
 
 declaration : variableDeclaration
             | constantDeclaration

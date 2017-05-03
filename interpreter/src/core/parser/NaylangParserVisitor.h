@@ -29,6 +29,10 @@ public:
 
     antlrcpp::Any visitProgram(GraceParser::ProgramContext *ctx) override;
 
+    antlrcpp::Any visitSelfAssign(GraceParser::SelfAssignContext *ctx) override;
+    antlrcpp::Any visitImplAssign(GraceParser::ImplAssignContext *ctx) override;
+    antlrcpp::Any visitExplAssign(GraceParser::ExplAssignContext *ctx) override;
+
     antlrcpp::Any visitPrefixExp(GraceParser::PrefixExpContext *ctx) override;
     antlrcpp::Any visitPrefix_op(GraceParser::Prefix_opContext *ctx) override;
 

@@ -390,4 +390,36 @@ int NaylangParserVisitor::getLine(antlr4::tree::TerminalNode *terminal) const {
 int NaylangParserVisitor::getLastLine(const antlr4::ParserRuleContext *ctx) const {
     return ctx->stop->getLine();
 }
+
+antlrcpp::Any NaylangParserVisitor::visitSelfAssign(GraceParser::SelfAssignContext *ctx) {
+    auto field = ctx->field->getText();
+    auto scope = make_node<ImplicitRequestNode>("self");
+    ctx->val->accept(this);
+    auto val = popPartialExp();
+    auto assign = make_node<Assignment>(field, scope, val);
+    pushPartialStat(assign);
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitImplAssign(GraceParser::ImplAssignContext *ctx) {
+    auto field = ctx->field->getText();
+    ctx->scope->accept(this);
+    auto scope = popPartialExp();
+    ctx->val->accept(this);
+    auto val = popPartialExp();
+    auto assign = make_node<Assignment>(field, scope, val);
+    pushPartialStat(assign);
+    return 0;
+}
+
+antlrcpp::Any NaylangParserVisitor::visitExplAssign(GraceParser::ExplAssignContext *ctx) {
+    auto field = ctx->field->getText();
+    ctx->scope->accept(this);
+    auto scope = popPartialExp();
+    ctx->val->accept(this);
+    auto val = popPartialExp();
+    auto assign = make_node<Assignment>(field, scope, val);
+    pushPartialStat(assign);
+    return 0;
+}
 }

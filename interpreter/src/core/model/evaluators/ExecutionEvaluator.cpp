@@ -199,6 +199,13 @@ DebugState ExecutionEvaluator::getDebugState() const {
 void ExecutionEvaluator::evaluate(Assignment &expression) {
     expression.value()->accept(*this);
     auto val = _partial;
+
+    auto oldScope = _currentScope;
+    expression.scope()->accept(*this);
+    _currentScope = _partial;
+
     _currentScope->setField(expression.field(), val);
+
+    _currentScope = oldScope;
 }
 }

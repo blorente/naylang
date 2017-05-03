@@ -306,6 +306,40 @@ TEST_CASE("Stoppable nodes", "[Naylang Parser Visitor]") {
     }
 }
 
+TEST_CASE("Assignment", "[Naylang Parser Visitor]") {
+    SECTION("Assignments can have just an identifier") {
+        auto AST = translate("x := 4;\n");
+        auto assign = static_cast<Assignment &>(*(AST[0]));
+        auto scope = static_cast<ImplicitRequestNode &>(*assign.scope());
+        auto val = static_cast<NumberLiteral &>(*assign.value());
+        REQUIRE(assign.field() == "x");
+        REQUIRE(scope.identifier() == "self");
+        REQUIRE(val.value() == 4.0);
+    }
+
+    SECTION("Assignments can a request and an identifier") {
+        auto AST = translate("obj.x := 4;\n");
+        auto assign = static_cast<Assignment &>(*(AST[0]));
+        auto scope = static_cast<ImplicitRequestNode &>(*assign.scope());
+        auto val = static_cast<NumberLiteral &>(*assign.value());
+        REQUIRE(assign.field() == "x");
+        REQUIRE(scope.identifier() == "obj");
+        REQUIRE(val.value() == 4.0);
+    }
+
+    SECTION("Assignments can multiple requests and an identifier") {
+        auto AST = translate("obj.val.x := 4;\n");
+        auto assign = static_cast<Assignment &>(*(AST[0]));
+        auto scope = static_cast<ExplicitRequestNode &>(*assign.scope());
+        auto obj = static_cast<ImplicitRequestNode &>(*scope.receiver());
+        auto val = static_cast<NumberLiteral &>(*assign.value());
+        REQUIRE(assign.field() == "x");
+        REQUIRE(scope.identifier() == "val");
+        REQUIRE(obj.identifier() == "obj");
+        REQUIRE(val.value() == 4.0);
+    }
+}
+
 GraceAST translate(std::string line) {
     ANTLRInputStream stream(line);
     GraceLexer lexer(&stream);
