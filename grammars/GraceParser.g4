@@ -149,7 +149,7 @@ primitive   : number
             ;
 
 identifier: ID;
-number: INT;
+number: INT (DOT INT)?;
 boolean: TRUE | FALSE;
 string: QUOTE content=.*? QUOTE;
 prefix_op: MINUS | EXCLAMATION;
