@@ -38,6 +38,7 @@ GREATER_EQUAL=37
 TRUE=38
 FALSE=39
 ID=40
+STRING_LITERAL=41
 'method '=5
 ':='=6
 'var '=7

@@ -143,15 +143,15 @@ block: OPEN_BRACE (params=formalParameterList RIGHT_ARROW)? body=methodBodyLine*
 lineup: OPEN_BRACKET lineupContents? CLOSE_BRACKET;
 lineupContents: expression (COMMA expression)*;
 
+identifier: ID;
 primitive   : number
             | boolean
             | string
             ;
 
-identifier: ID;
 number: INT (DOT INT)?;
 boolean: TRUE | FALSE;
-string: QUOTE content=.*? QUOTE;
+string: content=STRING_LITERAL;
 prefix_op: MINUS | EXCLAMATION;
 infix_op: MOD
         | POW

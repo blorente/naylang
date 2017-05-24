@@ -41,6 +41,7 @@ tokens {
 	DUMMY
 }
 
+fragment STRING_CONTENT: (LETTER|' ')+;
 WS : [ \r\t\n]+ -> channel(HIDDEN);
 INT: Digit+;
 Digit: [0-9];
@@ -87,4 +88,6 @@ FALSE: 'false';
 // SHould be defined last, so that reserved words stay reserved
 ID: LETTER (LETTER | '0'..'9')*;
 fragment LETTER : [a-zA-Z\u0080-\uFFFF];
+
+STRING_LITERAL: QUOTE STRING_CONTENT QUOTE;
 
