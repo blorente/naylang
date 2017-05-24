@@ -134,7 +134,7 @@ antlrcpp::Any NaylangParserVisitor::visitAddSubExp(GraceParser::AddSubExpContext
 antlrcpp::Any NaylangParserVisitor::visitString(GraceParser::StringContext *ctx) {
     auto contents = ctx->content->getText();
     // Remove quotes
-    contents = contents.substr(1, contents.size() - 2);
+    contents = contents.substr(1, contents.size() - 2                                                                                                                                                                                                                                                                                                  );
     auto str = make_node<StringLiteral>(contents, getLine(ctx), getCol(ctx));
     pushPartialExp(str);
     return 0;
