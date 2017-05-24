@@ -6,6 +6,8 @@
 #include <core/model/execution/objects/GraceNumber.h>
 #include <core/model/execution/objects/GraceBoolean.h>
 #include <core/model/execution/objects/GraceString.h>
+#include <core/model/execution/memory/Heap.h>
+#include <core/model/evaluators/ExecutionEvaluator.h>
 #include "catch.h"
 
 using namespace naylang;
@@ -15,16 +17,17 @@ TEST_CASE("Grace Number", "[GraceObjects]") {
 }
 
 TEST_CASE("Grace Number Native Methods", "[GraceNumber]") {
-    auto five = make_obj<GraceNumber>(5.0);
-    auto six = make_obj<GraceNumber>(6.0);
+    ExecutionEvaluator ctx;
+    auto five = ctx.create_obj<GraceNumber>(5.0);
+    auto six = ctx.create_obj<GraceNumber>(6.0);
 
     SECTION("Equals") {
         GraceNumber::Equals method;
 
         SECTION("==(_) returns GraceTrue iff they both represent the same number") {
             GraceNumber five(5.0);
-            auto otherFive = make_obj<GraceNumber>(5.0);
-            auto six = make_obj<GraceNumber>(6.0);
+            auto otherFive = ctx.create_obj<GraceNumber>(5.0);
+            auto six = ctx.create_obj<GraceNumber>(6.0);
 
             MethodRequest equalsSix("==(_)", {six});
             MethodRequest equalsFive("==(_)", {otherFive});
@@ -39,7 +42,7 @@ TEST_CASE("Grace Number Native Methods", "[GraceNumber]") {
 
         SECTION("!=(_) returns GraceTrue iff they both represent different numbers") {
             GraceNumber five(5.0);
-            auto otherFive = make_obj<GraceNumber>(5.0);
+            auto otherFive = ctx.create_obj<GraceNumber>(5.0);
 
             MethodRequest equalsSix("!=(_)", {six});
             MethodRequest equalsFive("!=(_)", {otherFive});
@@ -60,37 +63,37 @@ TEST_CASE("Grace Number Native Methods", "[GraceNumber]") {
 
         SECTION("prefix- returns the negative version of self") {
             MethodRequest req("prefix-", {});
-            REQUIRE(neg.respond(*six, req)->asNumber().value() == -6.0);
+            REQUIRE(neg.respond(ctx, *six, req)->asNumber().value() == -6.0);
         }
 
         SECTION("+(_) returns the sum of self and the first parameter") {
             MethodRequest req("+(_)", {five});
-            REQUIRE(add.respond(*six, req)->asNumber().value() == 11.0);
+            REQUIRE(add.respond(ctx, *six, req)->asNumber().value() == 11.0);
         }
 
         SECTION("-(_) returns the subtraction of self and the first parameter") {
             MethodRequest req("-(_)", {five});
-            REQUIRE(sub.respond(*six, req)->asNumber().value() == 1.0);
+            REQUIRE(sub.respond(ctx, *six, req)->asNumber().value() == 1.0);
         }
 
         SECTION("*(_) returns the product of self and the first parameter") {
             MethodRequest req("*(_)", {five});
-            REQUIRE(mul.respond(*six, req)->asNumber().value() == 30.0);
+            REQUIRE(mul.respond(ctx, *six, req)->asNumber().value() == 30.0);
         }
 
         SECTION("/(_) returns the real division of self and the first parameter") {
             MethodRequest req("/(_)", {five});
-            REQUIRE(div.respond(*six, req)->asNumber().value() == 1.2);
+            REQUIRE(div.respond(ctx, *six, req)->asNumber().value() == 1.2);
         }
 
         SECTION("%(_) returns the integer modulus of self and the first parameter") {
             MethodRequest req("%(_)", {five});
-            REQUIRE(mod.respond(*six, req)->asNumber().value() == 1.0);
+            REQUIRE(mod.respond(ctx, *six, req)->asNumber().value() == 1.0);
         }
 
         SECTION("^(_) returns self to the first parameter") {
             MethodRequest req("^(_)", {five});
-            REQUIRE(pow.respond(*six, req)->asNumber().value() == 7776.0);
+            REQUIRE(pow.respond(ctx, *six, req)->asNumber().value() == 7776.0);
         }
     }
 
@@ -134,7 +137,7 @@ TEST_CASE("Grace Number Native Methods", "[GraceNumber]") {
 
         SECTION("asString returns the string representation of the number") {
             MethodRequest str("asString", {});
-            REQUIRE(asStr.respond(*five, str)->asString().value() == "5.000000");
+            REQUIRE(asStr.respond(ctx, *five, str)->asString().value() == "5.000000");
         }
     }
 }

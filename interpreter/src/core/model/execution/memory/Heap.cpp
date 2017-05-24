@@ -7,12 +7,15 @@
 #include "Heap.h"
 
 namespace naylang {
-const long Heap::DefaultThreshold = 5;
-const long Heap::DefaultCapacity = 10;
+const long Heap::DefaultCapacity = 1000;
+const long Heap::DefaultThreshold = std::ceil(Heap::DefaultCapacity / 2.0);
 
-Heap::Heap() :
-        _capacity{DefaultCapacity},
-        _threshold{DefaultThreshold} {}
+Heap::Heap() : Heap(Heap::DefaultCapacity){}
+
+Heap::Heap(long capacity) :
+        _capacity{capacity},
+        _threshold{std::ceil(capacity / 2.0)},
+        _storage{}{}
 
 const std::list<HeapCell> &Heap::storage() const {
     return _storage;
@@ -25,8 +28,4 @@ long Heap::capacity() const {
 long Heap::threshold() const {
     return _threshold;
 }
-
-Heap::Heap(long capacity) :
-    _capacity{capacity},
-    _threshold{std::ceil(capacity / 2.0)}{}
 }

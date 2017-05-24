@@ -22,7 +22,7 @@ class GraceIterable;
 class ExecutionEvaluator;
 class GraceObject;
 
-typedef std::shared_ptr<GraceObject> GraceObjectPtr;
+typedef GraceObject* GraceObjectPtr;
 
 class GraceObject {
 protected:
@@ -54,7 +54,7 @@ public:
     virtual void setOuter(GraceObjectPtr outer);
 
     virtual bool hasField(const std::string &name) const;
-    virtual void setField(const std::string &name, GraceObjectPtr value);
+    virtual void setField(const std::string &name, const GraceObjectPtr value);
 
     virtual bool hasMethod(const std::string &name) const;
     virtual MethodPtr getMethod(const std::string &name);

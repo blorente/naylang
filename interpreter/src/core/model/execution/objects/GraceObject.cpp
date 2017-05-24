@@ -77,7 +77,7 @@ bool GraceObject::hasMethod(const std::string &name) const {
     return found;
 }
 
-void GraceObject::setField(const std::string &name, GraceObjectPtr value) {
+void GraceObject::setField(const std::string &name, const GraceObjectPtr value) {
     _fields[name] = value;
 }
 

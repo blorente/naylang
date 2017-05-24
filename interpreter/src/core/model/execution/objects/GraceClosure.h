@@ -14,7 +14,7 @@ class GraceClosure : public GraceObject {
 public:
 
     GraceClosure() = default;
-    GraceClosure(const std::string &name, MethodPtr method);
+    GraceClosure(const std::string &name, MethodPtr method, ExecutionEvaluator &context);
 
     virtual void addDefaultMethods();
     virtual bool isClosure() const;

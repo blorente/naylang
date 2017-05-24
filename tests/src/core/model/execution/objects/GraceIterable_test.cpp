@@ -13,16 +13,20 @@
 #include <core/model/ast/expressions/primitives/NumberLiteral.h>
 #include <core/model/ast/expressions/requests/ExplicitRequestNode.h>
 #include <core/model/execution/methods/MethodFactory.h>
+#include <core/model/execution/memory/Heap.h>
+#include <core/model/evaluators/ExecutionEvaluator.h>
 
 #include "catch.h"
 
 using namespace naylang;
 
 TEST_CASE("Grace Iterables", "[GraceObjects]") {
-    auto five = make_obj<GraceNumber>(5.0);
-    auto six = make_obj<GraceNumber>(6.0);
-    auto hello = make_obj<GraceString>("hello");
-    auto tru = make_obj<GraceBoolean>(true);
+    Heap heap;
+
+    auto five = heap.make_obj<GraceNumber>(5.0);
+    auto six = heap.make_obj<GraceNumber>(6.0);
+    auto hello = heap.make_obj<GraceString>("hello");
+    auto tru = heap.make_obj<GraceBoolean>(true);
 
     SECTION("The constructor takes al list of elements") {
         REQUIRE_NOTHROW(GraceIterable iter({five, hello, tru, six}););
@@ -43,10 +47,11 @@ TEST_CASE("Grace Iterables", "[GraceObjects]") {
 }
 
 TEST_CASE("Grace Iterables Native methods", "[GraceIterable]") {
-    auto five = make_obj<GraceNumber>(5.0);
-    auto six = make_obj<GraceNumber>(6.0);
-    auto hello = make_obj<GraceString>("hello");
-    auto tru = make_obj<GraceBoolean>(true);
+    Heap heap;
+    auto five = heap.make_obj<GraceNumber>(5.0);
+    auto six = heap.make_obj<GraceNumber>(6.0);
+    auto hello = heap.make_obj<GraceString>("hello");
+    auto tru = heap.make_obj<GraceBoolean>(true);
 
     GraceIterable::Append plusPlus;
     GraceIterable::Do myDo;
@@ -68,7 +73,7 @@ TEST_CASE("Grace Iterables Native methods", "[GraceIterable]") {
         std::vector<DeclarationPtr> params{paramDecl};
         std::vector<StatementPtr> body{add};
         auto meth = make_meth(params, body);
-        auto block = make_obj<GraceBlock>(meth);
+        auto block = heap.make_obj<GraceBlock>(meth);
 
         MethodRequest req("do(_)", {block});
         ExecutionEvaluator eval;

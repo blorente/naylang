@@ -73,10 +73,10 @@ GraceObjectPtr GraceBoolean::Not::respond(GraceObject &self, MethodRequest &requ
     return GraceTrue;
 }
 
-GraceObjectPtr GraceBoolean::AsString::respond(GraceObject &self, MethodRequest &request) {
+GraceObjectPtr GraceBoolean::AsString::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
     if (self.asBoolean().value()) {
-        return make_obj<GraceString>("true");
+        return context.create_obj<GraceString>("true");
     }
-    return make_obj<GraceString>("false");
+    return context.create_obj<GraceString>("false");
 }
 }

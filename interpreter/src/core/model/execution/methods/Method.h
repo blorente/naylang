@@ -10,7 +10,6 @@
 #include <core/model/ast/expressions/Block.h>
 #include <core/model/execution/objects/GraceObjectFactory.h>
 #include <core/model/execution/objects/GraceObject.h>
-#include <core/model/evaluators/ExecutionEvaluator.h>
 #include "MethodRequest.h"
 
 namespace naylang {

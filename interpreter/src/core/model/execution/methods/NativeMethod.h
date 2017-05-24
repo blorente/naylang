@@ -16,7 +16,9 @@ class NativeMethod : public Method {
 
 public:
 
-    virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request) = 0;
+    virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request) {
+        throw std::string {"Trying to use an unimplemented native method"};
+    }
     virtual GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
         return respond(self, request);
     }

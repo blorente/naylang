@@ -26,10 +26,8 @@ public:
 
     template <typename T, typename... Args>
     T* make_obj(Args&&...args) {
-        auto elem = std::unique_ptr<T>{new T{std::forward<Args>(args)...}};
-        auto elemPtr = elem.get();
-        _storage.push_back(std::move(elem));
-        return elemPtr;
+        _storage.push_back(std::unique_ptr<T>{new T{std::forward<Args>(args)...}});
+        return static_cast<T*>(_storage.back().get());
     };
 
     const std::list<HeapCell> &storage() const;

@@ -6,6 +6,7 @@
 
 
 
+#include <core/model/evaluators/ExecutionEvaluator.h>
 #include "GraceIterable.h"
 #include "GraceDoneDef.h"
 #include "GraceBlock.h"
@@ -32,7 +33,7 @@ void GraceIterable::setElem(int index, GraceObjectPtr value) {
 
 GraceObjectPtr GraceIterable::Append::respond(GraceObject &self, MethodRequest &request) {
     static_cast<GraceIterable &>(self)._contents.push_back(request.params()[0]);
-    return make_obj<GraceDoneDef>();
+    return GraceDone;
 }
 
 GraceObjectPtr GraceIterable::Do::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
@@ -41,7 +42,7 @@ GraceObjectPtr GraceIterable::Do::respond(ExecutionEvaluator &context, GraceObje
     for (int i = 0; i < lineup._contents.size(); i++) {
         self.asIterable().setElem(i, block.dispatch("apply", context, {lineup._contents[i]}));
     }
-    return make_obj<GraceDoneDef>();
+    return GraceDone;
 }
 
 GraceObjectPtr GraceIterable::Do::respond(GraceObject &self, MethodRequest &request) {

@@ -24,6 +24,9 @@ public:
 
     bool isDone() const;
 };
+
+static GraceDoneDef GraceDoneObj;
+static GraceDoneDef* GraceDone = &GraceDoneObj;
 } // end namespace naylang
 
 #endif //NAYLANG_GRACEDONEDEF_H

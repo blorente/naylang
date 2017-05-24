@@ -38,37 +38,37 @@ public:
 
     class Negative : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 
     class Add : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 
     class Sub : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 
     class Mul : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 
     class Div : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 
     class Mod : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 
     class Pow : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 
     class Greater : public NativeMethod {
@@ -93,7 +93,7 @@ public:
 
     class AsString : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 };
 } // end namespace naylang

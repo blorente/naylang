@@ -4,6 +4,7 @@
 //
 #include <core/model/execution/objects/GraceDoneDef.h>
 #include <core/model/execution/objects/GraceClosure.h>
+#include <core/model/evaluators/ExecutionEvaluator.h>
 #include "Method.h"
 
 namespace naylang {
@@ -22,7 +23,7 @@ Method::Method(const std::vector<DeclarationPtr> &params, const std::vector<Stat
     _params{params}, _code{body} {}
 
 GraceObjectPtr Method::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
-    GraceObjectPtr closure = make_obj<GraceClosure>();
+    GraceObjectPtr closure = context.create_obj<GraceClosure>();
 
     for (int i = 0; i < request.params().size(); i++) {
         closure->setField(params()[i]->name(), request.params()[i]);
@@ -35,7 +36,7 @@ GraceObjectPtr Method::respond(ExecutionEvaluator &context, GraceObject &self, M
     GraceObjectPtr ret = context.partial();
     if (ret == closure) {
         // The return value hasen't changed. Return Done
-        ret = make_obj<GraceDoneDef>();
+        ret = context.create_obj<GraceDoneDef>();
     }
     context.setScope(oldScope);
     return ret;

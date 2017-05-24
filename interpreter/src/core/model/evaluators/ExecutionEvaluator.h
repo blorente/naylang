@@ -12,12 +12,12 @@
 #include <core/model/ast/GraceAST.h>
 #include <core/model/execution/objects/GraceObject.h>
 #include <core/control/DebugState.h>
+#include <core/model/execution/memory/Heap.h>
 
 namespace naylang {
 
 class GraceObject;
 class Debugger;
-
 class ExecutionEvaluator : public Evaluator {
 
     GraceObjectPtr _partial;
@@ -25,6 +25,7 @@ class ExecutionEvaluator : public Evaluator {
 
     Debugger *_debugger;
     bool _debugging;
+    std::unique_ptr<Heap> _storage;
 
     DebugState _state;
 
@@ -63,16 +64,16 @@ public:
     void setDebugState(DebugState state);
     DebugState getDebugState() const;
 
-private:
-    void beginDebug(Statement *node);
-    void endDebug(Statement *node, DebugState prevState);
-
     template <typename T, typename... Args>
-    std::shared_ptr<T> create_obj(Args&&...args) {
-        std::shared_ptr<T> obj = make_obj<T>(std::forward<Args>(args)...);
+    T* create_obj(Args&&...args) {
+        T* obj = _storage->make_obj<T>(std::forward<Args>(args)...);
         obj->setField("self", obj);
         return obj;
     };
+
+private:
+    void beginDebug(Statement *node);
+    void endDebug(Statement *node, DebugState prevState);
 };
 } // end namespace naylang
 

@@ -5,6 +5,7 @@
 
 #include <core/model/execution/objects/GraceBoolean.h>
 #include <core/model/execution/objects/GraceString.h>
+#include <core/model/evaluators/ExecutionEvaluator.h>
 #include "catch.h"
 
 using namespace naylang;
@@ -15,14 +16,6 @@ TEST_CASE("Grace Boolean", "[GraceObjects]") {
     SECTION("A GraceBoolean can return it's raw boolean value") {
         REQUIRE(bul.value());
     }
-
-    SECTION("A GraceBoolean can dispatch the prefix! and &&(_) methods as predefined") {
-        ExecutionEvaluator eval;
-        REQUIRE(*GraceFalse == *bul.dispatch("prefix!", eval, {}));
-        eval.evaluate(*make_node<BooleanLiteral>(true));
-        REQUIRE(*GraceTrue == *bul.dispatch("&&(_)", eval, {eval.partial()}));
-    }
-
     SECTION("GraceTrue and GraceFalse constants are predefined") {
         REQUIRE(GraceTrue->value());
         REQUIRE(!GraceFalse->value());
@@ -87,12 +80,13 @@ TEST_CASE("Predefined methods in GraceBoolean", "[GraceBoolean]") {
     }
 
     SECTION("Misc") {
+        ExecutionEvaluator ctx;
         GraceBoolean::AsString asStr;
 
         SECTION("asString returns the string representation of the boolean") {
             MethodRequest str("asString", {});
-            REQUIRE(asStr.respond(*GraceTrue, str)->asString().value() == "true");
-            REQUIRE(asStr.respond(*GraceFalse, str)->asString().value() == "false");
+            REQUIRE(asStr.respond(ctx, *GraceTrue, str)->asString().value() == "true");
+            REQUIRE(asStr.respond(ctx, *GraceFalse, str)->asString().value() == "false");
         }
     }
 }

@@ -8,7 +8,6 @@
 
 #include <core/model/execution/objects/GraceObject.h>
 #include <core/model/ast/NodeFactory.h>
-#include <core/model/evaluators/ExecutionEvaluator.h>
 #include <core/model/execution/methods/NativeMethod.h>
 
 namespace naylang {
@@ -56,12 +55,14 @@ public:
 
     class AsString : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 };
 
-static const std::shared_ptr<GraceBoolean> GraceTrue = make_obj<GraceBoolean>(true);
-static const std::shared_ptr<GraceBoolean> GraceFalse= make_obj<GraceBoolean>(false);
+static GraceBoolean GraceTrueObj = GraceBoolean(true);
+static GraceBoolean* GraceTrue = &GraceTrueObj;
+static GraceBoolean GraceFalseObj = GraceBoolean(false);
+static GraceBoolean* GraceFalse = &GraceFalseObj;
 
 } // end namespace naylang
 

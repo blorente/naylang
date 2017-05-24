@@ -7,13 +7,8 @@
 
 #include <core/control/Debugger.h>
 
-#include <core/model/execution/objects/GraceBoolean.h>
-#include <core/model/execution/objects/GraceNumber.h>
-#include <core/model/execution/objects/GraceString.h>
-#include <core/model/execution/objects/GraceScope.h>
-#include <core/model/execution/objects/GraceDoneDef.h>
-#include <core/model/execution/objects/UserObject.h>
-#include <core/model/execution/objects/GraceBlock.h>
+#include <core/model/execution/objects/GraceObjectDefinitions.h>
+#include <core/model/execution/memory/Heap.h>
 #include <core/model/execution/methods/MethodFactory.h>
 
 namespace naylang {
@@ -22,11 +17,12 @@ ExecutionEvaluator::ExecutionEvaluator() :
         ExecutionEvaluator(nullptr) {}
 
 ExecutionEvaluator::ExecutionEvaluator(Debugger *debugger) :
-        _currentScope{create_obj<GraceScope>()},
-        _partial{create_obj<GraceDoneDef>()},
         _debugger{debugger} {
     _debugging = _debugger != nullptr;
     _state = STOP;
+    _storage = std::make_unique<Heap>();
+    _currentScope = create_obj<GraceScope>();
+    _partial = GraceDone;
 }
 
 void ExecutionEvaluator::evaluateAST(const GraceAST &ast) {

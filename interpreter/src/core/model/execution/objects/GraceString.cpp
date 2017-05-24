@@ -3,10 +3,8 @@
 // Distributed under the GPLv3 license.
 //
 
-
-
-
 #include <core/model/execution/methods/MethodFactory.h>
+#include <core/model/evaluators/ExecutionEvaluator.h>
 #include "GraceString.h"
 #include "GraceBoolean.h"
 #include "GraceNumber.h"
@@ -84,26 +82,26 @@ GraceObjectPtr GraceString::LessEq::respond(GraceObject &self, MethodRequest &re
     return GraceFalse;
 }
 
-GraceObjectPtr GraceString::Concat::respond(GraceObject &self, MethodRequest &request) {
+GraceObjectPtr GraceString::Concat::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
     std::string val = self.asString().value();
     val.append(request.params()[0]->asString().value());
-    return make_obj<GraceString>(val);
+    return context.create_obj<GraceString>(val);
 }
 
-GraceObjectPtr GraceString::At::respond(GraceObject &self, MethodRequest &request) {
+GraceObjectPtr GraceString::At::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
     int index = (int) request.params()[0]->asNumber().value();
     std::string val = self.asString().value().substr(index, 1);
-    return make_obj<GraceString>(val);
+    return context.create_obj<GraceString>(val);
 }
 
-GraceObjectPtr GraceString::Substring::respond(GraceObject &self, MethodRequest &request) {
+GraceObjectPtr GraceString::Substring::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
     int from = (int) request.params()[0]->asNumber().value();
     int to = (int) request.params()[1]->asNumber().value();
     std::string val = self.asString().value().substr(from, to);
-    return make_obj<GraceString>(val);
+    return context.create_obj<GraceString>(val);
 }
 
-GraceObjectPtr GraceString::AsString::respond(GraceObject &self, MethodRequest &request) {
-    return make_obj<GraceString>(self.asString().value());
+GraceObjectPtr GraceString::AsString::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
+    return context.create_obj<GraceString>(self.asString().value());
 }
 }

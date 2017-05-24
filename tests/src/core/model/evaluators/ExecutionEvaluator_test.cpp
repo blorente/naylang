@@ -36,7 +36,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
 
     SECTION("An execution evaluator has a partial GraceObject") {
         ExecutionEvaluator eval;
-        REQUIRE(*make_obj<GraceDoneDef>() == *eval.partial());
+        REQUIRE(eval.partial());
     }
 
     SECTION("Particular nodes") {
@@ -81,7 +81,7 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
         SECTION("Evaluating a parameterless ImplicitRequest places a variable in the partial if it exists. If no vars exists, it searches for a method") {
             ExecutionEvaluator eval;
             auto xRef = make_node<ImplicitRequestNode>("x");
-            auto myScope = make_obj<GraceScope>();
+            auto myScope = eval.create_obj<GraceScope>();
             myScope->setField("x", GraceTrue);
             REQUIRE_THROWS(xRef->accept(eval));
             eval.setScope(myScope);
@@ -252,9 +252,9 @@ TEST_CASE("Execution Evaluator", "[Evaluators]") {
 
         SECTION("It can set a passed scope") {
             ExecutionEvaluator eval;
-            auto oldEnv = make_obj<GraceScope>();
+            auto oldEnv = eval.create_obj<GraceScope>();
             oldEnv->setField("x", GraceTrue);
-            auto newEnv = make_obj<GraceScope>();
+            auto newEnv = eval.create_obj<GraceScope>();
             newEnv->setField("y", GraceFalse);
             eval.setScope(oldEnv);
             REQUIRE(eval.currentScope()->hasField("x"));

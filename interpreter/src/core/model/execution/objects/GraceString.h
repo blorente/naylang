@@ -58,22 +58,22 @@ public:
 
     class Concat : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 
     class At : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 
     class Substring : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 
     class AsString : public NativeMethod {
     public:
-        virtual GraceObjectPtr respond(GraceObject &self, MethodRequest &request);
+        GraceObjectPtr respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) override;
     };
 
 };

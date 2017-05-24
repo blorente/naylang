@@ -3,10 +3,8 @@
 // Distributed under the GPLv3 license.
 //
 
-
-
-
 #include <core/model/execution/methods/MethodFactory.h>
+#include <core/model/evaluators/ExecutionEvaluator.h>
 #include "GraceNumber.h"
 #include "GraceBoolean.h"
 #include "GraceString.h"
@@ -60,46 +58,6 @@ GraceObjectPtr GraceNumber::NotEquals::respond(GraceObject &self, MethodRequest 
     return GraceFalse;
 }
 
-GraceObjectPtr GraceNumber::Negative::respond(GraceObject &self, MethodRequest &request) {
-    double value = -self.asNumber().value();
-    return make_obj<GraceNumber>(value);
-}
-
-GraceObjectPtr GraceNumber::Add::respond(GraceObject &self, MethodRequest &request) {
-    double value = self.asNumber().value() + request.params()[0]->asNumber().value();
-    return make_obj<GraceNumber>(value);
-}
-
-GraceObjectPtr GraceNumber::Sub::respond(GraceObject &self, MethodRequest &request) {
-    double value = self.asNumber().value() - request.params()[0]->asNumber().value();
-    return make_obj<GraceNumber>(value);
-}
-
-GraceObjectPtr GraceNumber::Mul::respond(GraceObject &self, MethodRequest &request) {
-    double value = self.asNumber().value() * request.params()[0]->asNumber().value();
-    return make_obj<GraceNumber>(value);
-}
-
-GraceObjectPtr GraceNumber::Div::respond(GraceObject &self, MethodRequest &request) {
-    double value = self.asNumber().value() / request.params()[0]->asNumber().value();
-    return make_obj<GraceNumber>(value);
-}
-
-GraceObjectPtr GraceNumber::Mod::respond(GraceObject &self, MethodRequest &request) {
-    double value = (int) self.asNumber().value() % (int) request.params()[0]->asNumber().value();
-    return make_obj<GraceNumber>(value);
-}
-
-GraceObjectPtr GraceNumber::Pow::respond(GraceObject &self, MethodRequest &request) {
-    double value = self.asNumber().value();
-    double base = self.asNumber().value();
-    int power = (int) request.params()[0]->asNumber().value();
-    for (int i = 1; i < power; i++) {
-        value *= base;
-    }
-    return make_obj<GraceNumber>(value);
-}
-
 GraceObjectPtr GraceNumber::Greater::respond(GraceObject &self, MethodRequest &request) {
     if (self.asNumber().value() > request.params()[0]->asNumber().value()) {
         return GraceTrue;
@@ -128,8 +86,48 @@ GraceObjectPtr GraceNumber::LessEq::respond(GraceObject &self, MethodRequest &re
     return GraceFalse;
 }
 
-GraceObjectPtr GraceNumber::AsString::respond(GraceObject &self, MethodRequest &request) {
+GraceObjectPtr GraceNumber::Negative::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
+    double value = -self.asNumber().value();
+    return context.create_obj<GraceNumber>(value);
+}
+
+GraceObjectPtr GraceNumber::Add::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
+    double value = self.asNumber().value() + request.params()[0]->asNumber().value();
+    return context.create_obj<GraceNumber>(value);
+}
+
+GraceObjectPtr GraceNumber::Sub::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
+    double value = self.asNumber().value() - request.params()[0]->asNumber().value();
+    return context.create_obj<GraceNumber>(value);
+}
+
+GraceObjectPtr GraceNumber::Mul::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
+    double value = self.asNumber().value() * request.params()[0]->asNumber().value();
+    return context.create_obj<GraceNumber>(value);
+}
+
+GraceObjectPtr GraceNumber::Div::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
+    double value = self.asNumber().value() / request.params()[0]->asNumber().value();
+    return context.create_obj<GraceNumber>(value);
+}
+
+GraceObjectPtr GraceNumber::Mod::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
+    double value = (int) self.asNumber().value() % (int) request.params()[0]->asNumber().value();
+    return context.create_obj<GraceNumber>(value);
+}
+
+GraceObjectPtr GraceNumber::Pow::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
+    double value = self.asNumber().value();
+    double base = self.asNumber().value();
+    int power = (int) request.params()[0]->asNumber().value();
+    for (int i = 1; i < power; i++) {
+        value *= base;
+    }
+    return context.create_obj<GraceNumber>(value);
+}
+
+GraceObjectPtr GraceNumber::AsString::respond(ExecutionEvaluator &context, GraceObject &self, MethodRequest &request) {
     std::string value = std::to_string(self.asNumber().value());
-    return make_obj<GraceString>(value);
+    return context.create_obj<GraceString>(value);
 }
 }

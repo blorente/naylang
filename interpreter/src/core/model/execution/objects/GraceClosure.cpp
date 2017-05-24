@@ -9,12 +9,14 @@
 #include "GraceClosure.h"
 #include "GraceDoneDef.h"
 
+#include <core/model/evaluators/ExecutionEvaluator.h>
+
 namespace naylang {
 
-GraceClosure::GraceClosure(const std::string &name, MethodPtr method) : GraceObject::GraceObject() {
+GraceClosure::GraceClosure(const std::string &name, MethodPtr method, ExecutionEvaluator &context) : GraceObject::GraceObject() {
     addMethod(name, method);
     for (auto param : method->params()) {
-        _fields[param->name()] = make_obj<GraceDoneDef>();
+        _fields[param->name()] = context.create_obj<GraceDoneDef>();
     }
 }
 
