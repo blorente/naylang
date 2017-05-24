@@ -21,12 +21,12 @@
 using namespace naylang;
 
 TEST_CASE("Grace Iterables", "[GraceObjects]") {
-    Heap heap;
+    ExecutionEvaluator ctx;
 
-    auto five = heap.make_obj<GraceNumber>(5.0);
-    auto six = heap.make_obj<GraceNumber>(6.0);
-    auto hello = heap.make_obj<GraceString>("hello");
-    auto tru = heap.make_obj<GraceBoolean>(true);
+    auto five = ctx.create_obj<GraceNumber>(5.0);
+    auto six = ctx.create_obj<GraceNumber>(6.0);
+    auto hello = ctx.create_obj<GraceString>("hello");
+    auto tru = ctx.create_obj<GraceBoolean>(true);
 
     SECTION("The constructor takes al list of elements") {
         REQUIRE_NOTHROW(GraceIterable iter({five, hello, tru, six}););
@@ -47,11 +47,11 @@ TEST_CASE("Grace Iterables", "[GraceObjects]") {
 }
 
 TEST_CASE("Grace Iterables Native methods", "[GraceIterable]") {
-    Heap heap;
-    auto five = heap.make_obj<GraceNumber>(5.0);
-    auto six = heap.make_obj<GraceNumber>(6.0);
-    auto hello = heap.make_obj<GraceString>("hello");
-    auto tru = heap.make_obj<GraceBoolean>(true);
+    ExecutionEvaluator ctx;
+    auto five = ctx.create_obj<GraceNumber>(5.0);
+    auto six = ctx.create_obj<GraceNumber>(6.0);
+    auto hello = ctx.create_obj<GraceString>("hello");
+    auto tru = ctx.create_obj<GraceBoolean>(true);
 
     GraceIterable::Append plusPlus;
     GraceIterable::Do myDo;
@@ -73,7 +73,7 @@ TEST_CASE("Grace Iterables Native methods", "[GraceIterable]") {
         std::vector<DeclarationPtr> params{paramDecl};
         std::vector<StatementPtr> body{add};
         auto meth = make_meth(params, body);
-        auto block = heap.make_obj<GraceBlock>(meth);
+        auto block = ctx.create_obj<GraceBlock>(meth);
 
         MethodRequest req("do(_)", {block});
         ExecutionEvaluator eval;

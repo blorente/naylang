@@ -8,6 +8,7 @@
 #include <core/model/ast/NodeFactory.h>
 #include <core/model/execution/methods/MethodFactory.h>
 #include <core/model/execution/memory/Heap.h>
+#include <core/model/evaluators/ExecutionEvaluator.h>
 #include "catch.h"
 
 using namespace naylang;
@@ -17,10 +18,10 @@ TEST_CASE("Grace User-defined object", "[GraceObjects]") {
 }
 
 TEST_CASE("UserObject common utils", "[UserObject]") {
-    Heap heap;
+    ExecutionEvaluator ctx;
     SECTION("Calling prettyPrint on a UserObject a list of the fields and userMethods in brackets") {
         UserObject usr;
-        usr.setField("x", heap.make_obj<GraceNumber>(5.0));
+        usr.setField("x", ctx.create_obj<GraceNumber>(5.0));
         auto param = make_node<VariableDeclaration>("n");
         std::vector<DeclarationPtr> params{param};
         std::vector<StatementPtr> body{};

@@ -20,7 +20,7 @@ ExecutionEvaluator::ExecutionEvaluator(Debugger *debugger) :
         _debugger{debugger} {
     _debugging = _debugger != nullptr;
     _state = STOP;
-    _storage = std::make_unique<Heap>();
+    _storage = std::make_unique<Heap>(this);
     _currentScope = create_obj<GraceScope>();
     _partial = GraceDone;
 }

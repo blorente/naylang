@@ -69,6 +69,10 @@ bool GraceObject::hasField(const std::string &name) const {
     return _fields.find(name) != _fields.end();
 }
 
+const std::map<std::string, GraceObjectPtr> &GraceObject::fields() {
+    return _fields;
+}
+
 bool GraceObject::hasMethod(const std::string &name) const {
     bool found = false;
     found = found || (_outer != nullptr && _outer->hasMethod(name));

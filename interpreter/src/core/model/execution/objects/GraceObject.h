@@ -25,6 +25,9 @@ class GraceObject;
 typedef GraceObject* GraceObjectPtr;
 
 class GraceObject {
+public:
+    bool _accessible;
+
 protected:
     std::map<std::string, MethodPtr> _nativeMethods;
     std::map<std::string, MethodPtr> _userMethods;
@@ -55,6 +58,7 @@ public:
 
     virtual bool hasField(const std::string &name) const;
     virtual void setField(const std::string &name, const GraceObjectPtr value);
+    virtual const std::map<std::string, GraceObjectPtr> &fields();
 
     virtual bool hasMethod(const std::string &name) const;
     virtual MethodPtr getMethod(const std::string &name);
