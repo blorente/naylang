@@ -8,15 +8,18 @@
 
 #include <frontends/modes/debug/DebugMode.h>
 #include <core/control/DebugState.h>
+#include <core/model/evaluators/DebugEvaluator.h>
 #include "Interpreter.h"
 
 namespace naylang {
 class DebugMode;
+class DebugEvaluator;
 class Debugger : public Interpreter {
 
     GraceAST _AST;
     std::set<int> _breakpoints;
     DebugMode *_frontend;
+    std::unique_ptr<DebugEvaluator> _debugEval;
 
 public:
 

@@ -22,12 +22,7 @@ class ExecutionEvaluator : public Evaluator {
 
     GraceObjectPtr _partial;
     GraceObjectPtr _currentScope;
-
-    Debugger *_debugger;
-    bool _debugging;
     std::unique_ptr<Heap> _storage;
-
-    DebugState _state;
 
 public:
 
@@ -57,12 +52,7 @@ public:
     virtual void evaluate(Assignment &expression) override;
     void evaluate(IfThen &expression) override;
     void evaluate(IfThenElse &expression) override;
-
     void evaluate(While &expression) override;
-
-    // Debug Methods
-    void setDebugState(DebugState state);
-    DebugState getDebugState() const;
 
     template <typename T, typename... Args>
     T* create_obj(Args&&...args) {
@@ -70,10 +60,6 @@ public:
         obj->setField("self", obj);
         return obj;
     };
-
-private:
-    void beginDebug(Statement *node);
-    void endDebug(Statement *node, DebugState prevState);
 };
 } // end namespace naylang
 

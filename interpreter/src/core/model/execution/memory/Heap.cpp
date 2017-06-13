@@ -82,7 +82,7 @@ void Heap::markAndSweep() {
 
 void Heap::visitMark(GraceObject *obj) {
     for (auto field : obj->fields()) {
-        if (field.first != "self") {
+        if (field.first != "self" && !field.second->_accessible) {
             field.second->_accessible = true;
             visitMark(field.second);
         }

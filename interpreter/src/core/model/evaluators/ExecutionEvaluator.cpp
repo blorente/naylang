@@ -7,19 +7,11 @@
 
 #include <core/control/Debugger.h>
 
-#include <core/model/execution/objects/GraceObjectDefinitions.h>
-#include <core/model/execution/memory/Heap.h>
 #include <core/model/execution/methods/MethodFactory.h>
 
 namespace naylang {
 
-ExecutionEvaluator::ExecutionEvaluator() :
-        ExecutionEvaluator(nullptr) {}
-
-ExecutionEvaluator::ExecutionEvaluator(Debugger *debugger) :
-        _debugger{debugger} {
-    _debugging = _debugger != nullptr;
-    _state = STOP;
+ExecutionEvaluator::ExecutionEvaluator() {
     _storage = std::make_unique<Heap>(this);
     _currentScope = create_obj<GraceScope>();
     _partial = GraceDone;
@@ -82,7 +74,6 @@ void ExecutionEvaluator::evaluate(Return &expression) {
 }
 
 void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
-    beginDebug(&expression);
     expression.receiver()->accept(*this);
     auto self = _partial;
 
@@ -99,7 +90,6 @@ void ExecutionEvaluator::evaluate(ExplicitRequestNode &expression) {
         paramValues.push_back(_partial);
     }
     _partial = self->dispatch(expression.identifier(), *this, paramValues);
-    endDebug(&expression, STEP_OVER_SKIP);
 }
 
 void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {
@@ -113,23 +103,17 @@ void ExecutionEvaluator::evaluate(ObjectConstructor &expression) {
 }
 
 void ExecutionEvaluator::evaluate(ConstantDeclaration &expression) {
-    beginDebug(&expression);
-    DebugState prevState = _state;
     expression.value()->accept(*this);
     _currentScope->setField(expression.name(), _partial);
-    endDebug(&expression, prevState);
 }
 
 void ExecutionEvaluator::evaluate(VariableDeclaration &expression) {
-    beginDebug(&expression);
-    DebugState prevState = _state;
     if (expression.value()) {
         expression.value()->accept(*this);
         _currentScope->setField(expression.name(), _partial);
     } else {
         _currentScope->setField(expression.name(), create_obj<UserObject>());
     }
-    endDebug(&expression, prevState);
 }
 
 void ExecutionEvaluator::evaluate(Block &expression) {
@@ -158,38 +142,6 @@ void ExecutionEvaluator::restoreScope() {
 
 void ExecutionEvaluator::setScope(GraceObjectPtr scope) {
     _currentScope = scope;
-}
-
-void ExecutionEvaluator::beginDebug(Statement *node) {
-    if (!_debugging)
-        return;
-
-    if (_state == STEP_OVER)
-        _state = CONTINUE;
-
-    _debugger->debug(node);
-}
-
-void ExecutionEvaluator::endDebug(Statement *node, DebugState prevState) {
-    if (!_debugging)
-        return;
-
-    if (!node->stoppable())
-        return;
-
-    if (prevState == STEP_OVER)
-        _state = STOP;
-
-    if (_state == STEP_IN)
-        _state = STOP;
-}
-
-void ExecutionEvaluator::setDebugState(DebugState state) {
-    _state = state;
-}
-
-DebugState ExecutionEvaluator::getDebugState() const {
-    return _state;
 }
 
 void ExecutionEvaluator::evaluate(Assignment &expression) {

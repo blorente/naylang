@@ -13,5 +13,7 @@ void REPLInterpreter::execute(std::string line) {
     std::cout << _eval->currentScope()->prettyPrint(0) << std::endl;
 }
 
-REPLInterpreter::REPLInterpreter() : Interpreter(std::make_unique<ExecutionEvaluator>()) {}
+REPLInterpreter::REPLInterpreter() :
+        _replEval{std::make_unique<ExecutionEvaluator>()},
+        Interpreter(_replEval.get()) {}
 }

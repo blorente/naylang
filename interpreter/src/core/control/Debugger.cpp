@@ -3,18 +3,20 @@
 // Distributed under the GPLv3 license.
 //
 
+#include <core/model/evaluators/DebugEvaluator.h>
 #include "Debugger.h"
 
 namespace naylang {
 
 Debugger::Debugger(DebugMode *mode, const std::string &code) :
-        Interpreter(std::make_unique<ExecutionEvaluator>(this)),
-        _frontend{mode},
-        _AST{parse(code)}{}
+    _debugEval{std::make_unique<DebugEvaluator>(this)},
+    Interpreter(_debugEval.get()),
+    _frontend{mode},
+    _AST{parse(code)}{}
 
 void Debugger::run() {
-    _eval->setDebugState(CONTINUE);
-    _eval->evaluateAST(_AST);
+    _debugEval->setDebugState(CONTINUE);
+    _debugEval->evaluateAST(_AST);
     finish();
 }
 
@@ -29,27 +31,27 @@ void Debugger::printEnvironment() {
 }
 
 void Debugger::resume() {
-    _eval->setDebugState(CONTINUE);
+    _debugEval->setDebugState(CONTINUE);
 }
 
 void Debugger::debug(Statement *node) {
     if (node->stoppable()) {
         if (_breakpoints.count(node->line()) != 0) {
             std::cout << "Breakpoint found at line " << node->line() << ". Stop." << std::endl;
-            _eval->setDebugState(STOP);
+            _debugEval->setDebugState(STOP);
         }
-        while(_eval->getDebugState() == STOP) {
+        while(_debugEval->getDebugState() == STOP) {
             _frontend->executeNextCommand();
         }
     }
 }
 
 void Debugger::stepIn() {
-    _eval->setDebugState(STEP_IN);
+    _debugEval->setDebugState(STEP_IN);
 }
 
 void Debugger::stepOver() {
-    _eval->setDebugState(STEP_OVER);
+    _debugEval->setDebugState(STEP_OVER);
 }
 
 void Debugger::finish() {

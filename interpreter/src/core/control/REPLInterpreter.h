@@ -12,6 +12,8 @@
 namespace naylang {
 class REPLInterpreter : public Interpreter {
 
+    std::unique_ptr<ExecutionEvaluator> _replEval;
+
 public:
     REPLInterpreter();
 
