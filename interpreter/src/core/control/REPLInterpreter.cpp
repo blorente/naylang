@@ -9,8 +9,8 @@
 namespace naylang {
 void REPLInterpreter::execute(std::string line) {
     colonize(line);
-    _eval->evaluateAST(parse(line));
-    std::cout << _eval->currentScope()->prettyPrint(0) << std::endl;
+    _replEval->evaluateAST(parse(line));
+    std::cout << _replEval->currentScope()->prettyPrint(0) << std::endl;
 }
 
 REPLInterpreter::REPLInterpreter() :

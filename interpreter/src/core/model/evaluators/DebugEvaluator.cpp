@@ -8,9 +8,6 @@
 namespace naylang {
 
 void DebugEvaluator::beginDebug(Statement *node) {
-    if (!_debugging)
-        return;
-
     if (_state == STEP_OVER)
         _state = CONTINUE;
 
@@ -18,9 +15,6 @@ void DebugEvaluator::beginDebug(Statement *node) {
 }
 
 void DebugEvaluator::endDebug(Statement *node, DebugState prevState) {
-    if (!_debugging)
-        return;
-
     if (!node->stoppable())
         return;
 

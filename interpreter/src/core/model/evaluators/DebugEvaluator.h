@@ -12,9 +12,7 @@
 namespace naylang {
 
 class DebugEvaluator : public ExecutionEvaluator {
-
     Debugger *_debugger;
-    bool _debugging;
     DebugState _state;
 
 public:

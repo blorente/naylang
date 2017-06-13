@@ -12,7 +12,9 @@ Debugger::Debugger(DebugMode *mode, const std::string &code) :
     _debugEval{std::make_unique<DebugEvaluator>(this)},
     Interpreter(_debugEval.get()),
     _frontend{mode},
-    _AST{parse(code)}{}
+    _AST{parse(code)}{
+    _eval = _debugEval.get();
+}
 
 void Debugger::run() {
     _debugEval->setDebugState(CONTINUE);
@@ -27,7 +29,7 @@ void Debugger::setBreakpoint(int line) {
 
 void Debugger::printEnvironment() {
     std::cout << "Current environment: " << std::endl;
-    std::cout << _eval->currentScope()->prettyPrint(0) << std::endl;
+    std::cout << _debugEval->currentScope()->prettyPrint(0) << std::endl;
 }
 
 void Debugger::resume() {
@@ -56,6 +58,6 @@ void Debugger::stepOver() {
 
 void Debugger::finish() {
     std::cout << "Process finished. Resulting environment: " << std::endl;
-    std::cout << _eval->currentScope()->prettyPrint(0) << std::endl;
+    std::cout << _debugEval->currentScope()->prettyPrint(0) << std::endl;
 }
 }
